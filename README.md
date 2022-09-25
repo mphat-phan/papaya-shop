@@ -50,3 +50,4 @@ Install dependencies with npm
 ## Feedback
 
 If you have any feedback, please reach out to [me](mailto:phanminhphat2001@gmail.com)
+Le Nguyen Gia Linh
