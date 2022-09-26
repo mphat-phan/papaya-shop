@@ -6,6 +6,7 @@
     "dev": "node backend/server.js",
     "build": "next build",
     "start": "cross-env NODE_ENV=production node backend/server.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix && npm run build --prefix",
     "lint": "next lint"
   },
   "dependencies": {
