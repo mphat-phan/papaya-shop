@@ -1,20 +1,19 @@
 import express from 'express'
 import passport from 'passport';
-import session  from 'express-session';
+import session from 'cookie-session';
 import dotenv from 'dotenv';
-import MemoryStore from 'memorystore';
 dotenv.config();
 
 const authFacebook = express();
-
+authFacebook.set('trust proxy', 1);
 authFacebook.use(session({
-    cookie: { maxAge: 86400000 },
-    store: new MemoryStore({
-      checkPeriod: 86400000 // prune expired entries every 24h
-    }),
     secret: process.env.SESSION_SECRET,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    maxAge: 1000 * 60 * 15,
+    cookie:{
+      secure: true
+    }
 }));
 
 authFacebook.use(passport.initialize());

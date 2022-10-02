@@ -48,7 +48,7 @@ app.prepare().then(() => {
   server.all('*', (req, res) => {
     return handle(req, res)
   })
-
+  
   server.listen(port, err => {
     if (err) throw err
     console.log(`> Ready on ${process.env.DOMAIN_NAME}:${port}`)
