@@ -16,8 +16,6 @@ Install dependencies with npm
 ```bash
   cd papaya-shop
   npm install
-  cd frontend
-  npm install
 ```
 
 ## Features
