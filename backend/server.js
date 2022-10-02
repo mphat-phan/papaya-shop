@@ -9,8 +9,7 @@ import authFacebook from './config/authFacebook.js';
 import {isLogged} from './middlewares/AuthMiddleware.js';
 
 dotenv.config();
-
-const port = parseInt(process.env.PORT, 10) || 3000 // Port để chạy app Nextjs, cũng là server nodejs
+const port = process.env.PORT || 3000 // Port để chạy app Nextjs, cũng là server nodejs
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
