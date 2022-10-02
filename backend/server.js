@@ -1,27 +1,57 @@
-const express = require('express') // Sử dụng framework express
-const next = require('next') // Include module next
+import express from 'express' // Sử dụng framework express
+import next from 'next' // Include module next
+import connectDB from './config/db.js';
+import dotenv from 'dotenv';
+import api from './routes/index.js';
+import './config/passport.js';
+import authGoogle from './config/authGoogle.js';
+import authFacebook from './config/authFacebook.js';
+import {isLogged} from './middlewares/AuthMiddleware.js';
+
+dotenv.config();
 
 const port = parseInt(process.env.PORT, 10) || 3000 // Port để chạy app Nextjs, cũng là server nodejs
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 
-app.prepare().then(() => {
-  const server = express()
+connectDB();
 
-//Tạo ra các router. Dòng này có ý nghĩa khi gửi request đến path /a . Sẽ render file /a.js trong thư mục pages/a.js của Nextjs
-  server.get('/api/shows', (req, res) => {
-    return res.end("Hello");
+app.prepare().then(() => {
+  
+  //Server 
+  const server = express();
+  server.use(express.json());
+  server.use(authGoogle); //Set up authentication with GG
+  server.use(authFacebook);
+  
+  //Client Routes
+  server.get('/login', (req, res) => {
+    res.send('<a href="/auth/google">Login with Google</a></br><a href="/auth/facebook">Login with Facebook</a>');
+
   })
 
-// Nếu các bạn muốn các routing tự động liến kết đến route files giống với cấu trúc của Nextjs thì chỉ cần thêm 3 dòng bên dưới
-// https://nextjs.org/docs/routing/introduction
+  server.get('/protect', isLogged, (req, res) => {
+    res.send(req.user);
+  })
+
+  server.get('/logout', function(req, res, next) {
+    req.logout(function(err) {
+      if (err) { return next(err); }
+      res.redirect('/login');
+    });
+  });
+
+  //API routes
+  server.use('/api', api);
+
+  //Liên kết đến các routes NextJS
   server.all('*', (req, res) => {
     return handle(req, res)
   })
 
   server.listen(port, err => {
     if (err) throw err
-    console.log(`> Ready on http://localhost:${port}`)
+    console.log(`> Ready on ${process.env.DOMAIN_NAME}:${port}`)
   })
 })
