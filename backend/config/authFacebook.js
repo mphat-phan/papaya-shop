@@ -7,6 +7,10 @@ dotenv.config();
 const authFacebook = express();
 
 authFacebook.use(session({
+    cookie: {
+      secure: true,
+      maxAge:60000
+    },
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true

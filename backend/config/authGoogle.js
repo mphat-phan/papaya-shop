@@ -5,8 +5,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const authGoogle = express();
-
+authGoogle.set('trust proxy', 1);
 authGoogle.use(session({
+    cookie: {
+      secure: true,
+      maxAge:60000
+    },
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true
