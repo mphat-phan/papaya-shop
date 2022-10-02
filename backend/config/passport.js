@@ -10,7 +10,7 @@ passport.use(new OAuth2Strategy({
     // tokenURL: 'http://localhost:3000/oauth2/token',
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `${process.env.DOMAIN_NAME}:${process.env.PORT}/google/callback`
+    callbackURL: `${process.env.DOMAIN_NAME}/google/callback`
   },
   function(accessToken, refreshToken, profile, done) {
     // User.findOrCreate({ exampleId: profile.id }, function (err, user) {
@@ -24,7 +24,7 @@ passport.use(new OAuth2Strategy({
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
-  callbackURL: `${process.env.DOMAIN_NAME}:${process.env.PORT}/auth/facebook/callback`
+  callbackURL: `${process.env.DOMAIN_NAME}/auth/facebook/callback`
   },
   function(accessToken, refreshToken, profile, done) {
     // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
