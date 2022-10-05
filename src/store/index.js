@@ -1,13 +1,7 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import {
-    cartOpenDrawerReducer,
-} from './reducers/CartReducers';
-
-const reducers = combineReducers({
-    cartOpenDrawer: cartOpenDrawerReducer,
-});
+import rootReducer from './reducers'
 
 const initialState = {
 
@@ -16,7 +10,7 @@ const initialState = {
 const middlewares = [thunk];
 
 const store = createStore(
-    reducers,
+    rootReducer,
     initialState,
     composeWithDevTools(applyMiddleware(...middlewares))
 );

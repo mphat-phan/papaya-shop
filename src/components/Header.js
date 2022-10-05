@@ -20,7 +20,8 @@ import { useDispatch, useSelector } from 'react-redux';
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const CustomAppBar = styled(AppBar)(({theme}) => ({
-    backgroundColor: theme.header.color,
+    backgroundColor: theme.header.backgroundColor,
+    color: theme.header.color,
 }))
 const ResponsiveAppBar = () => {
     const dispatch = useDispatch();
@@ -62,7 +63,6 @@ const ResponsiveAppBar = () => {
                         fontFamily: 'monospace',
                         fontWeight: 700,
                         letterSpacing: '.3rem',
-                        color: 'inherit',
                         textDecoration: 'none',
                         }}
                     >
@@ -76,7 +76,6 @@ const ResponsiveAppBar = () => {
                         aria-controls="menu-appbar"
                         aria-haspopup="true"
                         onClick={handleOpenNavMenu}
-                        color="inherit"
                         >
                         <MenuIcon />
                         </IconButton>
@@ -121,7 +120,6 @@ const ResponsiveAppBar = () => {
                         fontFamily: 'monospace',
                         fontWeight: 700,
                         letterSpacing: '.3rem',
-                        color: 'inherit',
                         textDecoration: 'none',
                         }}
                     >
@@ -133,7 +131,7 @@ const ResponsiveAppBar = () => {
                         <Button
                             key={page}
                             onClick={handleCloseNavMenu}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
+                            sx={{ my: 2, color: 'inherit', display: 'block' }}
                         >
                             {page}
                         </Button>

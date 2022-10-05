@@ -6,9 +6,13 @@ export const theme = createTheme({
     primary: {
       main: '#E56717',
     },
+    text:{
+      primary: "#333333"
+    }
   },
   header: {
-    color: '#FF8E88'
+    backgroundColor: '#FFFFFF',
+    color: '#333333'
   }
 
 });

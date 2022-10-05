@@ -3,6 +3,7 @@ import next from 'next' // Include module next
 import connectDB from './config/db.js';
 import dotenv from 'dotenv';
 import api from './routes/index.js';
+import cors from "cors";
 import './config/passport.js';
 //import authGoogle from './config/authGoogle.js';
 //import authFacebook from './config/authFacebook.js';
@@ -21,6 +22,7 @@ app.prepare().then(() => {
   //Server 
   const server = express();
   server.use(express.json());
+  //server.use(cors());
   //server.use(authGoogle); //Set up authentication with GG
   //server.use(authFacebook);
   
@@ -51,6 +53,6 @@ app.prepare().then(() => {
   
   server.listen(port, err => {
     if (err) throw err
-    console.log(`> Ready on ${process.env.DOMAIN_NAME}:${port}`)
+    console.log(`> Ready on ${process.env.DOMAIN_NAME}`)
   })
 })
