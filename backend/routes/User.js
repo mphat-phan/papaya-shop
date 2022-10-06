@@ -1,5 +1,8 @@
 import express from "express";
 import {registerUser} from '../controllers/User.js';
+//Validator
+import { runValidation } from "../validators/index.js";
+import { userSignupValidator } from "../validators/auth.js";
 
 const router = express.Router();
 
@@ -11,8 +14,6 @@ const router = express.Router();
  */
 router
 .route('/')
-.post(registerUser);
-
-
+.post(userSignupValidator,runValidation,registerUser);
 
 export default router;

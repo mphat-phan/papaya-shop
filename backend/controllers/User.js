@@ -7,31 +7,31 @@ import asyncHandler from 'express-async-handler';
  * @access  Private
  */
 const registerUser = asyncHandler(async (req, res) => {
-    console.log(req.body);
-    const {email, password, rePassword} = req.body;
-    const checkUserExist = await User.findOne({ email });
+    
+    const {email, password} = req.body;
 
-    if(checkUserExist){
-        res.status(400);
-        throw new Error ('User Already Existed');
-    }
+    User.findOne({ email }, (err, user)=>{
+        //Check User Existed
+        if(user){
+            return res.status(400).json({
+                error: 'User Already Existed'
+            });
+        }
 
-    const _user = await User.create({
-        email,
-        password,
-    });
-
-    if(_user) {
-        res.status(201).json({
-            _id: _user._id,
-            email: _user.email,
+        //Creat New User
+        User.create({email, password}, (err, user) =>{
+            if(err){
+                return res.status(400).json({
+                    error: err
+                });
+            }
+            res.status(201).json({
+                _id: user._id,
+                email: user.email,
+            });
         });
-    }
-    else {
-        res.status(400);
-        throw new Error('Invalid User');
-    }
 
+    });
 })
 
 

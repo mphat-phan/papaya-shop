@@ -4,12 +4,12 @@ import bcrypt from 'bcryptjs';
 //User Schema
 const userSchema = mongoose.Schema(
     {
-        name: {
-          type: String,
-          trim: true,
-          required: true,
-          max: 32
-        },
+        // name: {
+        //   type: String,
+        //   trim: true,
+        //   required: true,
+        //   max: 32
+        // },
         email: {
           type: String,
           trim: true,
@@ -21,41 +21,41 @@ const userSchema = mongoose.Schema(
           type: String,
           required: true,
         },
-        isStatus: {
-          type: Boolean,
-          required: true,
-          default: true,
-        },
-        avatar: {
-          type: String,
-          default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-        },
-        address: [
-            {
-                addressCode: {
-                  type: String,
-                  default: '',
-                },
-                street: {
-                  type: String,
-                  default: '',
-                },
-                district: {
-                  type: String,
-                  default: '',
-                },
-                city: {
-                  type: String,
-                  default: '',
-                },
-                country: {
-                  type: String,
-                  default: '',
-                }
-            },{
-              timestamps: true,
-            }
-        ]
+        // isStatus: {
+        //   type: Boolean,
+        //   required: true,
+        //   default: true,
+        // },
+        // avatar: {
+        //   type: String,
+        //   default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+        // },
+        // address: [
+        //     {
+        //         addressCode: {
+        //           type: String,
+        //           default: '',
+        //         },
+        //         street: {
+        //           type: String,
+        //           default: '',
+        //         },
+        //         district: {
+        //           type: String,
+        //           default: '',
+        //         },
+        //         city: {
+        //           type: String,
+        //           default: '',
+        //         },
+        //         country: {
+        //           type: String,
+        //           default: '',
+        //         }
+        //     },{
+        //       timestamps: true,
+        //     }
+        // ]
     },
     {
         timestamps: true,
