@@ -1,14 +1,11 @@
 {
-    "name": "cybershop-ecommerce",
+    "name": "papaya-shop",
     "version": "1.0.0",
-    "description": "CyberShop",
-    "main": "server.js",
+    "description": "Papaya",
     "type": "module",
     "scripts": {
-      "start": "node backend/server",
-      "server": "npm run dev --prefix backend",
-      "client": "npm run dev --prefix frontend",
-      "test": "echo \"Error: no test specified\" && exit 1"
+        "server": "npm run dev --prefix backend",
+        "client": "npm run dev --prefix frontend",
+        "test": "echo \"Error: no test specified\" && exit 1"
     }
 }
-  
