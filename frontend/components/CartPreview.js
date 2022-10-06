@@ -6,7 +6,7 @@ import {
     IconButton,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
-import emptyGif from '../../public/Empty.gif';
+import emptyGif from '../public/Empty.gif';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOpenCartDrawer } from '../store/actions/CartActions';
 const useStyles = () => ({
