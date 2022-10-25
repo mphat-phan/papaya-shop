@@ -15,13 +15,8 @@ git clone https://github.com/mphat-phan/papaya-shop.git
 Install dependencies with npm
 
 ```bash
-  cd backend
-  npm install
-  cd frontend
-  npm install
   cd papaya-shop
-  npm run client
-  npm run server
+  npm install
 ```
 
 ## Features
@@ -59,3 +54,4 @@ Le Nguyen Gia Linh
 My Uyen
 Banh He dia~ huo^ng <3 cua Aphu
 love you babe
+My Tien

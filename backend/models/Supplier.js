@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 
-const brandSchema = mongoose.Schema(
+const supplierSchema = mongoose.Schema(
     {
         name:
         {
@@ -14,6 +14,6 @@ const brandSchema = mongoose.Schema(
         timestamps: true,
     }
 );
-const Brand = mongoose.model('Brand', brandSchema);
+const Supplier = mongoose.model('Supplier', supplierSchema);
 
-export default Brand;
+export default Supplier;
