@@ -1,5 +1,5 @@
 import { check } from 'express-validator';
-export const brandValidator = [
+export const supplierValidator = [
     check('name')
         .exists()
         .withMessage('Name not null')
