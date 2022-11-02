@@ -13,7 +13,7 @@ Modern and stylish e-commerce website
 https://fashion-shop-mern.herokuapp.com
 
 
-## Installation 
+## Installation
 
 Clone
 
@@ -41,9 +41,8 @@ Install dependencies with npm
 - Authentication (JWT)
 - Admin (Manage users, orders, products)
 - Upload images (**Cloudinary**)
-- Fully responsive 
+- Fully responsive
 - And more...
-
 
 ## Tech Stack
 
@@ -64,11 +63,25 @@ Install dependencies with npm
 
 ## Author
 
+<<<<<<< HEAD
+[@mphat-phan](https://github.com/mphat-phan)
+
+=======
 [@phongduybui](https://github.com/phongduybui)
 
   
+>>>>>>> master
 ## Feedback
 
 If you have any feedback, please reach out to [me](mailto:buiduyphong921@gmail.com)
 
+<<<<<<< HEAD
+Check
+Le Nguyen Gia Linh
+My Uyen
+Banh He dia~ huo^ng <3 cua Aphu
+love you babe
+My Tien
+=======
   
+>>>>>>> master
