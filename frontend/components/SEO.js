@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
-import settings from "../../settings/settings-development";
+import settings from "../settings/settings-development";
 
 const SEO = (props) => {
     const { title, description, image, url, shopName } = props;

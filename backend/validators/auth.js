@@ -7,4 +7,6 @@ export const userSignupValidator = [
     check('password')
         .isLength({ min: 6 })
         .withMessage('Password must be at least 6 characters long')
+        .isStrongPassword()
+        .withMessage('Password must have Uppercase, Number and Character')
 ];

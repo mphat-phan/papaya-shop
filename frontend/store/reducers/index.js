@@ -1,9 +1,83 @@
 import { combineReducers } from "redux";
 import {
-    cartOpenDrawerReducer
-} 
-from './CartReducers';
+    productListReducer,
+    productDetailsReducer,
+    productDeleteReducer,
+    productCreateReducer,
+    productUpdateReducer,
+    productReviewCreateReducer,
+    productCommentCreateReducer,
+    productTopRatedReducer,
+    productLatestReducer,
+    productSaleReducer,
+    productRelatedReducer,
+    productSortByPriceReducer,
+    productShopReducer,
+    productCommentReplyCreateReducer,
+    productReviewReplyCreateReducer
+} from './productReducers.js';
+import { cartOpenDrawerReducer, cartReducer } from './cartReducers';
+import { snackbarReducer } from './snackbarReducers';
+import { filterReducer } from './filterReducers';
+import {
+    orderCreateReducer,
+    orderDetailsReducer,
+    orderPayReducer,
+    orderListMyReducer,
+    orderListReducer,
+    orderDeliverReducer,
+    revenueReducer,
+    sellingProductReducer,
+    orderCancelReducer,
+    orderConfirmReducer,
+    orderDeliveringReducer
+} from './orderReducers';
+import {
+    userLoginReducer,
+    userRegisterReducer,
+    userDetailsReducer,
+    userUpdateProfileReducer,
+    userListReducer,
+    userDeleteReducer,
+    userUpdateReducer,
+} from './userReducers';
 
 export default combineReducers({
+    productShop: productShopReducer,
+    productList: productListReducer,
+    productDetails: productDetailsReducer,
+    productDelete: productDeleteReducer,
+    productCreate: productCreateReducer,
+    productUpdate: productUpdateReducer,
+    productReviewCreate: productReviewCreateReducer,
+    productCommentCreate: productCommentCreateReducer,
+    productCommentReplyCreate: productCommentReplyCreateReducer,
+    productReviewReplyCreate: productReviewReplyCreateReducer,
+    productTopRated: productTopRatedReducer,
+    productLatest: productLatestReducer,
+    productSale: productSaleReducer,
+    productRelated: productRelatedReducer,
+    productSortByPrice: productSortByPriceReducer,
+    cart: cartReducer,
     cartOpenDrawer: cartOpenDrawerReducer,
+    userLogin: userLoginReducer,
+    userRegister: userRegisterReducer,
+    userDetails: userDetailsReducer,
+    userUpdateProfile: userUpdateProfileReducer,
+    userList: userListReducer,
+    userDelete: userDeleteReducer,
+    userUpdate: userUpdateReducer,
+    orderCreate: orderCreateReducer,
+    orderDetails: orderDetailsReducer,
+    orderPay: orderPayReducer,
+    orderDeliver: orderDeliverReducer,
+    orderDelivering: orderDeliveringReducer,
+    orderCancel: orderCancelReducer,
+    orderConfirm: orderConfirmReducer,
+    orderListMy: orderListMyReducer,
+    orderList: orderListReducer,
+    revenueList: revenueReducer,
+    sellingProduct: sellingProductReducer,
+    snackbarState: snackbarReducer,
+    filter: filterReducer,
 });
