@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SEO from "../../src/components/SEO";
+import SEO from "../../components/SEO";
 import StyledPost from "./index.css";
 import Image from "next/image";
 const Post = (props) => (

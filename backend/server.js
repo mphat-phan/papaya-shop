@@ -8,7 +8,7 @@ import cors from "cors";
 dotenv.config();
 
 //Port
-const PORT = process.env.PORT || 3000 // Port để chạy app Nextjs, cũng là server nodejs
+const PORT = process.env.PORT || 5000
 
 //app 
 const app = express();
