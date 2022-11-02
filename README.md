@@ -1,23 +1,35 @@
-# Papaya Shop
 
-E-Commerce website
+# Fashion Shop v2.0
 
-![Logo](https://res.cloudinary.com/dnkhiiz0b/image/upload/v1664113799/papaya-shop/Logo_cb89s6.png)
+Modern and stylish e-commerce website
+
+![Logo](https://res.cloudinary.com/phongbuiduy/image/upload/v1624769545/fashionshop/logo_v327oi.png)
+
+
+
+## Demo
+
+:point_right: :point_right: Version 2.0 (Improved UI, UX, and more functions):
+https://fashion-shop-mern.herokuapp.com
+
 
 ## Installation 
 
 Clone
 
 ```bash
-git clone https://github.com/mphat-phan/papaya-shop.git
+git clone https://github.com/phongduybui/fashion-shop.git
 ```
+
 Install dependencies with npm
 
 ```bash
-  cd papaya-shop
+  cd fashion-shop
+  npm install
+  cd frontend
   npm install
 ```
-
+    
 ## Features
 
 - Functions with shopping cart (add, remove, update)
@@ -35,23 +47,28 @@ Install dependencies with npm
 
 ## Tech Stack
 
-**Client:** React, Redux, Material-UI, NextJS
+**Client:** React, Redux, Material-UI
 
-**Server:** Node, ExpressJS
+**Server:** Node, Express
 
 **Database:** MongoDB, mongoose
 
+## Reference resources:
+
+- Free images: [Unsplash](http://unsplash.com/), [Storyset](https://storyset.com/)  
+- Carousel images: [Goya Fashion](https://goya.everthemes.com/demo-fashion/)  
+- Products image: [QOS](https://demo2.wpopal.com/qos/home-8/)
+
+
+
+
 ## Author
 
-[@mphat-phan](https://github.com/mphat-phan)
+[@phongduybui](https://github.com/phongduybui)
+
   
 ## Feedback
 
-If you have any feedback, please reach out to [me](mailto:phanminhphat2001@gmail.com)
+If you have any feedback, please reach out to [me](mailto:buiduyphong921@gmail.com)
 
-Check
-Le Nguyen Gia Linh
-My Uyen
-Banh He dia~ huo^ng <3
-love you babe
-My Tien
+  
