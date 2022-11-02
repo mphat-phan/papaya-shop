@@ -22,7 +22,7 @@ const reviewSchema = mongoose.Schema(
     },
     reply: {
       type: String,
-      required: true,
+      // required: true,
     },
     avatar: {
       type: String,
