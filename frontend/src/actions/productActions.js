@@ -37,11 +37,19 @@ import {
   PRODUCT_SHOP_FAIL,
   PRODUCT_SHOP_REQUEST,
   PRODUCT_SHOP_FILTER,
+  PRODUCT_CREATE_COMMENT_FAIL,
+  PRODUCT_CREATE_COMMENT_REQUEST,
+  PRODUCT_CREATE_COMMENT_SUCCESS,
+  PRODUCT_CREATE_REPLY_FAIL,
+  PRODUCT_CREATE_REPLY_REQUEST,
+  PRODUCT_CREATE_REPLY_SUCCESS,
+  PRODUCT_CREATE_REVIEW_REPLY_FAIL,
+  PRODUCT_CREATE_REVIEW_REPLY_REQUEST,
+  PRODUCT_CREATE_REVIEW_REPLY_SUCCESS
 } from '../constants/productConstants';
 import { logout } from './userActions';
 
-export const listProducts =
-  (keyword = '', pageNumber = '', option = '') =>
+export const listProducts = (keyword = '', pageNumber = '', option = '') =>
   async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
@@ -63,7 +71,7 @@ export const listProducts =
             : error.message,
       });
     }
-  };
+};
 
 export const fetchProductDetails = (id) => async (dispatch) => {
   try {
@@ -202,8 +210,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
   }
 };
 
-export const createProductReview =
-  (productId, review) => async (dispatch, getState) => {
+export const createProductReview = (productId, review) => async (dispatch, getState) => {
     try {
       dispatch({
         type: PRODUCT_CREATE_REVIEW_REQUEST,
@@ -240,11 +247,124 @@ export const createProductReview =
         payload: message,
       });
     }
-  };
+};
 
-export const listTopProducts =
-  (pageNumber = '', perPage = '') =>
-  async (dispatch) => {
+export const createProductComment = (productId, comment) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_CREATE_COMMENT_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.post(`/api/products/${productId}/comments`, comment, config);
+
+    dispatch({
+      type: PRODUCT_CREATE_COMMENT_SUCCESS,
+    });
+
+    dispatch(fetchProductDetails(productId));
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout());
+    }
+    dispatch({
+      type: PRODUCT_CREATE_COMMENT_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const createCommentReply = (productId,commentId, avatar, reply) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_CREATE_REPLY_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.post(`/api/products/${productId}/reply`, {commentId, reply, avatar}, config);
+
+    dispatch({
+      type: PRODUCT_CREATE_REPLY_SUCCESS,
+    });
+
+    dispatch(fetchProductDetails(productId));
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout());
+    }
+    dispatch({
+      type: PRODUCT_CREATE_REPLY_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const createCommentReviewReply = (productId, reviewId, reply) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_REPLY_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.post(`/api/products/${productId}/reply/reviews`, {reviewId, reply}, config);
+
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_REPLY_SUCCESS,
+    });
+
+    dispatch(fetchProductDetails(productId));
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout());
+    }
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_REPLY_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const listTopProducts = (pageNumber = '', perPage = '') => async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_TOP_REQUEST });
 
@@ -265,7 +385,7 @@ export const listTopProducts =
             : error.message,
       });
     }
-  };
+};
 
 export const listLatestProducts = (pageNumber) => async (dispatch) => {
   try {
@@ -330,8 +450,7 @@ export const listRelatedProducts = (category) => async (dispatch) => {
   }
 };
 
-export const listSortByPriceProducts =
-  (sortBy, pageNumber) => async (dispatch) => {
+export const listSortByPriceProducts = (sortBy, pageNumber) => async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_SORT_BY_PRICE_REQUEST });
 
@@ -352,10 +471,9 @@ export const listSortByPriceProducts =
             : error.message,
       });
     }
-  };
+};
 
-export const listShopProduct =
-  (type, pageNumber, keyword) => async (dispatch, getState) => {
+export const listShopProduct = (type, pageNumber, keyword) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_SHOP_REQUEST });
     let payload = {};
     let error = null;
@@ -412,7 +530,7 @@ export const listShopProduct =
         payload: error,
       });
     }
-  };
+};
 
 export const filterListShopProduct = () => async (dispatch, getState) => {
   let filteredProducts = [];

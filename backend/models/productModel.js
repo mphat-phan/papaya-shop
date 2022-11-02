@@ -8,9 +8,34 @@ const reviewSchema = mongoose.Schema(
     },
     rating: {
       type: Number,
-      required: true,
     },
     comment: {
+      type: String,
+    },
+    reply: {
+      type: String,
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
+    avatar: {
+      type: String,
+    }
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const replySchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    reply: {
       type: String,
       required: true,
     },
@@ -19,6 +44,34 @@ const reviewSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    avatar: {
+      type: String,
+    }
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const commentSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    comment: {
+      type: String,
+      required: true,
+    },
+    reply: [replySchema],
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
+    avatar: {
+      type: String,
+    }
   },
   {
     timestamps: true,
@@ -50,7 +103,13 @@ const productSchema = mongoose.Schema(
       required: true,
     },
     reviews: [reviewSchema],
+    comments: [commentSchema],
     rating: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    numComments: {
       type: Number,
       required: true,
       default: 0,

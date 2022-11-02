@@ -37,6 +37,7 @@ import { FaTags } from 'react-icons/fa';
 import { FaShareAlt } from 'react-icons/fa';
 import ProductReview from '../components/Product/ProductReview.js';
 import ProductRelated from '../components/Product/ProductRelated.js';
+import ProductComment from '../components/Product/ProductComment.js';
 import ShareButtons from '../components/ShareButtons.js';
 
 const useStyles = makeStyles((theme) => ({
@@ -153,17 +154,17 @@ const ProductScreen = ({ history, match }) => {
               <Grid item>
                 <Breadcrumbs separator={<NavigateNextIcon fontSize='small' />}>
                   <Link color='inherit' component={RouterLink} to='/'>
-                    Home
+                    Trang chủ
                   </Link>
                   <Link color='inherit' component={RouterLink} to='/'>
-                    Product
+                    Sản phẩm
                   </Link>
                   <Link
                     color='textPrimary'
                     component={RouterLink}
                     to={`/product/${product._id}`}
                   >
-                    {product?.name || 'Not found product'}
+                    {product?.name || 'Không tìm thấy sản phẩm'}
                   </Link>
                 </Breadcrumbs>
               </Grid>
@@ -203,15 +204,15 @@ const ProductScreen = ({ history, match }) => {
                     readOnly
                   />
                   <Typography component='span' style={{ marginLeft: 5 }}>
-                    {`(${product.numReviews} reviews) | `}
+                    {`(${product.numReviews} đánh giá) | `}
                   </Typography>
                   <Typography
                     component='span'
                     style={{ marginLeft: 5 }}
                     color={product.countInStock > 0 ? 'primary' : 'secondary'}
                   >
-                    {`Status: ${
-                      product.countInStock > 0 ? 'In Stock' : 'Out of Stock'
+                    {`Trạng thái: ${
+                      product.countInStock > 0 ? 'Còn Hàng' : 'Hết hàng'
                     }`}
                   </Typography>
                 </Box>
@@ -229,11 +230,11 @@ const ProductScreen = ({ history, match }) => {
                       component='span'
                       className={classes.rootPrice}
                     >
-                      ${Number(product.price).toFixed(2)}
+                      {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(product.price)}
                     </Typography>
                   ) : null}
-                  {'  '}$
-                  {Number(product.price * (1 - product.sale / 100)).toFixed(2)}
+                  {'  '}
+                  {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(product.price * (1 - product.sale / 100))}
                 </Typography>
                 <Typography
                   variant='body1'
@@ -253,7 +254,7 @@ const ProductScreen = ({ history, match }) => {
                       color='secondary'
                       className={classes.label}
                     >
-                      Size:
+                      Kích thước:
                     </FormLabel>
                     <Controller
                       name='size'
@@ -285,7 +286,7 @@ const ProductScreen = ({ history, match }) => {
                           )}
                         </>
                       )}
-                      rules={{ required: 'Please select size!' }}
+                      rules={{ required: 'Vui lòng chọn kích thước!' }}
                     />
                   </FormControl>
                   <FormControl variant='outlined' style={{ width: 250 }}>
@@ -293,7 +294,7 @@ const ProductScreen = ({ history, match }) => {
                       className={classes.label}
                       style={{ marginBottom: 16 }}
                     >
-                      Quantity
+                      Số lượng
                     </FormLabel>
                     <Controller
                       name='qty'
@@ -302,10 +303,10 @@ const ProductScreen = ({ history, match }) => {
                       render={({ field }) => (
                         <TextField
                           select
-                          label='Select quantity'
+                          label='Chọn số lượng'
                           variant='outlined'
                           error={!product.countInStock}
-                          helperText={!product.countInStock && 'Out of stock'}
+                          helperText={!product.countInStock && 'Hết hàng'}
                           {...field}
                         >
                           {Array(product.countInStock)
@@ -328,7 +329,7 @@ const ProductScreen = ({ history, match }) => {
                   disabled={product.countInStock === 0}
                   onClick={handleSubmit(addToCartHandler)}
                 >
-                  Add to Cart
+                  Thêm vào giỏ hàng
                 </Button>
                 {/* <Button
                   variant='contained'
@@ -349,7 +350,7 @@ const ProductScreen = ({ history, match }) => {
                   >
                     <FaTags />
                   </Box>
-                  <Typography className={classes.label}>Tags:</Typography>
+                  <Typography className={classes.label}>Nhãn:</Typography>
                   <Box ml={2}>
                     <Chip
                       size='small'
@@ -369,10 +370,10 @@ const ProductScreen = ({ history, match }) => {
                   >
                     <FaShareAlt />
                   </Box>
-                  <Typography className={classes.label}>Share:</Typography>
+                  <Typography className={classes.label}>Chia sẻ:</Typography>
                   <Box ml={1}>
                     <div className={classes.socialGroup}>
-                      <ShareButtons url='https://cybershop-v1.herokuapp.com/product/60b7a25e04e1647ea01d5eaf' />
+                      <ShareButtons url={'https://changfashion.herokuapp.com/product/'+product._id} />
                     </div>
                   </Box>
                 </Box>
@@ -384,6 +385,14 @@ const ProductScreen = ({ history, match }) => {
                   reviews={product.reviews}
                   productId={match.params.id}
                 />
+
+              </Grid>
+              <Grid item xs={12}>
+                <ProductComment
+                  comments={product.comments}
+                  productId={match.params.id}
+                />
+
               </Grid>
             </Grid>
             <Grid container>

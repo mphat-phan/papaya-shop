@@ -1,5 +1,4 @@
 import React from 'react';
-import MessengerCustomerChat from 'react-messenger-customer-chat';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 const MessengerChat = () => {
@@ -10,13 +9,14 @@ const MessengerChat = () => {
   });
 
   return (
-    trigger && (
-      <MessengerCustomerChat
-        pageId='116093864422666'
-        appId='318297003748360'
-        themeColor='#F50057'
-      />
-    )
+    // trigger && (
+    //   <MessengerCustomerChat
+    //     pageId='116093864422666'
+    //     appId='318297003748360'
+    //     themeColor='#F50057'
+    //   />
+    // )
+    <></>
   );
 };
 

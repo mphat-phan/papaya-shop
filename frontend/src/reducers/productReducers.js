@@ -39,6 +39,18 @@ import {
   PRODUCT_SHOP_SUCCESS,
   PRODUCT_SHOP_FAIL,
   PRODUCT_SHOP_FILTER,
+  PRODUCT_CREATE_COMMENT_FAIL,
+  PRODUCT_CREATE_COMMENT_REQUEST,
+  PRODUCT_CREATE_COMMENT_RESET,
+  PRODUCT_CREATE_COMMENT_SUCCESS,
+  PRODUCT_CREATE_REPLY_FAIL,
+  PRODUCT_CREATE_REPLY_REQUEST,
+  PRODUCT_CREATE_REPLY_RESET,
+  PRODUCT_CREATE_REPLY_SUCCESS,
+  PRODUCT_CREATE_REVIEW_REPLY_FAIL,
+  PRODUCT_CREATE_REVIEW_REPLY_REQUEST,
+  PRODUCT_CREATE_REVIEW_REPLY_SUCCESS,
+  PRODUCT_CREATE_REVIEW_REPLY_RESET
 } from '../constants/productConstants';
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -123,6 +135,51 @@ export const productReviewCreateReducer = (state = {}, action) => {
     case PRODUCT_CREATE_REVIEW_FAIL:
       return { loading: false, error: action.payload };
     case PRODUCT_CREATE_REVIEW_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const productCommentCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_CREATE_COMMENT_REQUEST:
+      return { loading: true };
+    case PRODUCT_CREATE_COMMENT_SUCCESS:
+      return { loading: false, success: true };
+    case PRODUCT_CREATE_COMMENT_FAIL:
+      return { loading: false, error: action.payload };
+    case PRODUCT_CREATE_COMMENT_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const productCommentReplyCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_CREATE_REPLY_REQUEST:
+      return { loading: true };
+    case PRODUCT_CREATE_REPLY_SUCCESS:
+      return { loading: false, success: true };
+    case PRODUCT_CREATE_REPLY_FAIL:
+      return { loading: false, error: action.payload };
+    case PRODUCT_CREATE_REPLY_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const productReviewReplyCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_CREATE_REVIEW_REPLY_REQUEST:
+      return { loading: true };
+    case PRODUCT_CREATE_REVIEW_REPLY_SUCCESS:
+      return { loading: false, success: true };
+    case PRODUCT_CREATE_REVIEW_REPLY_FAIL:
+      return { loading: false, error: action.payload };
+    case PRODUCT_CREATE_REVIEW_REPLY_RESET:
       return {};
     default:
       return state;

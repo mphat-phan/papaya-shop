@@ -1,4 +1,5 @@
 import Product from '../models/productModel.js';
+import Order from '../models/orderModel.js';
 import asyncHandler from 'express-async-handler';
 
 /**
@@ -38,9 +39,9 @@ const getProducts = asyncHandler(async (req, res) => {
  * @access  Public
  */
 const getProductById = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
-  if (product) {
-    res.json(product);
+  const products = await Product.findById(req.params.id);
+  if (products ) {
+    res.json(products);
   } else {
     res.status(404).json({
       message: 'Product not found',
@@ -66,6 +67,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 // @desc    Create a product
 // @route   POST /api/products
 // @access  Private/Admin
+
 const createProduct = asyncHandler(async (req, res) => {
   const product = new Product({ ...req.body, user: req.user._id });
 
@@ -114,25 +116,17 @@ const updateProduct = asyncHandler(async (req, res) => {
 // @route   POST /api/products/:id/reviews
 // @access  Private
 const createProductReview = asyncHandler(async (req, res) => {
-  const { rating, comment } = req.body;
-
+  const { rating, comment, avatar, orderID, orderItem } = req.body;
+  console.log(req.body)
   const product = await Product.findById(req.params.id);
-
   if (product) {
-    const alreadyReviewed = product.reviews.find(
-      (r) => r.user.toString() === req.user._id.toString()
-    );
-
-    if (alreadyReviewed) {
-      res.status(400);
-      throw new Error('Product already reviewed');
-    }
 
     const review = {
       name: req.user.name,
       rating: Number(rating),
       comment,
       user: req.user._id,
+      avatar
     };
 
     product.reviews.push(review);
@@ -142,12 +136,108 @@ const createProductReview = asyncHandler(async (req, res) => {
     product.rating =
       product.reviews.reduce((acc, item) => item.rating + acc, 0) /
       product.reviews.length;
-
+      
     await product.save();
+    await Order.updateOne(
+    {
+      '_id' : orderID,
+      'orderItems._id' : orderItem
+    },
+    {
+      $set: { 
+        "orderItems.$.rating": rating,
+        "orderItems.$.comment": comment,
+      }
+    });
+    
     res.status(201).json({ message: 'Review added' });
   } else {
     res.status(404);
     throw new Error('Product not found');
+  }
+});
+
+// @desc    Create new review
+// @route   POST /api/products/:id/reply/reviews
+// @access  Private
+const createReviewReply = asyncHandler(async (req, res) => {
+  const { reply, reviewId } = req.body;
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    let replyUpdate = await Product.updateOne(
+    {
+      'reviews._id' : reviewId
+    },
+    {
+      $set: { "reviews.$.reply": reply}
+    });
+
+    res.status(201).json({ message: 'Review added' });
+  } else {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});
+
+
+// @desc    Create new review
+// @route   POST /api/products/:id/comments
+// @access  Private
+const createProductComment = asyncHandler(async (req, res) => {
+  const { comment, avatar } = req.body;
+
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+
+    const commentUser = {
+      name: req.user.name,
+      comment,
+      user: req.user._id,
+      avatar
+    };
+
+    product.comments.push(commentUser);
+
+    product.numComments = product.comments.length;
+
+    await product.save();
+    res.status(201).json({ message: 'Bình luận đã được thêm vào' });
+  } else {
+    res.status(404);
+    throw new Error('Không tìm thấy sản phẩm');
+  }
+});
+
+// @desc    Create new review
+// @route   POST /api/products/:id/reply
+// @access  Private
+const createCommentReply = asyncHandler(async (req, res) => {
+  const { reply, avatar, commentId } = req.body;
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+
+    const replyUser = {
+      name: req.user.name,
+      reply,
+      user: req.user._id,
+      avatar,
+    };
+    console.log(replyUser);
+    let replyUpdate = await Product.updateOne(
+    {
+      'comments._id' : commentId
+    },
+    {
+      $push: { "comments.$.reply": replyUser}
+    });
+    
+    res.status(201).json({ message: 'Bình luận đã được thêm vào' });
+  } else {
+    res.status(404);
+    throw new Error('Không tìm thấy sản phẩm');
   }
 });
 
@@ -278,4 +368,7 @@ export {
   getSaleProducts,
   getRelatedProducts,
   getSortByPriceProducts,
+  createProductComment,
+  createCommentReply,
+  createReviewReply
 };

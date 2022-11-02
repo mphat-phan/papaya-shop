@@ -10,6 +10,8 @@ const orderSchema = mongoose.Schema(
     orderItems: [
       {
         name: { type: String, required: true },
+        rating: { type: Number},
+        comment: { type: String},
         qty: { type: Number, required: true },
         sizeSelected: { type: String, required: true },
         images: [String],
@@ -67,6 +69,11 @@ const orderSchema = mongoose.Schema(
     },
     deliveredAt: {
       type: Date,
+    },
+    status: {
+      type: Number,
+      required: true,
+      default: 1,
     },
   },
   {

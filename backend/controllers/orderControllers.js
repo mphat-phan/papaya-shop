@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
-
+import Product from '../models/productModel.js';
 /**
  * @desc    Create new order
  * @route   POST /api/orders
@@ -31,8 +31,70 @@ const addOrderItems = asyncHandler(async (req, res) => {
       shippingPrice,
       totalPrice,
     });
-
+    
     const createdOrder = await order.save();
+    let size;
+    for (const i of orderItems) {
+      ///console.log(i);
+      //case s
+      if(i.sizeSelected === 's'){
+        let replyUpdate = await Product.updateOne(
+          {
+            '_id' : i.product,
+          },
+          {
+            $inc: 
+            { 
+              "size.$.s" : -i.qty
+            }
+          }
+        );
+      }
+      //case m
+      if(i.sizeSelected === 'm'){
+        console.log(i.qty);
+        let replyUpdate = await Product.updateOne(
+          {
+            '_id' : i.product,
+          },
+          {
+            $inc: 
+            { 
+              "size.m" : -i.qty
+            }
+          }
+        );
+      }
+      //case l
+      if(i.sizeSelected === 'l'){
+        let replyUpdate = await Product.updateOne(
+          {
+            '_id' : i.product,
+          },
+          {
+            $inc: 
+            { 
+              "size.$.l" : -i.qty
+            }
+          }
+        );
+      }
+      //case xl
+      if(i.sizeSelected === 'xl'){
+        let replyUpdate = await Product.updateOne(
+          {
+            '_id' : i.product,
+          },
+          {
+            $inc: 
+            { 
+              "size.$.xl" : -i.qty
+            }
+          }
+        );
+      }
+      
+    }
 
     res.status(201).json(createdOrder);
   }
@@ -115,7 +177,11 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
   if (order) {
     order.isDelivered = true;
     order.deliveredAt = Date.now();
-
+    order.status = 4;
+    if(order.isPaid === false || order.isPaid === undefined){
+      order.paidAt = Date.now();
+      order.isPaid = true;
+    }
     const updatedOrder = await order.save();
 
     res.json(updatedOrder);
@@ -124,6 +190,113 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
     throw new Error('Order not found');
   }
 });
+
+//Update to confirm
+const updateOrderToConfirm = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.status = 2;
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+//Update to cancel
+const updateOrderToCancel = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.status = 0;
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+
+    for (const i of updatedOrder.orderItems) {
+      //case s
+      if(i.sizeSelected === 's'){
+        let replyUpdate = await Product.updateOne(
+          {
+            '_id' : i.product,
+          },
+          {
+            $inc: 
+            { 
+              "size.$.s" : i.qty
+            }
+          }
+        );
+      }
+      //case m
+      if(i.sizeSelected === 'm'){
+        console.log(i.qty);
+        let replyUpdate = await Product.updateOne(
+          {
+            '_id' : i.product,
+          },
+          {
+            $inc: 
+            { 
+              "size.m" : i.qty
+            }
+          }
+        );
+      }
+      //case l
+      if(i.sizeSelected === 'l'){
+        let replyUpdate = await Product.updateOne(
+          {
+            '_id' : i.product,
+          },
+          {
+            $inc: 
+            { 
+              "size.$.l" : i.qty
+            }
+          }
+        );
+      }
+      //case xl
+      if(i.sizeSelected === 'xl'){
+        let replyUpdate = await Product.updateOne(
+          {
+            '_id' : i.product,
+          },
+          {
+            $inc: 
+            { 
+              "size.$.xl" : i.qty
+            }
+          }
+        );
+      }
+      
+    }
+
+
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+//Update to delivering
+const updateOrderToDelivering = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.status = 3;
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+
 const getTopProductMonthInYear = asyncHandler(async (req, res) => {
   var orders = [];
   const year = req.params.year;
@@ -145,7 +318,7 @@ const getTopProductMonthInYear = asyncHandler(async (req, res) => {
     { "$unwind": "$orderItems" },
     {
       $match: { 
-        deliveredAt: { $gte: new Date(startDate),$lt: new Date(endDate) }
+        deliveredAt: { $gte: new Date(startDate),$lte: new Date(endDate) }
       }
     },
     {
@@ -169,7 +342,7 @@ const getRevenueOfYear = asyncHandler(async (req, res) => {
     orders = await Order.aggregate([
     {
       $match: { 
-        deliveredAt: { $gte: new Date(startDate),$lt: new Date(endDate) }
+        deliveredAt: { $gte: new Date(startDate),$lte: new Date(endDate) }
       }
     },
     {
@@ -193,6 +366,7 @@ const getRevenueOfYear = asyncHandler(async (req, res) => {
   })
   res.json(orders);
 });
+
 export {
   addOrderItems,
   getOrderById,
@@ -202,4 +376,7 @@ export {
   updateOrderToDelivered,
   getRevenueOfYear,
   getTopProductMonthInYear,
+  updateOrderToCancel,
+  updateOrderToConfirm,
+  updateOrderToDelivering
 };

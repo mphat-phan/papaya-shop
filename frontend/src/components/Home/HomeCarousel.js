@@ -7,22 +7,23 @@ import { Carousel } from 'react-responsive-carousel';
 const dataCarousel = [
   {
     image:
-      'https://res.cloudinary.com/detabvdku/image/upload/v1651072486/brooke-cagle-z1B9f48F5dc-unsplash_d291ga.jpg',
-    subtitle: "Mùa hè 2022",
-    title: 'Thiết kế mới',
+      'https://res.cloudinary.com/phongbuiduy/image/upload/v1623085103/fashionshop/carousel/monigote_gnzuhj.jpg',
+    subtitle: "tSUMMER '21",
+    title: 'Áo Thun Ngày Hè',
     position: 'left',
   },
   {
-    image:'https://res.cloudinary.com/detabvdku/image/upload/v1651072829/tamara-bellis-wYwQMrLBbXI-unsplash_rh3mzx.jpg',
-    subtitle: 'Giảm 50%',
-    title: 'Dạo phố cuối tuần',
+    image:
+      'https://res.cloudinary.com/phongbuiduy/image/upload/v1623085132/fashionshop/carousel/curly_hair_white-1_x4bo5v.jpg',
+    subtitle: '50% OFF',
+    title: 'Váy Cocktail Mới',
     position: 'right',
   },
   {
     image:
-    'https://res.cloudinary.com/detabvdku/image/upload/v1651072830/charles-fair-XpY5guPssSI-unsplash_lhnjxn.jpg',
-    subtitle: "Xuân/Hạ 2022",
-    title: 'Tự tin thể hiện',
+      'https://res.cloudinary.com/phongbuiduy/image/upload/v1623085147/fashionshop/carousel/curly_hair_girl-1_rus3zv.jpg',
+    subtitle: "LIMITED",
+    title: 'Limited Collection',
     position: 'left',
   },
 ];
@@ -57,7 +58,7 @@ const HomeCarousel = () => {
                 color='secondary'
                 className='banner__link'
               >
-                Mua ngay
+                MUA NGAY
               </Button>
             </div>
           </div>
