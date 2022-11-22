@@ -1,6 +1,20 @@
 import User from '../models/userModel.js';
 import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken.js';
+import Verify from '../models/verifyModel.js';
+import { transporter } from '../config/mailer.js';
+import dotenv from 'dotenv';
+import { randomNumber } from '../utils/RandomNumber.js'
+dotenv.config();
+
+transporter.verify((error, success) => {
+  if(error){
+    console.log(error);
+  }
+  else {
+    console.log("Email is Ready");
+  }
+})
 
 /**
  * @desc    Authenticate user & get token
@@ -12,7 +26,10 @@ const authUser = asyncHandler(async (req, res) => {
   // res.send(req.body);
 
   const user = await User.findOne({ email });
-
+  if (!user.verified){
+    res.status(401);
+    throw new Error('Your account is not verified!!!!');
+  }
   if (user && user.isStatus && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
@@ -72,42 +89,150 @@ const getUserProfile = asyncHandler(async (req, res) => {
  * @access  Public
  */
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, avatar, address, ctity, postalCode, country } = req.body;
+  const { name, email, password } = req.body;
+  
+  //Check exist
   const userExist = await User.findOne({ email });
-
   if (userExist) {
     res.status(400);
     throw new Error('User already existed');
   }
 
+  //Create user
   const user = await User.create({
     name,
     email,
-    password,
-    avatar, 
-    address, 
-    ctity, 
-    postalCode, 
-    country,
+    password
   });
 
-  if (user) {
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      isStatus: user.isStatus,
-      avatar : user.avatar,
-      address : user.address,
-      city : user.city,
-      postalCode : user.postalCode,
-      country : user.country,
+  //Send OTP
+  sendOTPVerify({
+    email: user.email,
+  }, res);
+
+  // if (user) {
+  //   res.status(201).json({
+  //     _id: user._id,
+  //     name: user.name,
+  //     email: user.email,
+  //     isAdmin: user.isAdmin,
+  //     isStatus: user.isStatus,
+  //     avatar : user.avatar,
+  //     address : user.address,
+  //     city : user.city,
+  //     postalCode : user.postalCode,
+  //     country : user.country,
+  //   });
+  // } else {
+  //   res.status(400);
+  //   throw new Error('Invalid user data');
+  // }
+});
+
+const sendOTPVerify = async ({email}, res) => {
+  try {
+    //Random otp
+    const otp = randomNumber(1000, 9999);
+
+    const mailOptions = {
+      from: process.env.AUTH_EMAIL,
+      to: email,
+      subject: "Verify your email",
+      html: 
+      `<p>
+        Enter ${otp} to verify your email in Papaya Shop Website
+        </br>
+        This OTP will expire in 1 hours
+      </p>`
+    }
+
+    //Create database verify
+    const verify = await Verify.create({
+      email,
+      otp
     });
-  } else {
-    res.status(400);
-    throw new Error('Invalid user data');
+
+    //Send email with otp
+    await transporter.sendMail(mailOptions);
+
+    //If success
+    res.json({
+      status: "PENDING",
+      message: "Verification otp email sent",
+      data: {
+        email
+      }
+    })
+  } catch (error) {
+    //Else Fail
+    res.json({
+      status: "FAILED",
+      message: error.message,
+    })
   }
+};
+
+/**
+ * @desc    Update user profile
+ * @route   PUT /api/users/verifyOTP
+ * @access  Private
+ */
+const verifyOTP = asyncHandler(async (req, res) => {
+  const { email, otp } = req.body;
+  if(!email || !otp){
+    throw new Error('Invalid email or OTP');
+  }
+  //Kiem tra user
+  const user = await User.findOne({email});
+  if(!user){
+    throw new Error('User is not existed');
+  }
+  
+  if(user.verified){
+    throw new Error('User is verified');
+  }
+
+  const verify = await Verify.findOne({ email });
+
+  if(verify && (await verify.matchOTP(otp))){
+    await Verify.deleteMany({email});
+    user.verified = true;
+    await user.save();
+    res.json({
+      status: "VERIFIED",
+      message: "User email verified successfully",
+    })
+  }
+});
+
+/**
+ * @desc    Update user profile
+ * @route   PUT /api/users/resend-verify-otp
+ * @access  Private
+ */
+ const resendVerifyOTP = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  if(!email){
+    throw new Error('Invalid email');
+  }
+
+  const user = await User.findOne({email});
+  if (!user) {
+    return res.json({
+      message: "Your account is not existed",
+    })
+  }
+  if (user.verified) {
+    return res.json({
+      message: "Your account is verified",
+    })
+  }
+  else{
+    await Verify.deleteMany({email});
+    sendOTPVerify({email},res);
+  }
+
+  
 });
 
 /**
@@ -246,4 +371,6 @@ export {
   deleteUser,
   getUserById,
   updateUser,
+  verifyOTP,
+  resendVerifyOTP
 };
