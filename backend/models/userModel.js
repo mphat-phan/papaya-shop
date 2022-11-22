@@ -46,8 +46,12 @@ const userSchema = mongoose.Schema(
     country: {
       type: String,
       default: '',
-
-    }
+    },
+    verified: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: true,

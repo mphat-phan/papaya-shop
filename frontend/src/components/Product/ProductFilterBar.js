@@ -29,7 +29,7 @@ import SearchBox from '../SearchBox';
 import categories from '../../assets/data/categories';
 import brands from '../../assets/data/brands';
 
-const INITIAL_RANGE_PRICE = [10, 400];
+const INITIAL_RANGE_PRICE = [10000, 10000000];
 
 const useStyles = makeStyles((theme) => ({
   divider: {
@@ -177,15 +177,15 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant='h6' gutterBottom className={classes.title}>
-            Filter By Pricing
+            Lọc theo giá
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Slider
             value={price}
             onChange={handlePriceChange}
-            max={500}
-            min={1}
+            max={10000000}
+            min={10000}
             color='secondary'
             valueLabelDisplay='auto'
             aria-labelledby='range-slider'
@@ -195,8 +195,8 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
             justifyContent='space-between'
             color='text.secondary'
           >
-            <span>Filter</span>
-            <span>{`Pricing $${price[0]} - $${price[1]}`}</span>
+            <span>Lọc</span>
+            <span>{`Giá ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(price[0])} - ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(price[1])}`}</span>
           </Box>
         </AccordionDetails>
       </Accordion>
@@ -208,7 +208,7 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant='h6' gutterBottom className={classes.title}>
-            Categories
+            Thể loại
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -247,7 +247,7 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant='h6' gutterBottom className={classes.title}>
-            Size
+            Kích Thước
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -277,7 +277,7 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant='h6' gutterBottom className={classes.title}>
-            Brands
+            Nhãn hàng
           </Typography>
         </AccordionSummary>
         <AccordionDetails>

@@ -4,7 +4,7 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrderById, payOrder, deliverOrder } from '../actions/orderActions';
+import { getOrderById, payOrder, deliverOrder, cancelOrder, confirmOrder, deliveringOrder } from '../actions/orderActions';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   ORDER_DELIVER_RESET,
@@ -33,13 +33,17 @@ import {
   TableHead,
   TableRow,
   Button,
+  TextField,
 } from '@material-ui/core';
+import Rating from '@material-ui/lab/Rating';
 import { makeStyles } from '@material-ui/core/styles';
 import { GrLocation, GrCreditCard, GrProjects, GrUser } from 'react-icons/gr';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Meta from '../components/Meta';
 import paypalImage from '../assets/images/paypal.png';
-
+import OrderSteps from '../components/OrderSteps'
+import OrderButton from '../components/OrderButton';
+import { createProductReview } from '../actions/productActions';
 const useStyles = makeStyles((theme) => ({
   breadcrumbsContainer: {
     ...theme.mixins.customize.breadcrumbs,
@@ -100,12 +104,17 @@ const useStyles = makeStyles((theme) => ({
   itemName: {
     ...theme.mixins.customize.textClamp(2),
   },
+  form: {
+    ...theme.mixins.customize.flexMixin('center', 'flex-start', 'column'),
+    '& > *': {
+      marginBottom: 16,
+    },
+  },
 }));
 
 const OrderScreen = ({ match, history }) => {
   const classes = useStyles();
   const orderId = match.params.id;
-
   const [sdkReady, setSdkReady] = useState(false);
 
   const dispatch = useDispatch();
@@ -121,6 +130,8 @@ const OrderScreen = ({ match, history }) => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const [message, setMessage] = useState('');
 
   if (!loading && order) {
     //   Calculate prices
@@ -140,7 +151,6 @@ const OrderScreen = ({ match, history }) => {
     if (!userInfo) {
       history.push('/login');
     }
-
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get('/api/config/paypal');
       const script = document.createElement('script');
@@ -165,9 +175,8 @@ const OrderScreen = ({ match, history }) => {
       }
     }
   }, [dispatch, history, orderId, successPay, successDeliver, order, userInfo]);
-
+  
   const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult));
   };
 
@@ -175,13 +184,60 @@ const OrderScreen = ({ match, history }) => {
     dispatch(deliverOrder(order));
   };
 
+  const cancelHandler = () => {
+    dispatch(cancelOrder(order));
+  };
+
+  const confirmHandler = () => {
+    dispatch(confirmOrder(order));
+  };
+
+  const deliveringHandler = () => {
+    dispatch(deliveringOrder(order));
+  };
+  const handleCommentChange = (e) => {
+    // setComment(e.target.value);
+    // if (comment.trim()) {
+    //   setMessage('');
+    // }
+  };
+
+  const handleSubmitReview = (e, productId, orderID, orderItem) => {
+    e.preventDefault();
+    
+    
+    const comment = e.target[10].value;
+    let rating = 0;
+    const target = e.target;
+    for(let i=0; i<=9 ;i++){
+      if(target[i].checked){
+        rating = target[i]._wrapperState.initialValue;
+      }
+    }
+    if(comment){
+      dispatch(
+        createProductReview(productId, {
+          rating,
+          comment,
+          orderID,
+          orderItem,
+          avatar:userInfo.avatar
+        })
+      );
+      window.location.reload();
+    }
+    else{
+      alert('Nhập đánh giá!!')
+    }
+  };
+
   return loading ? (
     <Loader my={200} />
   ) : error ? (
     <Message mt={100}>{error}</Message>
-  ) : (
+  ) : (   
     <Container maxWidth='xl' style={{ marginBottom: 48 }}>
-      <Meta title='Order | FashionShop' />
+      <Meta title='Order | Chang Fashion Shop' />
       <Grid container className={classes.breadcrumbsContainer}>
         <Grid item xs={12}>
           <Breadcrumbs
@@ -189,12 +245,18 @@ const OrderScreen = ({ match, history }) => {
             style={{ marginBottom: 24 }}
           >
             <Link color='inherit' component={RouterLink} to='/'>
-              Trang chủ
+              Home
             </Link>
             <Link color='textPrimary' component={RouterLink} to='/order'>
-              Thông tin đơn hàng
+              Order Details
             </Link>
           </Breadcrumbs>
+          {order.status ? 
+          (
+          <OrderSteps step={order.status}></OrderSteps>)
+          : 
+          <OrderSteps step={0}></OrderSteps> }
+          
         </Grid>
       </Grid>
       <Paper elevation={0} className={classes.content}>
@@ -212,7 +274,7 @@ const OrderScreen = ({ match, history }) => {
                   <GrUser fontSize={22} />
                 </ListItemIcon>
                 <ListItemText
-                  primary='Người nhận'
+                  primary='Receiver'
                   secondary={`${order.user.name}, email: ${order.user.email}`}
                 />
               </ListItem>
@@ -221,15 +283,15 @@ const OrderScreen = ({ match, history }) => {
                   <GrLocation fontSize={22} />
                 </ListItemIcon>
                 <ListItemText
-                  primary='Địa điểm giao hàng'
+                  primary='Shipping'
                   secondary={Object.values(order.shippingAddress).join(', ')}
                 />
                 {order.isDelivered ? (
                   <Message severity='success' mt={8}>
-                    Đã giao hàng {new Date(order.deliveredAt).toUTCString()}
+                    Delivered on {new Date(order.deliveredAt).toUTCString()}
                   </Message>
                 ) : (
-                  <Message mt={8}>Chưa được giao</Message>
+                  <Message mt={8}>Not Delivered</Message>
                 )}
               </ListItem>
               <ListItem divider style={{ flexWrap: 'wrap' }}>
@@ -237,43 +299,41 @@ const OrderScreen = ({ match, history }) => {
                   <GrCreditCard fontSize={22} />
                 </ListItemIcon>
                 <ListItemText
-                  primary='Phương thức thanh toán'
+                  primary='Payment Method'
                   secondary={order.paymentMethod}
                 />
-                { (order.paymentMethod =='Paypal') ? (<ListItemAvatar>
+                <ListItemAvatar>
                   <img src={paypalImage} alt='' width='80px' height='30px' />
-                </ListItemAvatar>) : (<ListItemAvatar>
                 </ListItemAvatar>
+                {order.isPaid ? (
+                  <Message severity='success' mt={8}>
+                    Paid on {new Date(order.paidAt).toUTCString()}
+                  </Message>
+                ) : (
+                  <Message mt={8}>Not Paid</Message>
                 )}
-                { (order.paymentMethod==="Paypal") ? (order.isPaid ? (
-                    <Message severity='success' mt={8}>
-                      Đã thanh toán {new Date(order.paidAt).toUTCString()}
-                    </Message>
-                  ) : (
-                    <Message mt={8}>Chưa thanh toán</Message>
-                  )) : (" ")}
-
               </ListItem>
               <ListItem className={classes.orderItems}>
                 <ListItemIcon>
                   <GrProjects fontSize={22} />
                 </ListItemIcon>
-                <ListItemText primary='Đơn hàng' />
+                <ListItemText primary='Order Items' />
                 {order.orderItems.length > 0 ? (
                   <div className={classes.items}>
                     <TableContainer component={Paper} elevation={0}>
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell>Sản phẩm</TableCell>
+                            <TableCell>Products</TableCell>
                             <Hidden smDown>
                               <TableCell align='right'>Size</TableCell>
-                              <TableCell align='right'>Giá</TableCell>
+                              <TableCell align='right'>Price</TableCell>
                             </Hidden>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {order.orderItems.map((item) => (
+                            <>
                             <TableRow key={item.name}>
                               <TableCell component='th' scope='item'>
                                 <ListItem disableGutters>
@@ -303,8 +363,8 @@ const OrderScreen = ({ match, history }) => {
                                     </Box>
                                     <Box textAlign='center'>
                                       {`${item.qty} x ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)} = ${
-                                          new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.qty * item.priceSale)
-                                        }`}
+                                        new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.qty * item.priceSale)
+                                      }`}
                                     </Box>
                                   </Box>
                                 </Hidden>
@@ -315,12 +375,54 @@ const OrderScreen = ({ match, history }) => {
                                 </TableCell>
                                 <TableCell align='right'>
                                   {`${item.qty} x ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)} = ${
-                                      new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.qty * item.priceSale)
-                                    }`}
+                                    new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.qty * item.priceSale)
+                                  }`}
                                 </TableCell>
                               </Hidden>
                             </TableRow>
+                           
+                            {!item.rating && userInfo && !userInfo.isAdmin && order.isDelivered ? 
+                            (
+                              <Box marginTop={2}>
+                              <form onSubmit={(e) => handleSubmitReview(e, item.product, orderId, item._id)} className={classes.form}>
+                              <Typography variant='h6'>Viết một đánh giá</Typography>
+                              <Rating
+                                name={'rating-value-'+item.name}
+                                precision={0.5}
+                              />
+                              <TextField
+                                variant='outlined'
+                                label='Reply'
+                                multiline
+                                fullWidth
+                                error={!!message}
+                                helperText={message}
+                              ></TextField>
+                              <Button variant='contained' color='secondary' type='submit'>
+                                Reply
+                              </Button>
+                              </form>
+                              </Box>
+                            ):
+                            (
+                              <>
+                              <Grid item xs zeroMinWidth>
+                                <Rating
+                                name='rating'
+                                value={item.rating}
+                                precision={0.5}
+                                readOnly
+                                />
+                                <p style={{ textAlign: 'left', marginTop: 5 }}>
+                                  {item.comment}
+                                </p>
+                              </Grid>
+                              </>
+                            )
+                            }
+                            </>
                           ))}
+
                         </TableBody>
                       </Table>
                     </TableContainer>
@@ -328,9 +430,9 @@ const OrderScreen = ({ match, history }) => {
                 ) : (
                   <div className={classes.empty}>
                     <Typography variant='subtitle1' color='secondary'>
-                      Giỏ hàng đang trống.{' '}
+                      Your cart is empty.{' '}
                       <Link to='/' component={RouterLink} color='primary'>
-                        Mua hàng ngay!
+                        Shopping now!
                       </Link>
                     </Typography>
                   </div>
@@ -341,30 +443,29 @@ const OrderScreen = ({ match, history }) => {
           <Grid item xs={12} lg={4}>
             <Paper elevation={0} className={classes.cartTotalWrapper}>
               <Typography variant='h4' style={{ fontSize: 23 }}>
-                Tổng đơn hàng
+                Order Summary
               </Typography>
               <Divider className={classes.divider} />
               <List style={{ padding: '10px 20px 20px' }}>
                 <ListItem divider disableGutters>
-                  <ListItemText primary='Sản phẩm:' />
+                  <ListItemText primary='Items:' />
                   <Typography>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(order.itemsPrice)}</Typography>
                 </ListItem>
                 <ListItem divider disableGutters>
-                  <ListItemText primary='Phí giao hàng:' />
+                  <ListItemText primary='Shipping:' />
                   <Typography>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(order.shippingPrice)}</Typography>
                 </ListItem>
                 <ListItem divider disableGutters>
-                  <ListItemText primary='Thuế:' />
+                  <ListItemText primary='Tax:' />
                   <Typography>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(order.taxPrice)}</Typography>
                 </ListItem>
                 <ListItem disableGutters>
-                  <ListItemText primary='Tổng cộng:' />
+                  <ListItemText primary='Total:' />
                   <Typography color='secondary'>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(order.totalPrice)}</Typography>
                 </ListItem>
               </List>
-              {!order.isPaid && order.paymentMethod === "PayPal" && (
+              {!order.isPaid && order.paymentMethod === "PayPal" &&(
                 <Box fullWidth>
-                  
                   {loadingPay && <Loader />}
                   {!sdkReady ? (
                     <Loader />
@@ -378,21 +479,39 @@ const OrderScreen = ({ match, history }) => {
                 </Box>
               )}
               {loadingDeliver && <Loader />}
-              {userInfo &&
-                userInfo.isAdmin &&
-                (order.isPaid || order.paymentMethod==='Cash') &&
-                !order.isDelivered && (
-                  <Box>
-                    <Button
-                      variant='contained'
-                      color='secondary'
-                      fullWidth
-                      onClick={deliverHandler}
-                    >
-                      Đánh dấu đã giao
-                    </Button>
-                  </Box>
-                )}
+              {
+                userInfo 
+                &&
+                userInfo.isAdmin 
+                &&
+                (order.isPaid || order.paymentMethod==='Cash') 
+                && 
+                !order.isDelivered 
+                && 
+                (<OrderButton status={order.status} order={order}></OrderButton>)
+              }
+              {
+                userInfo 
+                &&
+                !userInfo.isAdmin 
+                &&
+                order.status !==0 
+                &&
+                !order.isDelivered 
+                &&  
+                (<OrderButton status={5} order={order}></OrderButton>)
+              }
+              {
+                userInfo 
+                &&
+                !userInfo.isAdmin 
+                &&
+                order.status ===0 
+                &&
+                !order.isDelivered 
+                &&  
+                (<OrderButton status={0} order={order}></OrderButton>)
+              }
             </Paper>
           </Grid>
         </Grid>

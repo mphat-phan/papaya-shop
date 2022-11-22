@@ -17,6 +17,7 @@ import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    borderRadius: '15px',
     boxShadow: `0px 0px 0px 0px rgb(0 0 0 / 0%), 
                 0px 1px 1px 0px rgb(0 0 0 / 0%), 
                 0px 1px 0px 1px rgb(0 0 0 / 4%)`,
@@ -122,7 +123,6 @@ const ProductCard = (props) => {
     e.preventDefault();
     setOpenModal(true);
   };
-
   return (
     <>
       <Card className={classes.root}>
@@ -182,10 +182,10 @@ const ProductCard = (props) => {
                     component='span'
                     className={classes.rootPrice}
                   >
-                    ${(price * 1).toFixed(2)}
+                    {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(price)}
                   </Typography>
                 ) : null}
-                {'  '}${(price * (1 - sale / 100)).toFixed(2)}
+                {'  '}{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(price * (1 - sale / 100))}
               </Typography>
               <Hidden mdUp>
                 <Tooltip title='Add to cart' placement='bottom' arrow>

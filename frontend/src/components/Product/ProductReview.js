@@ -14,8 +14,10 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { getUserDetails } from '../../actions/userActions';
 import { PRODUCT_CREATE_REVIEW_RESET } from '../../constants/productConstants.js';
-import { createProductReview } from '../../actions/productActions.js';
+import { createProductReview, createCommentReviewReply } from '../../actions/productActions.js';
+
 import Message from '../Message';
 import Loader from '../Loader';
 
@@ -36,7 +38,14 @@ const ProductReview = ({ reviews, productId }) => {
   const [message, setMessage] = useState('');
 
   const userLogin = useSelector((state) => state.userLogin);
+  const userDetails = useSelector((state) => state.userDetails);
+  const { user } = userDetails;
   const { userInfo } = userLogin;
+ 
+  var avatar = ''
+  if(userInfo){
+    avatar = userInfo.avatar
+  }
 
   const productReviewCreate = useSelector((state) => state.productReviewCreate);
   const {
@@ -46,24 +55,35 @@ const ProductReview = ({ reviews, productId }) => {
   } = productReviewCreate;
 
   const handleCommentChange = (e) => {
-    setComment(e.target.value);
-    if (comment.trim()) {
-      setMessage('');
-    }
+    // setComment(e.target.value);
+    // if (comment.trim()) {
+    //   setMessage('');
+    // }
   };
 
-  const handleSubmitReview = (e) => {
+  const handleSubmitReview = (e, reviewId) => {
     e.preventDefault();
-    if (comment.trim()) {
+    const reply = e.target[0].value;
+    console.log(reply, reviewId);
+    if(reply){
       dispatch(
-        createProductReview(productId, {
-          rating,
-          comment,
-        })
+        createCommentReviewReply(productId, reviewId, reply)
       );
-    } else {
-      setMessage('Please write a comment!');
+      e.target[0].value = '';
     }
+    else{
+      alert('Nhập reply');
+    }
+    // if (comment.trim()) {
+    //   dispatch(
+    //     createProductReview(productId, {
+    //       rating,
+    //       comment,
+    //     })
+    //   );
+    // } else {
+    //   setMessage('Hãy viết một bình luận!');
+    // }
   };
 
   useEffect(() => {
@@ -75,26 +95,26 @@ const ProductReview = ({ reviews, productId }) => {
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
   }, [dispatch, successProductReview, productId]);
-
+ console.log(reviews)
   return (
     <>
       <Box my={3}>
-        <Typography variant='h5'>Reviews</Typography>
+        <Typography variant='h5'>Đánh giá</Typography>
       </Box>
       <Paper style={{ padding: 20, margin: '24px 0' }} elevation={0}>
         {reviews.map((review) => (
+          
           <>
             <Grid container wrap='nowrap' spacing={2}>
               <Grid item>
                 <Avatar
-                  alt='avatar'
-                  src={`https://ui-avatars.com/api/?background=random&color=fff&name=${review.name}`}
-                />
+                  src={review.avatar !== "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" ? review.avatar : `https://ui-avatars.com/api/?background=random&color=fff&name=${review.name}`}                       
+                />        
               </Grid>
               <Grid item xs zeroMinWidth>
                 <Box display='flex' alignItems='center'>
                   <h4
-                    style={{
+                    style={{ 
                       margin: '0 8px 0 0',
                       textAlign: 'left',
                       display: 'inline-block',
@@ -116,54 +136,64 @@ const ProductReview = ({ reviews, productId }) => {
                 <p style={{ textAlign: 'left', marginTop: 5 }}>
                   {review.comment}
                 </p>
+                {review.reply && (
+                  <>
+                    <Divider variant='fullWidth' style={{ margin: '10px 0' }} />
+                    <Grid container wrap='nowrap' spacing={2}>
+                        <Grid item>
+                            <Avatar
+                                src={`https://ui-avatars.com/api/?background=random&color=fff&name=Admin`}                       
+                            />        
+                        </Grid>
+                        <Grid item xs zeroMinWidth>
+                            <Box display='flex' alignItems='center'>
+                                <h4
+                                style={{ 
+                                    margin: '0 8px 0 0',
+                                    textAlign: 'left',
+                                    display: 'inline-block',
+                                }}
+                                >
+                                Admin
+                                </h4>
+                                <p style={{ margin: 0, textAlign: 'left', color: 'gray' }}>
+                                
+                                </p>
+                            </Box>
+                            <p style={{ textAlign: 'left', marginTop: 5 }}>
+                                {review.reply}
+                            </p>
+
+                        </Grid>
+                    </Grid>
+                  </>
+                  
+                )}
+                
+
+                {loadingProductReview && <Loader />}
+              {errorProductReview && <Message>{errorProductReview}</Message>}
+              {userInfo && userInfo.isAdmin 
+              && !review.reply &&
+                (<form onSubmit={(e) => handleSubmitReview(e,review._id)} className={classes.form}>
+                  <TextField
+                    variant='outlined'
+                    label='Reply'
+                    multiline
+                    fullWidth
+                    error={!!message}
+                    helperText={message}
+                  ></TextField>
+                  <Button variant='contained' color='secondary' type='submit'>
+                    Reply
+                  </Button>
+                </form>)
+              }
               </Grid>
             </Grid>
             <Divider variant='fullWidth' style={{ margin: '30px 0' }} />
           </>
         ))}
-        <Grid container>
-          <Grid item xs={12}>
-            {loadingProductReview && <Loader />}
-            {errorProductReview && <Message>{errorProductReview}</Message>}
-            {userInfo ? (
-              <form onSubmit={handleSubmitReview} className={classes.form}>
-                <Typography variant='h5'>Write a review</Typography>
-                <Rating
-                  name='rating-value'
-                  value={rating}
-                  precision={0.5}
-                  onChange={(event, newValue) => {
-                    setRating(newValue);
-                  }}
-                />
-                <TextField
-                  variant='outlined'
-                  label='Comment'
-                  multiline
-                  fullWidth
-                  value={comment}
-                  error={!!message}
-                  helperText={message}
-                  onChange={handleCommentChange}
-                ></TextField>
-                <Button variant='contained' color='secondary' type='submit'>
-                  Submit
-                </Button>
-              </form>
-            ) : (
-              <Message severity='info'>
-                Please{' '}
-                <Link
-                  component={RouterLink}
-                  to={`/login?redirect=/product/${productId}`}
-                >
-                  login
-                </Link>{' '}
-                to write a review
-              </Message>
-            )}
-          </Grid>
-        </Grid>
       </Paper>
     </>
   );

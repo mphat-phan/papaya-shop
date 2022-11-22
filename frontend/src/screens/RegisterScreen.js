@@ -189,28 +189,28 @@ const RegisterScreen = ({ location, history }) => {
                   className={classes.form}
                   onSubmit={handleSubmit(submitHandler)}
                 >
-                  <FormControl className={classes.avatarCenter} fullWidth style={{  marginBottom: 16  }}>
-                    <input
-                        accept="image/*"                      
-                        style={{ display: 'none' }}
-                        id="raised-button-file"
-                        multiple
-                        type="file"
-                        onChange={(e) => uploadAvatar(e.target.files[0])}
-                    />
-                    <label htmlFor="raised-button-file">
-                      {
-                        avatar ? (
-                          <Avatar className={classes.lagreAvatar} src={avatar}>
+                {/* <FormControl className={classes.avatarCenter} fullWidth style={{  marginBottom: 16  }}>
+                  <input
+                      accept="image/*"                      
+                      style={{ display: 'none' }}
+                      id="raised-button-file"
+                      multiple
+                      type="file"
+                      onChange={(e) => uploadAvatar(e.target.files[0])}
+                  />
+                  <label htmlFor="raised-button-file">
+                    {
+                      avatar ? (
+                        <Avatar className={classes.lagreAvatar} src={avatar}>
+                        
+                        </Avatar>
                           
-                          </Avatar>
-                            
-                        ) :(
-                          <Avatar className={classes.lagreAvatar} src={null}></Avatar>
-                        )
-                      }
-                    </label>           
-                  </FormControl> 
+                      ) :(
+                        <Avatar className={classes.lagreAvatar} src={null}></Avatar>
+                      )
+                    }
+                  </label>           
+                </FormControl>
                  <FormControl fullWidth >
                   
                     {
@@ -245,7 +245,8 @@ const RegisterScreen = ({ location, history }) => {
                         ''
                       )
                     }
-                 </FormControl>
+                 </FormControl> */}
+
                   <FormControl fullWidth style={{ marginBottom: 16 }}>
                     <InputController name='name' label='Tên' required />
                   </FormControl>
