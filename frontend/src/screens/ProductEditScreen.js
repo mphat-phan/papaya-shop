@@ -97,10 +97,6 @@ const ProductEditScreen = ({ match, history }) => {
   const [sale, setSale] = useState(0);
   const [brand, setBrand] = useState('');
   const [category, setCategory] = useState('');
-  const [sizeS, setSizeS] = useState(0);
-  const [sizeM, setSizeM] = useState(0);
-  const [sizeL, setSizeL] = useState(0);
-  const [sizeXl, setSizeXl] = useState(0);
   const [description, setDescription] = useState('');
 
   const dispatch = useDispatch();
@@ -131,10 +127,6 @@ const ProductEditScreen = ({ match, history }) => {
         setPreviewImages(product.images);
         setBrand(product.brand);
         setCategory(product.category);
-        setSizeS(product.size.s);
-        setSizeM(product.size.m);
-        setSizeL(product.size.l);
-        setSizeXl(product.size.xl);
         setDescription(product.description);
       }
     }
@@ -180,8 +172,6 @@ const ProductEditScreen = ({ match, history }) => {
       }
     }
 
-    const countInStock = parseInt(sizeS) + parseInt(sizeM)
-    + parseInt(sizeL) + parseInt(sizeXl);
 
     const product = {
       _id: productId,
@@ -192,8 +182,6 @@ const ProductEditScreen = ({ match, history }) => {
       brand,
       category,
       description,
-      size: { s: sizeS, m: sizeM, l: sizeL, xl: sizeXl },
-      countInStock
     };
     dispatch(updateProduct(product));
   };
@@ -353,55 +341,6 @@ const ProductEditScreen = ({ match, history }) => {
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
                 />
-
-                <div className={classes.size}>
-                  <InputLabel>Count In Stock</InputLabel>
-                  <div>
-                    <TextField
-                      variant='outlined'
-                      required
-                      type='number'
-                      inputProps={{ min: 0 }}
-                      name='s'
-                      label='Size S'
-                      value={sizeS}
-                      onChange={(e) => setSizeS(e.target.value)}
-                    />
-
-                    <TextField
-                      variant='outlined'
-                      required
-                      type='number'
-                      inputProps={{ min: 0 }}
-                      name='m'
-                      label='Size M'
-                      value={sizeM}
-                      onChange={(e) => setSizeM(e.target.value)}
-                    />
-
-                    <TextField
-                      variant='outlined'
-                      required
-                      type='number'
-                      inputProps={{ min: 0 }}
-                      name='l'
-                      label='Size L'
-                      value={sizeL}
-                      onChange={(e) => setSizeL(e.target.value)}
-                    />
-
-                    <TextField
-                      variant='outlined'
-                      required
-                      type='number'
-                      inputProps={{ min: 0 }}
-                      name='xl'
-                      label='Size XL'
-                      value={sizeXl}
-                      onChange={(e) => setSizeXl(e.target.value)}
-                    />
-                  </div>
-                </div>
 
                 <TextField
                   select

@@ -126,7 +126,7 @@ const CartPreview = () => {
                     primary={item.name}
                     secondary={`${item.qty} x ${
                       new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)
-                    } | ${item.sizeSelected.toUpperCase()}`}
+                    }`}
                     style={{ marginLeft: 10 }}
                   />
                   <ListItemSecondaryAction>

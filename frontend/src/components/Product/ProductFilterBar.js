@@ -19,7 +19,6 @@ import {
 import {
   addRangePrice,
   addCategories,
-  addSize,
   addBrands,
 } from '../../actions/filterActions';
 import { makeStyles } from '@material-ui/core/styles';
@@ -66,17 +65,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: 'transparent',
     },
   },
-  size: {
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-    '& span': {
-      fontSize: 14,
-    },
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'column',
-      flexWrap: 'wrap',
-    },
-  },
   accordion: {
     '&::before': {
       display: 'none',
@@ -95,18 +83,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProductFilterBar = ({ products, sizeSelected, filter }) => {
+const ProductFilterBar = ({ products,  filter }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const onMobile = useMediaQuery('(max-width:740px)');
   const [expanded, setExpanded] = useState([
     'priceRange',
     'categories',
-    'size',
     'brands',
   ]);
   const [price, setPrice] = useState(INITIAL_RANGE_PRICE);
-  const [size, setSize] = useState('');
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(
@@ -118,19 +104,9 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
     setPrice(newValue);
   };
 
-  const handleSizeChange = (newSize) => {
-    setSize(newSize);
-    addSizeHandler(newSize);
-  };
-
   const addCategoriesHandler = (category) => {
     dispatch(addCategories(category));
   };
-
-  const addSizeHandler = (size) => {
-    dispatch(addSize(size));
-  };
-
   const addBrandsHandler = (brand) => {
     dispatch(addBrands(brand));
   };
@@ -150,12 +126,6 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
       return () => clearTimeout(timer);
     }
   }, [dispatch, price]);
-
-  useEffect(() => {
-    if (!sizeSelected) {
-      setSize('');
-    }
-  }, [sizeSelected]);
 
   useEffect(() => {
     if (onMobile) {
@@ -242,32 +212,12 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
       <Divider className={classes.divider} />
       <Accordion
         className={classes.accordion}
-        expanded={expanded.indexOf('size') >= 0}
-        onChange={handleAccordionChange('size')}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant='h6' gutterBottom className={classes.title}>
             Kích Thước
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <FormControl fullWidth component='fieldset'>
-            <RadioGroup
-              className={classes.size}
-              value={size}
-              onChange={(e) => handleSizeChange(e.target.value)}
-            >
-              {['s', 'm', 'l', 'xl'].map((value) => (
-                <FormControlLabel
-                  key={value}
-                  value={value}
-                  control={<Radio />}
-                  label={value.toUpperCase()}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
-        </AccordionDetails>
       </Accordion>
       <Divider className={classes.divider} />
       <Accordion

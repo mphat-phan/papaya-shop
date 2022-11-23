@@ -36,15 +36,6 @@ function randomSale() {
   }
 }
 
-function randomSize() {
-  let rate = Math.random();
-  if (rate <= 0.3) {
-    return 0;
-  } else {
-    //random sale from 10 - 50
-    return Math.floor(Math.random() * (50 - 10) + 10);
-  }
-}
 
 const products = [
   {
@@ -63,8 +54,6 @@ const products = [
     "rating": 4.5,
     "sale": 0,
     "numReviews": 0,
-    "size": { s: 0, m: 6, l: 9, xl: 1 },
-    "countInStock": 16,
   },
   {
     name: "Tye Shorts – Found On The Beach Slim carrot fit",
@@ -82,8 +71,6 @@ const products = [
     "rating": 5,
     "sale": 20,
     "numReviews": 0,
-    "size": { s: 0, m: 6, l: 9, xl: 1 },
-    "countInStock": 16,
   },
   {
     name: "Structured Hawaii Shirt Regular fit",
@@ -99,8 +86,6 @@ const products = [
     "rating": 4,
     "sale": 5,
     "numReviews": 0,
-    "size": { s: 0, m: 6, l: 9, xl: 1 },
-    "countInStock": 16,
   },
   {
     name: "Sleeveless Pleated Top",
@@ -116,8 +101,6 @@ const products = [
     "rating": 5,
     "sale": 0,
     "numReviews": 0,
-    "size": { s: 0, m: 6, l: 9, xl: 1 },
-    "countInStock": 16,
   },
   {
     name: "Suede Trucker Jacket",
@@ -132,26 +115,12 @@ const products = [
     "rating": 5,
     "sale": 10,
     "numReviews": 0,
-    "size": { s: 0, m: 6, l: 9, xl: 1 },
-    "countInStock": 16,
   },
 ];
 
 getImages(1, 2)
   .then((imagesFashion) => {
     for (let i = 0; i < 15; i++) {
-      let sizeRandom = {
-        s: randomSize(),
-        m: randomSize(),
-        l: randomSize(),
-        xl: randomSize(),
-      };
-
-      let count = Object.values(sizeRandom).reduce(
-        (acc, size) => acc + size,
-        0
-      );
-
       products.push({
         name: faker.commerce.productName(),
         images: imagesFashion.slice(4 * i, 4 * i + 4),
@@ -162,8 +131,6 @@ getImages(1, 2)
         rating: Math.floor(Math.random() * (5 - 0) + 0),
         sale: randomSale(),
         numReviews: 1,
-        size: sizeRandom,
-        countInStock: count,
       });
     }
   })

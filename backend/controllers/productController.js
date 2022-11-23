@@ -87,8 +87,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     brand,
     category,
     description,
-    size,
-    countInStock,
   } = req.body;
 
   const product = await Product.findById(req.params.id);
@@ -101,8 +99,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.images = images || product.images;
     product.brand = brand || product.brand;
     product.category = category || product.category;
-    product.size = size || product.size;
-    product.countInStock = countInStock || product.countInStock;
 
     const updatedProduct = await product.save();
     res.json(updatedProduct);
@@ -329,11 +325,9 @@ const getSortByPriceProducts = asyncHandler(async (req, res) => {
         // _id: 1,
         price: 1,
         sale: 1,
-        size: 1,
         images: 1,
         rating: 1,
         numReviews: 1,
-        countInStock: 1,
         name: 1,
         brand: 1,
         category: 1,
