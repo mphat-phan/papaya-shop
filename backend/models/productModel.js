@@ -134,24 +134,6 @@ const productSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
-    size: {
-      s: {
-        type: Number,
-        default: 0,
-      },
-      m: {
-        type: Number,
-        default: 0,
-      },
-      l: {
-        type: Number,
-        default: 0,
-      },
-      xl: {
-        type: Number,
-        default: 0,
-      },
-    },
   },
   {
     timestamps: true,

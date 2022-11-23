@@ -216,7 +216,6 @@ const PlaceOrderScreen = ({ history }) => {
                           <TableRow>
                             <TableCell>Sản phẩm</TableCell>
                             <Hidden smDown>
-                              <TableCell align='right'>Size</TableCell>
                               <TableCell align='right'>Giá</TableCell>
                             </Hidden>
                           </TableRow>
@@ -247,9 +246,7 @@ const PlaceOrderScreen = ({ history }) => {
                                     alignItems='center'
                                     mt={2}
                                   >
-                                    <Box textAlign='center'>
-                                      Size: {item.sizeSelected.toUpperCase()}
-                                    </Box>
+                                    
                                     <Box textAlign='center'>
                                       {`${item.qty} x ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)} = ${
                                           new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.qty * item.priceSale)
@@ -259,9 +256,6 @@ const PlaceOrderScreen = ({ history }) => {
                                 </Hidden>
                               </TableCell>
                               <Hidden smDown>
-                                <TableCell align='right'>
-                                  {item.sizeSelected.toUpperCase()}
-                                </TableCell>
                                 <TableCell align='right'>
                                   {`${item.qty} x ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)} = ${
                                     new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.qty * item.priceSale)

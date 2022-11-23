@@ -109,7 +109,7 @@ const CartScreen = ({ history }) => {
                       <TableCell>Sản phẩm</TableCell>
                       <Hidden smDown>
                         <TableCell align='right'>Giá</TableCell>
-                        <TableCell align='right'>kích thước &amp; Số lượng</TableCell>
+                        <TableCell align='right'>Số lượng</TableCell>
                         <TableCell align='right'>Hành động</TableCell>
                       </Hidden>
                     </TableRow>

@@ -326,7 +326,6 @@ const OrderScreen = ({ match, history }) => {
                           <TableRow>
                             <TableCell>Products</TableCell>
                             <Hidden smDown>
-                              <TableCell align='right'>Size</TableCell>
                               <TableCell align='right'>Price</TableCell>
                             </Hidden>
                           </TableRow>
@@ -359,9 +358,6 @@ const OrderScreen = ({ match, history }) => {
                                     mt={2}
                                   >
                                     <Box textAlign='center'>
-                                      Size: {item.sizeSelected.toUpperCase()}
-                                    </Box>
-                                    <Box textAlign='center'>
                                       {`${item.qty} x ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)} = ${
                                         new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.qty * item.priceSale)
                                       }`}
@@ -370,9 +366,7 @@ const OrderScreen = ({ match, history }) => {
                                 </Hidden>
                               </TableCell>
                               <Hidden smDown>
-                                <TableCell align='right'>
-                                  {item.sizeSelected.toUpperCase()}
-                                </TableCell>
+                              
                                 <TableCell align='right'>
                                   {`${item.qty} x ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)} = ${
                                     new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.qty * item.priceSale)

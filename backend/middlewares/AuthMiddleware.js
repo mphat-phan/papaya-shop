@@ -1,33 +1,31 @@
-import jwt from 'jsonwebtoken';
-import asyncHandler from 'express-async-handler';
-import User from '../models/userModel.js';
+import jwt from "jsonwebtoken";
+import asyncHandler from "express-async-handler";
+import User from "../models/userModel.js";
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
 
   if (
     req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
+    req.headers.authorization.startsWith("Bearer")
   ) {
     try {
-      
-      token = req.headers.authorization.split(' ')[1];
+      token = req.headers.authorization.split(" ")[1];
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = await User.findById(decoded.id).select('-password');
-      
+      req.user = await User.findById(decoded.id).select("-password");
       next();
     } catch (error) {
       console.error(error);
       res.status(401);
-      throw new Error('Not authorized, token failed');
+      throw new Error("Not authorized, token failed");
     }
   }
 
   if (!token) {
     res.status(401);
-    throw new Error('Not authorized, no token is provided');
+    throw new Error("Not authorized, no token is provided");
   }
 });
 
@@ -36,7 +34,7 @@ const checkAdmin = (req, res, next) => {
     next();
   } else {
     res.status(401);
-    throw new Error('Not authorized, not admin');
+    throw new Error("Not authorized, not admin");
   }
 };
 
@@ -45,7 +43,7 @@ const checkCustomer = (req, res, next) => {
     next();
   } else {
     res.status(401);
-    throw new Error('Cấm admin mua hàng');
+    throw new Error("Cấm admin mua hàng");
   }
 };
 

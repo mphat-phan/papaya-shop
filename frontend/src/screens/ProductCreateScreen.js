@@ -97,10 +97,6 @@ const ProductCreateScreen = ({ history }) => {
   const [sale, setSale] = useState(0);
   const [brand, setBrand] = useState('');
   const [category, setCategory] = useState('');
-  const [sizeS, setSizeS] = useState(0);
-  const [sizeM, setSizeM] = useState(0);
-  const [sizeL, setSizeL] = useState(0);
-  const [sizeXl, setSizeXl] = useState(0);
   const [description, setDescription] = useState('');
 
   const productCreate = useSelector((state) => state.productCreate);
@@ -156,9 +152,6 @@ const ProductCreateScreen = ({ history }) => {
         setUploading(false);
       }
 
-      const countInStock = parseInt(sizeS) + parseInt(sizeM)
-        + parseInt(sizeL) + parseInt(sizeXl);
-
       const product = {
         name,
         price,
@@ -167,8 +160,6 @@ const ProductCreateScreen = ({ history }) => {
         brand,
         category,
         description,
-        size: { s: sizeS, m: sizeM, l: sizeL, xl: sizeXl },
-        countInStock,
       };
       dispatch(createProduct(product));
     }
@@ -314,55 +305,6 @@ const ProductCreateScreen = ({ history }) => {
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
             />
-
-            <div className={classes.size}>
-              <InputLabel>Count In Stock</InputLabel>
-              <div>
-                <TextField
-                  variant='outlined'
-                  required
-                  type='number'
-                  inputProps={{ min: 0 }}
-                  name='s'
-                  label='Size S'
-                  value={sizeS}
-                  onChange={(e) => setSizeS(e.target.value)}
-                />
-
-                <TextField
-                  variant='outlined'
-                  required
-                  type='number'
-                  inputProps={{ min: 0 }}
-                  name='m'
-                  label='Size M'
-                  value={sizeM}
-                  onChange={(e) => setSizeM(e.target.value)}
-                />
-
-                <TextField
-                  variant='outlined'
-                  required
-                  type='number'
-                  inputProps={{ min: 0 }}
-                  name='l'
-                  label='Size L'
-                  value={sizeL}
-                  onChange={(e) => setSizeL(e.target.value)}
-                />
-
-                <TextField
-                  variant='outlined'
-                  required
-                  type='number'
-                  inputProps={{ min: 0 }}
-                  name='xl'
-                  label='Size XL'
-                  value={sizeXl}
-                  onChange={(e) => setSizeXl(e.target.value)}
-                />
-              </div>
-            </div>
 
             <TextField
               select

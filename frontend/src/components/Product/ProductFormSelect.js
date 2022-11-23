@@ -28,7 +28,7 @@ const ProductFormSelect = ({ item, className }) => {
   const dispatch = useDispatch();
   const { control, handleSubmit } = useForm();
   const updateCartHandler = (data, id) => {
-    dispatch(addToCart(id, data.qty, data.size));
+    dispatch(addToCart(id, data.qty));
     dispatch(openSnackbar('Item has been updated', 'success'));
   };
 
@@ -39,27 +39,6 @@ const ProductFormSelect = ({ item, className }) => {
         updateCartHandler(data, item.product);
       })}
     >
-      <FormControl variant='outlined' size='small'>
-        <InputLabel shrink id='size-select-label'>
-          Size
-        </InputLabel>
-        <Controller
-          name='size'
-          control={control}
-          defaultValue={item.sizeSelected}
-          render={({ field }) => (
-            <Select {...field} label='Size' autoWidth>
-              {Object.keys(item.size).map((value) =>
-                item.size[value] > 0 ? (
-                  <MenuItem value={value} key={value}>
-                    {value.toUpperCase()}
-                  </MenuItem>
-                ) : null
-              )}
-            </Select>
-          )}
-        />
-      </FormControl>
       <FormControl variant='outlined' size='small'>
         <InputLabel shrink id='quantity-select-label'>
           Qty

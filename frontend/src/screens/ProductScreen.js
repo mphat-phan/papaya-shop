@@ -117,8 +117,8 @@ const ProductScreen = ({ history, match }) => {
 
   const classes = useStyles(product);
 
-  const addToCartHandler = ({ qty, size }) => {
-    dispatch(addToCart(match.params.id, qty, size));
+  const addToCartHandler = ({ qty }) => {
+    dispatch(addToCart(match.params.id, qty));
     dispatch(
       openSnackbar('The product has been added to cart!', 'success', {
         hasLink: true,
@@ -244,51 +244,6 @@ const ProductScreen = ({ history, match }) => {
                   {product.description}
                 </Typography>
                 <form>
-                  <FormControl
-                    fullWidth
-                    component='fieldset'
-                    classes={{ root: classes.sizeFormControl }}
-                  >
-                    <FormLabel
-                      component='legend'
-                      color='secondary'
-                      className={classes.label}
-                    >
-                      Kích thước:
-                    </FormLabel>
-                    <Controller
-                      name='size'
-                      control={control}
-                      defaultValue=''
-                      render={({ field, fieldState: { error } }) => (
-                        <>
-                          <RadioGroup
-                            classes={{ root: classes.sizeFormGroup }}
-                            {...field}
-                          >
-                            {product.size &&
-                              Object.keys(product.size).map(
-                                (value) =>
-                                  product.size[value] > 0 && (
-                                    <FormControlLabel
-                                      value={value}
-                                      control={<Radio />}
-                                      label={value.toUpperCase()}
-                                      key={value}
-                                    />
-                                  )
-                              )}
-                          </RadioGroup>
-                          {error && (
-                            <FormHelperText error>
-                              {error.message}
-                            </FormHelperText>
-                          )}
-                        </>
-                      )}
-                      rules={{ required: 'Vui lòng chọn kích thước!' }}
-                    />
-                  </FormControl>
                   <FormControl variant='outlined' style={{ width: 250 }}>
                     <FormLabel
                       className={classes.label}

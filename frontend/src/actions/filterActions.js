@@ -5,8 +5,6 @@ import {
   FILTER_REMOVE_RANGE_PRICE,
   FILTER_ADD_CATEGORY,
   FILTER_REMOVE_CATEGORY,
-  FILTER_ADD_SIZE,
-  FILTER_REMOVE_SIZE,
   FILTER_ADD_BRAND,
   FILTER_REMOVE_BRAND,
   FILTER_CLEAR_ALL,
@@ -41,15 +39,6 @@ export const addCategories = (categories) => ({
 export const removeCategory = (category) => ({
   type: FILTER_REMOVE_CATEGORY,
   payload: category,
-});
-
-export const addSize = (size) => ({
-  type: FILTER_ADD_SIZE,
-  payload: size,
-});
-
-export const removeSize = () => ({
-  type: FILTER_REMOVE_SIZE,
 });
 
 export const addBrands = (brands) => ({
