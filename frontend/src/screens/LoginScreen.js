@@ -215,7 +215,7 @@ const LoginScreen = ({ location, history }) => {
                   }
                   
                   <Box display='flex' justifyContent='flex-end' pb={3} pt={1}>
-                    <Link component={RouterLink} to='/forgot-pasword'>
+                    <Link component={RouterLink} to='/forgot-password'>
                       Quên mật khẩu?
                     </Link>
                   </Box>

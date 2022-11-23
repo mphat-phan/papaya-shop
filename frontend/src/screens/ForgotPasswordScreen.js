@@ -107,18 +107,8 @@ const ForgotPasswordScreen = ({ location, history }) => {
   }, [history, userInfo, redirectHome]);
 
   const submitHandler = ({ email, password, otpCode }) => {
-    setEmail(email);
-    if(isVerified === false){
-      dispatch(login(email, password, otpCode));
-    }
-    else{
-      dispatch(login(email, password));
-    }
-    
   };
   const submitResendOTP = () => {
-    //console.log(email);
-    dispatch(resendOTP(email))
   }
   return (
     <ThemeProvider theme={theme}>
@@ -152,96 +142,25 @@ const ForgotPasswordScreen = ({ location, history }) => {
                       disabled={ isVerified === false ? true : false }
                     />
                   </FormControl>
-                  <FormControl fullWidth style={{ marginBottom: 8 }}>
-                    <InputController
-                      type={showPassword ? 'text' : 'password'}
-                      name='password'
-                      label='Password'
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position='end'>
-                            <IconButton
-                              onClick={() => setShowPassword(!showPassword)}
-                              onMouseDown={(e) => e.preventDefault()}
-                            >
-                              {showPassword ? <VscEye /> : <VscEyeClosed />}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                      required
-                      rules={{
-                        minLength: {
-                          value: 6,
-                          message: 'Mật khẩu phải hơn 6 ký tự',
-                        },
-                      }}
-                    />
-                  </FormControl>
-                  { isVerified === false && 
-                    <Grid 
-                    container 
-                    spacing={2}
-                    justifyContent="center"
-                    alignItems="center"
-                    >
-                      <Grid item xs={8}>
-                          <FormControl style={{ marginBottom: 16 }}>
-                            <InputController
-                              name='otpCode'
-                              label='OTP Code'
-                              required
-                              rules={{
-                                pattern: {
-                                  value: /^\d{4}$/,
-                                  message: 'Nhập mã OTP gồm 4 chữ số',
-                                },
-                              }}
-                            />
-                          </FormControl>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Button
-                          onClick={submitResendOTP}
-                          variant='contained'
-                          color='secondary'
-                          style={{height: 30,fontSize:8}}
-                        >
-                          Re-send OTP
-                        </Button>
-                      </Grid>
-                    </Grid>
-                    
-                  }
-                  
-                  <Box display='flex' justifyContent='flex-end' pb={3} pt={1}>
-                    <Link component={RouterLink} to='/forgot-pasword'>
-                      Quên mật khẩu?
-                    </Link>
-                  </Box>
+                
                   <Button
                     type='submit'
                     variant='contained'
                     color='secondary'
                     fullWidth
                   >
-                    Đăng nhập
+                    Xác nhận
                   </Button>
                 </form>
               </FormProvider>
-              <Box my={4}>
-                Tài khoản mới?{' '}
-                <Link
-                  component={RouterLink}
-                  to={`/register?redirect=${redirectHome}`}
-                >
-                  Tạo tài khoản mới
+              <Box my={2}>
+                Đã có tài khoản?{' '}
+                <Link component={RouterLink} to={`/login?redirect=${redirectHome}`}>
+                  Đăng nhập
                 </Link>
               </Box>
               {loading && <Loader my={0} />}
               {error && <Message mt={0}>{error}</Message>}
-              {isVerified === false && <Message mt={0}>{`Tài khoản email của bản đã được gửi OTP vui lòng nhập OTP để xác nhận!!`}</Message>}
-              {message && <Message mt={0}>{message}</Message>}
             </Box>
           </Grid>
           <Hidden smDown>

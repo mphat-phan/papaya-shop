@@ -5,6 +5,7 @@ import Verify from '../models/verifyModel.js';
 import { transporter } from '../config/mailer.js';
 import dotenv from 'dotenv';
 import { randomNumber } from '../utils/RandomNumber.js'
+import { randomPassword } from '../utils/RandomPassword.js'
 dotenv.config();
 
 transporter.verify((error, success) => {
@@ -139,7 +140,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('Invalid user data');
   }
 });
-
+///Send OTP
 const sendOTPVerify = async ({email}, res) => {
   try {
     //Random otp
@@ -182,6 +183,34 @@ const sendOTPVerify = async ({email}, res) => {
     // })
   }
 };
+///Send Password
+const sendNewPassword = async({email, password}, res) => {
+  try {
+    const mailOptions = {
+      from: process.env.AUTH_EMAIL,
+      to: email,
+      subject: "Verify your email",
+      html: 
+      `<p>
+        Your new password is <b>${password}</b>
+      </p>`
+    }
+
+    //Send email with otp
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+  }
+}
+
+/**
+ * @desc    Create a new user
+ * @route   POST /api/users/reset-password
+ * @access  Public
+ */
+const resetPassword = asyncHandler(async (req, res) => {
+
+});
+
 
 /**
  * @desc    Update user profile
@@ -223,12 +252,14 @@ const verifyOTP = asyncHandler(async (req, res) => {
   }
 });
 
+
+
 /**
  * @desc    Update user profile
  * @route   PUT /api/users/resend-verify-otp
  * @access  Private
  */
- const resendVerifyOTP = asyncHandler(async (req, res) => {
+const resendVerifyOTP = asyncHandler(async (req, res) => {
   const { email } = req.body;
   if(!email){
     throw new Error('Invalid email');
