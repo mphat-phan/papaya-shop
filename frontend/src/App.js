@@ -25,12 +25,14 @@ import CartPreview from './components/Drawer/CartPreview';
 import SnackbarMessage from './components/SnackbarMessage';
 import MessengerChat from './components/MessengerChat';
 import ReceptScreen from './screens/ReceptScreen';
+import VerifyScreen from './screens/VerifyScreen';
 const App = () => {
   return (
     <Router>
       <Switch>
         <Route path='/login' component={LoginScreen} exact />
         <Route path='/register' component={RegisterScreen} exact />
+        <Route path='/verify' component={VerifyScreen} exact />
         <Route>
           <Header />
           <main className='main'>

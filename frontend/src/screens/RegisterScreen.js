@@ -12,7 +12,6 @@ import {
 } from '@material-ui/core/styles';
 import { useForm, FormProvider } from 'react-hook-form';
 import { ReactComponent as LoginImage } from '../assets/images/login-illu.svg';
-import { USER_REGISTER_RESET } from '../constants/userConstants';
 import logo from '../assets/images/logo.png';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -151,8 +150,7 @@ const RegisterScreen = ({ location, history }) => {
 
   useEffect(() => {
     if (userInfo) {
-      history.push(`/login?redirect=${redirect}`);
-      dispatch({ type: USER_REGISTER_RESET });
+      history.push(`/verify?redirect=${redirect}`);
     }
     if(avatar !== null){
         setAvatar(null)

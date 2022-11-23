@@ -19,6 +19,7 @@ const InputController = ({
   required,
   rules,
   InputProps,
+  disabled,
   ...props
 }) => {
   const classes = useStyles();
@@ -34,6 +35,7 @@ const InputController = ({
           type={type}
           label={label}
           value={value}
+          disabled={disabled}
           onChange={onChange}
           error={!!error}
           helperText={error ? error.message : null}

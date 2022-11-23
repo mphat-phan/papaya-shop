@@ -26,11 +26,25 @@ const authUser = asyncHandler(async (req, res) => {
   // res.send(req.body);
 
   const user = await User.findOne({ email });
-  if (!user.verified){
-    res.status(401);
-    throw new Error('Your account is not verified!!!!');
-  }
+  
   if (user && user.isStatus && (await user.matchPassword(password))) {
+    //Nêu tài khoản chưa được xác thực thì sẽ gửi user 
+    if (!user.verified){
+      sendOTPVerify({
+        email: user.email,
+      }, res)
+      return res.status(401).json({
+        message : "Your account is not verified!!!!",
+        verified : false,
+      });
+    }
+
+    //Nêu tài khoản khoa
+    if(user.isStatus === false){
+      throw new Error('You blocked'); 
+    }
+
+    //Nếu đăng nhập thành công
     res.json({
       _id: user._id,
       name: user.name,
@@ -42,19 +56,16 @@ const authUser = asyncHandler(async (req, res) => {
       city : user.city,
       postalCode : user.postalCode,
       country : user.country,
+      verified : user.verified,
       token: generateToken(user._id),
     });
   } else {
     res.status(401);
-    if(user.isStatus === false){
-      throw new Error('You blocked'); 
-    }
-    else{
-      throw new Error('Invalid email or password');
-    }
+    throw new Error('Invalid email or password');
+  }
     
   }
-});
+);
 
 /**
  * @desc    Get user profile
@@ -110,30 +121,30 @@ const registerUser = asyncHandler(async (req, res) => {
     email: user.email,
   }, res);
 
-  // if (user) {
-  //   res.status(201).json({
-  //     _id: user._id,
-  //     name: user.name,
-  //     email: user.email,
-  //     isAdmin: user.isAdmin,
-  //     isStatus: user.isStatus,
-  //     avatar : user.avatar,
-  //     address : user.address,
-  //     city : user.city,
-  //     postalCode : user.postalCode,
-  //     country : user.country,
-  //   });
-  // } else {
-  //   res.status(400);
-  //   throw new Error('Invalid user data');
-  // }
+  if (user) {
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      isStatus: user.isStatus,
+      avatar : user.avatar,
+      address : user.address,
+      city : user.city,
+      postalCode : user.postalCode,
+      country : user.country,
+    });
+  } else {
+    res.status(400);
+    throw new Error('Invalid user data');
+  }
 });
 
 const sendOTPVerify = async ({email}, res) => {
   try {
     //Random otp
     const otp = randomNumber(1000, 9999);
-
+    await Verify.deleteMany({email});
     const mailOptions = {
       from: process.env.AUTH_EMAIL,
       to: email,
@@ -156,19 +167,19 @@ const sendOTPVerify = async ({email}, res) => {
     await transporter.sendMail(mailOptions);
 
     //If success
-    res.json({
-      status: "PENDING",
-      message: "Verification otp email sent",
-      data: {
-        email
-      }
-    })
+    // res.json({
+    //   status: "PENDING",
+    //   message: "Verification otp email sent",
+    //   data: {
+    //     email
+    //   }
+    // })
   } catch (error) {
     //Else Fail
-    res.json({
-      status: "FAILED",
-      message: error.message,
-    })
+    // res.json({
+    //   status: "FAILED",
+    //   message: error.message,
+    // })
   }
 };
 
@@ -203,6 +214,13 @@ const verifyOTP = asyncHandler(async (req, res) => {
       message: "User email verified successfully",
     })
   }
+  else{
+    res.status(401).json({
+      status: "NOT VERIFIED",
+      message: "Not match otp",
+      verified : false,
+    })
+  }
 });
 
 /**
@@ -230,6 +248,9 @@ const verifyOTP = asyncHandler(async (req, res) => {
   else{
     await Verify.deleteMany({email});
     sendOTPVerify({email},res);
+    return res.status(201).json({
+      message: "Resend Successfully",
+    })
   }
 
   

@@ -26,6 +26,11 @@ import {
   USER_UPDATE_RESET,
   USER_UPDATE_PROFILE_RESET,
   USER_REGISTER_RESET,
+  USER_SENDOTP_REQUEST,
+  USER_SENDOTP_SUCCESS,
+  USER_VERIFY_FAIL,
+  USER_VERIFY_REQUEST,
+  USER_VERIFY_SUCCESS
 } from '../constants/userConstants.js';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -35,9 +40,19 @@ export const userLoginReducer = (state = {}, action) => {
     case USER_LOGIN_SUCCESS:
       return { loading: false, userInfo: action.payload };
     case USER_LOGIN_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, isVerified: action.isVerified };
     case USER_LOGOUT:
       return {};
+    case USER_SENDOTP_REQUEST:
+      return { loading: true };
+    case USER_SENDOTP_SUCCESS:
+      return { loading: false, message: action.payload, isVerified: false };
+    case USER_VERIFY_REQUEST:
+      return { loading: true };
+    case USER_VERIFY_SUCCESS:
+      return { loading: false, message: action.payload, status:action.status };
+    case USER_VERIFY_FAIL:
+      return { loading: false, message: action.payload };
     default:
       return state;
   }
@@ -51,8 +66,7 @@ export const userRegisterReducer = (state = {}, action) => {
       return { loading: false, userInfo: action.payload };
     case USER_REGISTER_FAIL:
       return { loading: false, error: action.payload };
-    case USER_REGISTER_RESET:
-      return {};
+    
     default:
       return state;
   }

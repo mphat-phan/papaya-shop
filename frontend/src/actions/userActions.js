@@ -24,10 +24,15 @@ import {
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
   USER_REGISTER_RESET,
+  USER_SENDOTP_REQUEST,
+  USER_SENDOTP_SUCCESS,
+  USER_VERIFY_FAIL,
+  USER_VERIFY_REQUEST,
+  USER_VERIFY_SUCCESS
 } from '../constants/userConstants.js';
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants';
 
-export const login = (email, password) => async (dispatch) => {
+export const login = (email, password, otpCode) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });
 
@@ -36,7 +41,14 @@ export const login = (email, password) => async (dispatch) => {
         'Content-Type': 'application/json',
       },
     };
-
+    if(otpCode){
+      const { data } = await axios.post(
+        '/api/users/verifyOTP',
+        { email, otp: otpCode },
+        config
+      );
+      console.log(data);
+    }
     const { data } = await axios.post(
       '/api/users/login',
       { email, password },
@@ -50,15 +62,75 @@ export const login = (email, password) => async (dispatch) => {
 
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (error) {
+    console.log(error.response)
     dispatch({
       type: USER_LOGIN_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
+      isVerified: error.response.data.verified
     });
   }
 };
+
+export const verify = (email, otpCode) => async(dispatch) => {
+  try {
+    dispatch({ type: USER_VERIFY_REQUEST });
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const { data } = await axios.post(
+      '/api/users/verifyOTP',
+      { email, otp:otpCode },
+      config
+    );
+    
+    dispatch({
+      type: USER_VERIFY_SUCCESS,
+      payload: data.message,
+      status: data.status
+    });
+
+  } catch (error) {
+    dispatch({
+      type: USER_VERIFY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}
+
+export const resendOTP = (email) => async(dispatch) => {
+  try {
+    dispatch({ type: USER_SENDOTP_REQUEST });
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const { data } = await axios.post(
+      '/api/users/resend-verify-otp',
+      { email },
+      config
+    );
+
+    dispatch({
+      type: USER_SENDOTP_SUCCESS,
+      payload: data.response && data.response.data.message
+      ? data.response.data.message
+      : data.message,
+    });
+  } catch (error) {
+    
+  }
+}
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { login,resendOTP } from '../actions/userActions';
+import { login,resendOTP,verify } from '../actions/userActions';
 import {
   makeStyles,
   createMuiTheme,
@@ -26,7 +26,6 @@ import backgroundImage from '../assets/images/background.jpg';
 import { useForm, FormProvider } from 'react-hook-form';
 import { VscEyeClosed, VscEye } from 'react-icons/vsc';
 import { BiArrowBack } from 'react-icons/bi';
-import {useRef} from 'react';
 const theme = createMuiTheme({
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
@@ -82,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginScreen = ({ location, history }) => {
+const VerifyScreen = ({ location, history }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const methods = useForm();
@@ -91,34 +90,31 @@ const LoginScreen = ({ location, history }) => {
   const classes = useStyles();
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, userInfo, isVerified, message} = userLogin;
-
+  const userRegister = useSelector((state) => state.userRegister);
+  const { loading, error, isVerified, message, status} = userLogin;
+  const { userInfo } = userRegister;
+  //Kiểm tra route
+  if(!userInfo){
+    history.push(`/register`);
+  }
+  if(status === 'VERIFIED'){
+    history.push(`/login`);
+  }
   const { redirectHome = '/' } = queryString.parse(location.search);
   useEffect(() => {
     if (userInfo) {
       
-      if(!userInfo.verified){
-
-      }
-      else{
-        history.push(redirectHome);
-      }
+    }
+    else{
+      history.push(`/register?redirect=${redirectHome}`);
     }
   }, [history, userInfo, redirectHome]);
 
-  const submitHandler = ({ email, password, otpCode }) => {
-    setEmail(email);
-    if(isVerified === false){
-      dispatch(login(email, password, otpCode));
-    }
-    else{
-      dispatch(login(email, password));
-    }
-    
+  const submitHandler = ({ email, otpCode }) => {
+    dispatch(verify(userInfo.email, otpCode))
   };
   const submitResendOTP = () => {
-    //console.log(email);
-    dispatch(resendOTP(email))
+    dispatch(resendOTP(userInfo.email))
   }
   return (
     <ThemeProvider theme={theme}>
@@ -142,6 +138,7 @@ const LoginScreen = ({ location, history }) => {
                     <InputController
                       name='email'
                       label='Email'
+                      defaultValue={userInfo.email ? userInfo.email : ''}
                       required
                       rules={{
                         pattern: {
@@ -149,36 +146,10 @@ const LoginScreen = ({ location, history }) => {
                           message: 'Địa chỉ email không hợp lệ',
                         },
                       }}
-                      disabled={ isVerified === false ? true : false }
+                      disabled={ true }
                     />
                   </FormControl>
-                  <FormControl fullWidth style={{ marginBottom: 8 }}>
-                    <InputController
-                      type={showPassword ? 'text' : 'password'}
-                      name='password'
-                      label='Password'
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position='end'>
-                            <IconButton
-                              onClick={() => setShowPassword(!showPassword)}
-                              onMouseDown={(e) => e.preventDefault()}
-                            >
-                              {showPassword ? <VscEye /> : <VscEyeClosed />}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                      required
-                      rules={{
-                        minLength: {
-                          value: 6,
-                          message: 'Mật khẩu phải hơn 6 ký tự',
-                        },
-                      }}
-                    />
-                  </FormControl>
-                  { isVerified === false && 
+                  
                     <Grid 
                     container 
                     spacing={2}
@@ -211,31 +182,22 @@ const LoginScreen = ({ location, history }) => {
                         </Button>
                       </Grid>
                     </Grid>
-                    
-                  }
                   
-                  <Box display='flex' justifyContent='flex-end' pb={3} pt={1}>
-                    <Link component={RouterLink} to='/forgot-pasword'>
-                      Quên mật khẩu?
-                    </Link>
-                  </Box>
+          
                   <Button
                     type='submit'
                     variant='contained'
                     color='secondary'
                     fullWidth
                   >
-                    Đăng nhập
+                    Xác nhận
                   </Button>
                 </form>
               </FormProvider>
-              <Box my={4}>
-                Tài khoản mới?{' '}
-                <Link
-                  component={RouterLink}
-                  to={`/register?redirect=${redirectHome}`}
-                >
-                  Tạo tài khoản mới
+              <Box my={2}>
+                Đã có tài khoản?{' '}
+                <Link component={RouterLink} to={`/login?redirect=${redirectHome}`}>
+                  Đăng nhập
                 </Link>
               </Box>
               {loading && <Loader my={0} />}
@@ -255,4 +217,4 @@ const LoginScreen = ({ location, history }) => {
   );
 };
 
-export default LoginScreen;
+export default VerifyScreen;
