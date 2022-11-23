@@ -244,7 +244,7 @@ const ProductScreen = ({ history, match }) => {
                   {product.description}
                 </Typography>
                 <form>
-                  <FormControl
+                  {/* <FormControl
                     fullWidth
                     component='fieldset'
                     classes={{ root: classes.sizeFormControl }}
@@ -288,7 +288,7 @@ const ProductScreen = ({ history, match }) => {
                       )}
                       rules={{ required: 'Vui lòng chọn kích thước!' }}
                     />
-                  </FormControl>
+                  </FormControl> */}
                   <FormControl variant='outlined' style={{ width: 250 }}>
                     <FormLabel
                       className={classes.label}
