@@ -13,7 +13,6 @@ const orderSchema = mongoose.Schema(
         rating: { type: Number},
         comment: { type: String},
         qty: { type: Number, required: true },
-        sizeSelected: { type: String, required: true },
         images: [String],
         priceSale: { type: Number, required: true },
         product: {

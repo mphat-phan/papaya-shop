@@ -33,68 +33,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
     });
     
     const createdOrder = await order.save();
-    let size;
-    for (const i of orderItems) {
-      ///console.log(i);
-      //case s
-      if(i.sizeSelected === 's'){
-        let replyUpdate = await Product.updateOne(
-          {
-            '_id' : i.product,
-          },
-          {
-            $inc: 
-            { 
-              "size.$.s" : -i.qty
-            }
-          }
-        );
-      }
-      //case m
-      if(i.sizeSelected === 'm'){
-        console.log(i.qty);
-        let replyUpdate = await Product.updateOne(
-          {
-            '_id' : i.product,
-          },
-          {
-            $inc: 
-            { 
-              "size.m" : -i.qty
-            }
-          }
-        );
-      }
-      //case l
-      if(i.sizeSelected === 'l'){
-        let replyUpdate = await Product.updateOne(
-          {
-            '_id' : i.product,
-          },
-          {
-            $inc: 
-            { 
-              "size.$.l" : -i.qty
-            }
-          }
-        );
-      }
-      //case xl
-      if(i.sizeSelected === 'xl'){
-        let replyUpdate = await Product.updateOne(
-          {
-            '_id' : i.product,
-          },
-          {
-            $inc: 
-            { 
-              "size.$.xl" : -i.qty
-            }
-          }
-        );
-      }
-      
-    }
 
     res.status(201).json(createdOrder);
   }
@@ -213,69 +151,6 @@ const updateOrderToCancel = asyncHandler(async (req, res) => {
     order.status = 0;
     const updatedOrder = await order.save();
     res.json(updatedOrder);
-
-    for (const i of updatedOrder.orderItems) {
-      //case s
-      if(i.sizeSelected === 's'){
-        let replyUpdate = await Product.updateOne(
-          {
-            '_id' : i.product,
-          },
-          {
-            $inc: 
-            { 
-              "size.$.s" : i.qty
-            }
-          }
-        );
-      }
-      //case m
-      if(i.sizeSelected === 'm'){
-        console.log(i.qty);
-        let replyUpdate = await Product.updateOne(
-          {
-            '_id' : i.product,
-          },
-          {
-            $inc: 
-            { 
-              "size.m" : i.qty
-            }
-          }
-        );
-      }
-      //case l
-      if(i.sizeSelected === 'l'){
-        let replyUpdate = await Product.updateOne(
-          {
-            '_id' : i.product,
-          },
-          {
-            $inc: 
-            { 
-              "size.$.l" : i.qty
-            }
-          }
-        );
-      }
-      //case xl
-      if(i.sizeSelected === 'xl'){
-        let replyUpdate = await Product.updateOne(
-          {
-            '_id' : i.product,
-          },
-          {
-            $inc: 
-            { 
-              "size.$.xl" : i.qty
-            }
-          }
-        );
-      }
-      
-    }
-
-
   } else {
     res.status(404);
     throw new Error('Order not found');

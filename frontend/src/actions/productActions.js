@@ -536,13 +536,13 @@ export const filterListShopProduct = () => async (dispatch, getState) => {
   let filteredProducts = [];
   const filter = getState().filter;
   let { products } = getState().productShop;
-  const { categories, brands, size, priceMax, priceMin } = filter;
+  const { categories, brands, priceMax, priceMin } = filter;
   products = products.map((p) => ({
     ...p,
     priceSale: p.price * (1 - p.sale / 100),
   }));
 
-  if (!categories.length && !brands.length && !size && !priceMax && !priceMin) {
+  if (!categories.length && !brands.length && !priceMax && !priceMin) {
     dispatch({ type: PRODUCT_SHOP_FILTER, payload: null });
     return;
   }
@@ -559,14 +559,6 @@ export const filterListShopProduct = () => async (dispatch, getState) => {
     filteredProducts = products.filter(
       (p) => categories.indexOf(p.category) >= 0
     );
-  }
-  if (size) {
-    filteredProducts = products.filter((p) => {
-      const availableSizes = Object.keys(p.size).filter(
-        (sizeItem) => p.size[sizeItem] > 0
-      );
-      return availableSizes.indexOf(size) >= 0;
-    });
   }
   if (brands.length) {
     filteredProducts = products.filter((p) => brands.indexOf(p.brand) >= 0);

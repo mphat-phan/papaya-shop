@@ -14,7 +14,6 @@ import {
   removeSearchTerm,
   removeRangePrice,
   removeCategory,
-  removeSize,
   removeBrand,
   filterClearAll,
 } from '../actions/filterActions';
@@ -125,7 +124,7 @@ const ShopScreen = ({ location, history }) => {
   const { loading, error, products, page, pages } = productShop;
 
   const filter = useSelector((state) => state.filter);
-  const { searchTerm, categories, brands, size, priceMax, priceMin } = filter;
+  const { searchTerm, categories, brands, priceMax, priceMin } = filter;
 
   const handleChangeLayout = (type) => {
     setActiveLayout(type);
@@ -171,7 +170,6 @@ const ShopScreen = ({ location, history }) => {
         <Grid item xs={12} md={3}>
           <ProductFilterBar
             products={products}
-            sizeSelected={size}
             filter={filter}
           />
         </Grid>
@@ -249,14 +247,6 @@ const ShopScreen = ({ location, history }) => {
                   onDelete={() => dispatch(removeCategory(category))}
                 />
               ))}
-              {size && (
-                <Chip
-                  variant='outlined'
-                  size='small'
-                  label={`Size: ${size.toUpperCase()}`}
-                  onDelete={() => dispatch(removeSize())}
-                />
-              )}
               {brands.map((brand) => (
                 <Chip
                   variant='outlined'
