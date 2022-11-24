@@ -1,6 +1,6 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
 import {
   productListReducer,
   productDetailsReducer,
@@ -16,11 +16,11 @@ import {
   productSortByPriceReducer,
   productShopReducer,
   productCommentReplyCreateReducer,
-  productReviewReplyCreateReducer
-} from './reducers/productReducers.js';
-import { cartOpenDrawerReducer, cartReducer } from './reducers/cartReducers';
-import { snackbarReducer } from './reducers/snackbarReducers';
-import { filterReducer } from './reducers/filterReducers';
+  productReviewReplyCreateReducer,
+} from "./reducers/productReducers.js";
+import { cartOpenDrawerReducer, cartReducer } from "./reducers/cartReducers";
+import { snackbarReducer } from "./reducers/snackbarReducers";
+import { filterReducer } from "./reducers/filterReducers";
 import {
   orderCreateReducer,
   orderDetailsReducer,
@@ -32,8 +32,8 @@ import {
   sellingProductReducer,
   orderCancelReducer,
   orderConfirmReducer,
-  orderDeliveringReducer
-} from './reducers/orderReducers';
+  orderDeliveringReducer,
+} from "./reducers/orderReducers";
 import {
   userLoginReducer,
   userRegisterReducer,
@@ -42,9 +42,21 @@ import {
   userListReducer,
   userDeleteReducer,
   userUpdateReducer,
-} from './reducers/userReducers';
+} from "./reducers/userReducers";
+import {
+  categoryListReducer,
+  categoryCreateReducer,
+  categoryDeleteReducer,
+  categoryUpdateReducer,
+  categoryDetailsReducer,
+} from "./reducers/categoryReducers";
 
 const reducers = combineReducers({
+  categoryList: categoryListReducer,
+  categoryDetails: categoryDetailsReducer,
+  categoryDelete: categoryDeleteReducer,
+  categoryCreate: categoryCreateReducer,
+  categoryUpdate: categoryUpdateReducer,
   productShop: productShopReducer,
   productList: productListReducer,
   productDetails: productDetailsReducer,
@@ -84,16 +96,16 @@ const reducers = combineReducers({
   filter: filterReducer,
 });
 
-const cartItemsFromStorage = localStorage.getItem('cartItems')
-  ? JSON.parse(localStorage.getItem('cartItems'))
+const cartItemsFromStorage = localStorage.getItem("cartItems")
+  ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
 
-const userInfoFromStorage = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo'))
+const userInfoFromStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
 
-const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
-  ? JSON.parse(localStorage.getItem('shippingAddress'))
+const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
+  ? JSON.parse(localStorage.getItem("shippingAddress"))
   : {};
 
 const initialState = {

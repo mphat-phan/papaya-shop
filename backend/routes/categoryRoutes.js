@@ -21,5 +21,4 @@ router
   .delete(deleteCategory)
   .put(categoryValidator, runValidation, updateCategory)
   .get(getCategoryById);
-
 export default router;
