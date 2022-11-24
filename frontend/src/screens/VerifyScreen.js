@@ -150,38 +150,38 @@ const VerifyScreen = ({ location, history }) => {
                     />
                   </FormControl>
                   
-                    <Grid 
-                    container 
-                    spacing={2}
-                    justifyContent="center"
-                    alignItems="center"
-                    >
-                      <Grid item xs={8}>
-                          <FormControl style={{ marginBottom: 16 }}>
-                            <InputController
-                              name='otpCode'
-                              label='OTP Code'
-                              required
-                              rules={{
-                                pattern: {
-                                  value: /^\d{4}$/,
-                                  message: 'Nhập mã OTP gồm 4 chữ số',
-                                },
-                              }}
-                            />
-                          </FormControl>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Button
-                          onClick={submitResendOTP}
-                          variant='contained'
-                          color='secondary'
-                          style={{height: 30,fontSize:8}}
-                        >
-                          Re-send OTP
-                        </Button>
-                      </Grid>
+                  <Grid 
+                  container 
+                  spacing={2}
+                  justifyContent="center"
+                  alignItems="center"
+                  >
+                    <Grid item xs={8}>
+                        <FormControl style={{ marginBottom: 16 }}>
+                          <InputController
+                            name='otpCode'
+                            label='OTP Code'
+                            required
+                            rules={{
+                              pattern: {
+                                value: /^\d{4}$/,
+                                message: 'Nhập mã OTP gồm 4 chữ số',
+                              },
+                            }}
+                          />
+                        </FormControl>
                     </Grid>
+                    <Grid item xs={4}>
+                      <Button
+                        onClick={submitResendOTP}
+                        variant='contained'
+                        color='secondary'
+                        style={{height: 30,fontSize:8}}
+                      >
+                        Re-send OTP
+                      </Button>
+                    </Grid>
+                  </Grid>
                   
           
                   <Button

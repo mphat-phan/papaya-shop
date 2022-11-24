@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { login,resendOTP } from '../actions/userActions';
+import { sendOTPPassword, forgotPassword, changePassword } from '../actions/userActions';
 import {
   makeStyles,
   createMuiTheme,
@@ -26,6 +26,7 @@ import backgroundImage from '../assets/images/background.jpg';
 import { useForm, FormProvider } from 'react-hook-form';
 import { VscEyeClosed, VscEye } from 'react-icons/vsc';
 import { BiArrowBack } from 'react-icons/bi';
+import { USER_CHANGEPASSWORD_RESET } from '../constants/userConstants.js';
 import {useRef} from 'react';
 const theme = createMuiTheme({
   typography: {
@@ -83,32 +84,39 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ForgotPasswordScreen = ({ location, history }) => {
-  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const methods = useForm();
-  const { handleSubmit } = methods;
+  const { handleSubmit, getValues } = methods;
+  
   const dispatch = useDispatch();
   const classes = useStyles();
-
+  const [showPassword, setShowPassword] = useState(false);
   const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, userInfo, isVerified, message} = userLogin;
-
+  
+  const { loading, error, message, userInfo, status } = userLogin;
   const { redirectHome = '/' } = queryString.parse(location.search);
-  useEffect(() => {
-    if (userInfo) {
-      
-      if(!userInfo.verified){
 
-      }
-      else{
-        history.push(redirectHome);
-      }
-    }
-  }, [history, userInfo, redirectHome]);
-
-  const submitHandler = ({ email, password, otpCode }) => {
+  if(status === 'SUCCESS'){
+    history.push(`/login`);
+    dispatch({
+      type: USER_CHANGEPASSWORD_RESET,
+    });
+  }
+  const submitHandler = ({ email }) => {
+    setEmail(email);
+    dispatch(sendOTPPassword(email))
   };
+
+  const verifyOTPHandler = ({ email, otpCode }) => {
+    dispatch(forgotPassword(email, otpCode))
+  };
+
   const submitResendOTP = () => {
+    dispatch(sendOTPPassword(email))
+  }
+
+  const submitChangePassword = ({password}) => {
+    dispatch(changePassword(password,userInfo))
   }
   return (
     <ThemeProvider theme={theme}>
@@ -123,36 +131,140 @@ const ForgotPasswordScreen = ({ location, history }) => {
                 className={classes.backIcon}
               />
               <img src={logo} alt='' className={classes.logo} />
-              <FormProvider {...methods}>
-                <form
-                  className={classes.form}
-                  onSubmit={handleSubmit(submitHandler)}
-                >
-                  <FormControl fullWidth style={{ marginBottom: 16 }}>
+              
+                
+                  {userInfo ? 
+                  //Nếu có user info thì giao diện đổi mật khẩu
+                  <>
+                  <FormProvider {...methods}>
+                  <form
+                    className={classes.form}
+                    onSubmit={handleSubmit(submitChangePassword)}
+                  >
+                  <FormControl fullWidth style={{ marginBottom: 8 }}>
                     <InputController
-                      name='email'
-                      label='Email'
+                      type={showPassword ? 'text' : 'password'}
+                      name='password'
+                      label='Mật khẩu'
+                      defaultValue=""
                       required
                       rules={{
-                        pattern: {
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: 'Địa chỉ email không hợp lệ',
+                        minLength: {
+                          value: 6,
+                          message: 'Password phải hơn 6 ký tự',
                         },
                       }}
-                      disabled={ isVerified === false ? true : false }
                     />
                   </FormControl>
-                
+                  <FormControl fullWidth style={{ marginBottom: 8 }}>
+                    <InputController
+                      type={showPassword ? 'text' : 'password'}
+                      name='confirmPassword'
+                      label='Xác nhận mật khẩu'
+                      required
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position='end'>
+                            <IconButton
+                              onClick={() => setShowPassword(!showPassword)}
+                              onMouseDown={(e) => e.preventDefault()}
+                            >
+                              {showPassword ? <VscEye /> : <VscEyeClosed />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                      rules={{
+                        validate: {
+                          matchPassword: (value) =>
+                            value !== getValues('password')
+                              ? 'Password không khớp'
+                              : true,
+                        },
+                      }}
+                    />
+                  </FormControl>
+                  
                   <Button
                     type='submit'
                     variant='contained'
                     color='secondary'
                     fullWidth
                   >
-                    Xác nhận
+                    Đổi mật khẩu
                   </Button>
-                </form>
-              </FormProvider>
+                  </form>
+                  </FormProvider>
+                  </>
+                  :
+                  //Nếu chưa có user info
+                  <>
+                  <FormProvider {...methods}>
+                  <form
+                    className={classes.form}
+                    onSubmit={email ? handleSubmit(verifyOTPHandler) : handleSubmit(submitHandler)}
+                  >
+                    <FormControl fullWidth style={{ marginBottom: 16 }}>
+                      <InputController
+                        name='email'
+                        label='Email'
+                        required
+                        disabled={email && true}
+                        rules={{
+                          pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            message: 'Địa chỉ email không hợp lệ',
+                          },
+                        }}
+                      />
+                    </FormControl>
+                    {email &&
+                      <Grid 
+                      container 
+                      spacing={2}
+                      justifyContent="center"
+                      alignItems="center"
+                      >
+                        <Grid item xs={8}>
+                            <FormControl style={{ marginBottom: 16 }}>
+                              <InputController
+                                name='otpCode'
+                                label='OTP Code'
+                                required
+                                rules={{
+                                  pattern: {
+                                    value: /^\d{4}$/,
+                                    message: 'Nhập mã OTP gồm 4 chữ số',
+                                  },
+                                }}
+                              />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Button
+                            onClick={submitResendOTP}
+                            variant='contained'
+                            color='secondary'
+                            style={{height: 30,fontSize:8}}
+                          >
+                            Re-send OTP
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    }
+                    
+                    <Button
+                      type='submit'
+                      variant='contained'
+                      color='secondary'
+                      fullWidth
+                    >
+                      Xác nhận
+                    </Button>
+                  </form>
+                  </FormProvider>
+                  </>
+                  }
               <Box my={2}>
                 Đã có tài khoản?{' '}
                 <Link component={RouterLink} to={`/login?redirect=${redirectHome}`}>
@@ -161,6 +273,7 @@ const ForgotPasswordScreen = ({ location, history }) => {
               </Box>
               {loading && <Loader my={0} />}
               {error && <Message mt={0}>{error}</Message>}
+              {message && <Message mt={0}>{message}</Message>}
             </Box>
           </Grid>
           <Hidden smDown>

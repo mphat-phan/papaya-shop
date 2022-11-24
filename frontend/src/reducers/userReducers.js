@@ -28,9 +28,14 @@ import {
   USER_REGISTER_RESET,
   USER_SENDOTP_REQUEST,
   USER_SENDOTP_SUCCESS,
+  USER_SENDOTP_FAIL,
   USER_VERIFY_FAIL,
   USER_VERIFY_REQUEST,
-  USER_VERIFY_SUCCESS
+  USER_VERIFY_SUCCESS,
+  USER_CHANGEPASSWORD_FAIL,
+  USER_CHANGEPASSWORD_REQUEST,
+  USER_CHANGEPASSWORD_SUCCESS,
+  USER_CHANGEPASSWORD_RESET
 } from '../constants/userConstants.js';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -47,12 +52,22 @@ export const userLoginReducer = (state = {}, action) => {
       return { loading: true };
     case USER_SENDOTP_SUCCESS:
       return { loading: false, message: action.payload, isVerified: false };
+    case USER_SENDOTP_FAIL:
+      return { loading: false, message: action.payload };
     case USER_VERIFY_REQUEST:
       return { loading: true };
     case USER_VERIFY_SUCCESS:
-      return { loading: false, message: action.payload, status:action.status };
+      return { loading: false, message: action.payload, status:action.status, userInfo:action.userInfo };
     case USER_VERIFY_FAIL:
       return { loading: false, message: action.payload };
+    case USER_CHANGEPASSWORD_REQUEST:
+      return { loading: true };
+    case USER_CHANGEPASSWORD_SUCCESS:
+      return { loading: false, message: action.payload, status:action.status };
+    case USER_CHANGEPASSWORD_FAIL:
+      return { loading: false, message: action.payload };
+    case USER_CHANGEPASSWORD_RESET:
+      return { };
     default:
       return state;
   }
@@ -92,7 +107,7 @@ export const userUpdateProfileReducer = (state = {}, action) => {
     case USER_UPDATE_PROFILE_REQUEST:
       return { loading: true };
     case USER_UPDATE_PROFILE_SUCCESS:
-      return { loading: false, success: true, userInfo: action.payload };
+      return { loading: false, success: true, userInfo: action.payload, message: action.message };
     case USER_UPDATE_PROFILE_FAIL:
       return { loading: false, error: action.payload };
     case USER_UPDATE_PROFILE_RESET:

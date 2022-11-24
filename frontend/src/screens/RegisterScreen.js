@@ -116,7 +116,7 @@ const RegisterScreen = ({ location, history }) => {
   const dispatch = useDispatch();
 
   const userRegister = useSelector((state) => state.userRegister);
-  const { loading, error, userInfo } = userRegister;
+  const { loading, error, userInfo, message } = userRegister;
 
   const { redirect = '/login' } = queryString.parse(location.search);
   const uploadAvatar = (avt) => {
@@ -334,6 +334,7 @@ const RegisterScreen = ({ location, history }) => {
               </Box>
               {loading && <Loader my={0} />}
               {error && <Message mt={0}>{error}</Message>}
+              {message && <Message mt={0}>{message}</Message>}
             </Box>
           </Grid>
           <Hidden smDown>

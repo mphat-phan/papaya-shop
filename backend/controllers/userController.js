@@ -183,34 +183,93 @@ const sendOTPVerify = async ({email}, res) => {
     // })
   }
 };
-///Send Password
-const sendNewPassword = async({email, password}, res) => {
-  try {
-    const mailOptions = {
-      from: process.env.AUTH_EMAIL,
-      to: email,
-      subject: "Verify your email",
-      html: 
-      `<p>
-        Your new password is <b>${password}</b>
-      </p>`
-    }
-
-    //Send email with otp
-    await transporter.sendMail(mailOptions);
-  } catch (error) {
-  }
-}
 
 /**
  * @desc    Create a new user
- * @route   POST /api/users/reset-password
+ * @route   POST /api/users/send-otp-password
  * @access  Public
  */
-const resetPassword = asyncHandler(async (req, res) => {
+///Send Password
+const sendOTPPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  if(!email){
+    throw new Error('Invalid email');
+  }
+  const user = await User.findOne({email});
+  if (!user) {
+    return res.json({
+      message: "Your account is not existed",
+    })
+  }
+  else{
+    await Verify.deleteMany({email});
+    sendOTPVerify({email},res);
+    return res.status(201).json({
+      status: "SUCCESS",
+      message: "Send Successfully",
+    })
+  }
+})
 
+/**
+ * @desc    Create a new user
+ * @route   POST /api/users/forgot-password
+ * @access  Public
+ */
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email, otp } = req.body;
+  if(!email || !otp){
+    throw new Error('Invalid email or OTP');
+  }
+  //Kiem tra user
+  const user = await User.findOne({email});
+  if(!user){
+    throw new Error('User is not existed');
+  }
+  const verify = await Verify.findOne({ email });
+  if(verify && (await verify.matchOTP(otp))){
+    await Verify.deleteMany({email});
+    //Nếu đăng nhập thành công
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      status: "VERIFIED",
+      token: generateToken(user._id),
+    });
+  }
+  else{
+    res.status(401).json({
+      status: "NOT VERIFIED",
+      message: "Not match otp"
+    })
+  }
 });
 
+/**
+ * @desc    Create a new user
+ * @route   POST /api/users/change-password
+ * @access  PRIVATE
+ */
+const changePassword = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    const { password } = req.body;
+    user.password = password || user.password;
+
+    const updatedUser = await user.save();
+
+    res.json({
+      status: 'SUCCESS',
+      message: "Password have changed successfully"
+    });
+
+  } else {
+      res.status(404);
+      throw new Error('User not found');
+  }
+})
 
 /**
  * @desc    Update user profile
@@ -424,5 +483,8 @@ export {
   getUserById,
   updateUser,
   verifyOTP,
-  resendVerifyOTP
+  resendVerifyOTP,
+  sendOTPPassword,
+  forgotPassword,
+  changePassword
 };
