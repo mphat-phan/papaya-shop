@@ -131,6 +131,7 @@ getImages(1, 2)
         rating: Math.floor(Math.random() * (5 - 0) + 0),
         sale: randomSale(),
         numReviews: 1,
+        countInStock: 0,
       });
     }
   })

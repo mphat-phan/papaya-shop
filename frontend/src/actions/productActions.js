@@ -533,35 +533,34 @@ export const listShopProduct = (type, pageNumber, keyword) => async (dispatch, g
 };
 
 export const filterListShopProduct = () => async (dispatch, getState) => {
-  let filteredProducts = [];
   const filter = getState().filter;
-  let { products } = getState().productShop;
-  const { categories, brands, priceMax, priceMin } = filter;
+  let products = getState().productShop.tempProducts;
+  const { categories, brands, size, priceMax, priceMin } = filter;
   products = products.map((p) => ({
     ...p,
     priceSale: p.price * (1 - p.sale / 100),
   }));
-
+  let filteredProducts = products;
   if (!categories.length && !brands.length && !priceMax && !priceMin) {
     dispatch({ type: PRODUCT_SHOP_FILTER, payload: null });
     return;
   }
   if (priceMax && priceMin) {
-    filteredProducts = products.filter(
+    filteredProducts = filteredProducts.filter(
       (p) => p.priceSale >= priceMin && p.priceSale <= priceMax
     );
   } else if (priceMax) {
-    filteredProducts = products.filter((p) => p.priceSale <= priceMax);
+    filteredProducts = filteredProducts.filter((p) => p.priceSale <= priceMax);
   } else if (priceMin) {
-    filteredProducts = products.filter((p) => p.priceSale >= priceMin);
+    filteredProducts = filteredProducts.filter((p) => p.priceSale >= priceMin);
   }
   if (categories.length) {
-    filteredProducts = products.filter(
+    filteredProducts = filteredProducts.filter(
       (p) => categories.indexOf(p.category) >= 0
     );
   }
   if (brands.length) {
-    filteredProducts = products.filter((p) => brands.indexOf(p.brand) >= 0);
+    filteredProducts = filteredProducts.filter((p) => brands.indexOf(p.brand) >= 0);
   }
   dispatch({
     type: PRODUCT_SHOP_FILTER,

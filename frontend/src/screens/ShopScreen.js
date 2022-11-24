@@ -124,6 +124,7 @@ const ShopScreen = ({ location, history }) => {
   const { loading, error, products, page, pages } = productShop;
 
   const filter = useSelector((state) => state.filter);
+
   const { searchTerm, categories, brands, priceMax, priceMin } = filter;
 
   const handleChangeLayout = (type) => {
