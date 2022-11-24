@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Avatar,
   Button,
@@ -12,63 +12,63 @@ import {
   ListItemText,
   SwipeableDrawer,
   Typography,
-} from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import ClearIcon from '@material-ui/icons/Clear';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { useDispatch, useSelector } from 'react-redux';
-import { removeFromCart, setOpenCartDrawer } from '../../actions/cartActions';
-import emptyGif from '../../assets/images/Empty.gif';
-import { Link as LinkRouter } from 'react-router-dom';
+} from "@material-ui/core";
+import { Link as RouterLink } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import ClearIcon from "@material-ui/icons/Clear";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart, setOpenCartDrawer } from "../../actions/cartActions";
+import emptyGif from "../../assets/images/Empty.gif";
+import { Link as LinkRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 400,
-    height: '100%',
+    height: "100%",
     padding: 20,
     backgroundColor: theme.palette.background.paper,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       width: 300,
     },
   },
   title: {
-    ...theme.mixins.customize.flexMixin('space-between', 'center'),
+    ...theme.mixins.customize.flexMixin("space-between", "center"),
   },
   large: {
     width: theme.spacing(12),
     height: theme.spacing(15),
   },
   listProduct: {
-    overflowY: 'auto',
-    maxHeight: '60%',
+    overflowY: "auto",
+    maxHeight: "60%",
     marginTop: 10,
     marginBottom: 10,
-    '&::-webkit-scrollbar': {
+    "&::-webkit-scrollbar": {
       width: 8,
     },
-    '&::-webkit-scrollbar-thumb': {
+    "&::-webkit-scrollbar-thumb": {
       background: theme.palette.secondary.main,
     },
-    '&::-webkit-scrollbar-track': {
-      background: 'rgba(245, 0, 87, 0.04)',
+    "&::-webkit-scrollbar-track": {
+      background: "rgba(245, 0, 87, 0.04)",
     },
-    '& .MuiListItem-container:last-child > .MuiListItem-divider': {
-      borderBottom: 'none',
+    "& .MuiListItem-container:last-child > .MuiListItem-divider": {
+      borderBottom: "none",
     },
   },
   priceTotal: {
-    ...theme.mixins.customize.flexMixin('space-between', 'center'),
-    padding: '10px 0',
+    ...theme.mixins.customize.flexMixin("space-between", "center"),
+    padding: "10px 0",
   },
   button: {
-    margin: '10px 0',
-    '& + $button': {
+    margin: "10px 0",
+    "& + $button": {
       marginTop: 2,
     },
   },
   empty: {
-    ...theme.mixins.customize.centerFlex('column wrap'),
+    ...theme.mixins.customize.centerFlex("column wrap"),
     marginTop: 30,
   },
 }));
@@ -94,21 +94,21 @@ const CartPreview = () => {
 
   return (
     <SwipeableDrawer
-      anchor='right'
+      anchor="right"
       open={isOpenDrawer}
       onClose={onDrawerClose}
       onOpen={onDrawerOpen}
     >
       <div className={classes.root}>
         <div className={classes.title}>
-          <Typography variant='h5' component='h2' gutterBottom>
+          <Typography variant="h5" component="h2" gutterBottom>
             Giỏ hàng ({cartItems.length})
           </Typography>
-          <IconButton color='secondary' onClick={onDrawerClose}>
+          <IconButton color="secondary" onClick={onDrawerClose}>
             <ClearIcon />
           </IconButton>
         </div>
-        <Divider variant='fullWidth' />
+        <Divider variant="fullWidth" />
         {cartItems.length > 0 ? (
           <>
             <List className={classes.listProduct}>
@@ -116,22 +116,23 @@ const CartPreview = () => {
                 <ListItem divider disableGutters key={item.product}>
                   <ListItemAvatar>
                     <Avatar
-                      variant='square'
+                      variant="square"
                       src={item.images && item.images[0]}
-                      alt='product image'
+                      alt="product image"
                       className={classes.large}
                     ></Avatar>
                   </ListItemAvatar>
                   <ListItemText
                     primary={item.name}
-                    secondary={`${item.qty} x ${
-                      new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)
-                    } | ${item.sizeSelected.toUpperCase()}`}
+                    secondary={`${item.qty} x ${new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(item.priceSale)}   `}
                     style={{ marginLeft: 10 }}
                   />
                   <ListItemSecondaryAction>
                     <IconButton
-                      edge='end'
+                      edge="end"
                       onClick={() => removeFromCartHandler(item.product)}
                     >
                       <DeleteIcon />
@@ -140,39 +141,47 @@ const CartPreview = () => {
                 </ListItem>
               ))}
             </List>
-            <Divider variant='fullWidth' />
+            <Divider variant="fullWidth" />
             <div className={classes.priceTotal}>
-              <Typography variant='subtitle1' component='span'>
+              <Typography variant="subtitle1" component="span">
                 Tổng tiền:
               </Typography>
               <Typography
-                variant='subtitle1'
-                component='span'
-                color='secondary'
+                variant="subtitle1"
+                component="span"
+                color="secondary"
                 style={{ fontWeight: 600, fontSize: 18 }}
               >
-                {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(cartItems.reduce((acc, item) => acc + item.priceSale * item.qty, 0))}
+                {new Intl.NumberFormat("de-DE", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(
+                  cartItems.reduce(
+                    (acc, item) => acc + item.priceSale * item.qty,
+                    0
+                  )
+                )}
               </Typography>
             </div>
-            <Divider variant='fullWidth' />
+            <Divider variant="fullWidth" />
             <Button
-              variant='contained'
-              color='primary'
+              variant="contained"
+              color="primary"
               fullWidth
               component={RouterLink}
-              to='/cart'
+              to="/cart"
               onClick={onDrawerClose}
               className={classes.button}
             >
               Xem giỏ hàng
             </Button>
             <Button
-              variant='contained'
-              color='secondary'
+              variant="contained"
+              color="secondary"
               fullWidth
               className={classes.button}
               component={RouterLink}
-              to='/shipping'
+              to="/shipping"
               onClick={onDrawerClose}
             >
               Thanh toán
@@ -180,18 +189,18 @@ const CartPreview = () => {
           </>
         ) : (
           <div className={classes.empty}>
-            <Typography variant='subtitle1' color='secondary'>
-              Giỏ của bạn trống.{' '}
+            <Typography variant="subtitle1" color="secondary">
+              Giỏ của bạn trống.{" "}
               <Link
-                to='/'
+                to="/"
                 component={LinkRouter}
-                color='primary'
+                color="primary"
                 onClick={onDrawerClose}
               >
                 Mua sắm ngay bây giờ!
               </Link>
             </Typography>
-            <img src={emptyGif} alt='empty' />
+            <img src={emptyGif} alt="empty" />
           </div>
         )}
       </div>

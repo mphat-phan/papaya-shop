@@ -2,7 +2,7 @@ import Category from "../models/categoryModel.js";
 import asyncHandler from "express-async-handler";
 /**
  * @desc    Create a category
- * @route   POST /api/products
+ * @route   POST /api/category
  * @access  Private
  */
 const createCategory = asyncHandler(async (req, res) => {
@@ -36,13 +36,34 @@ const createCategory = asyncHandler(async (req, res) => {
  * @access  Private
  */
 const getCategorys = asyncHandler(async (req, res) => {
-  const categorys = await Category.find({});
-  res.status(200).json(categorys);
+  if (req.query.option === "all") {
+    const categorys = await Category.find({});
+    res.json({ categorys });
+  } else {
+    const perPage = 12;
+    const page = parseInt(req.query.pageNumber) || 1;
+
+    const keyword = req.query.keyword
+      ? {
+          name: {
+            $regex: req.query.keyword,
+            $options: "i",
+          },
+        }
+      : {};
+
+    const count = await Category.countDocuments({ ...keyword });
+    const categorys = await Category.find({ ...keyword })
+      .limit(perPage)
+      .skip(perPage * (page - 1));
+
+    res.json({ categorys, page, pages: Math.ceil(count / perPage), count });
+  }
 });
 
 /**
  * @desc    Get CategoryByID
- * @route   GET /api/products/:id
+ * @route   GET /api/categorys/:id
  * @access  Private
  */
 
@@ -59,7 +80,7 @@ const getCategoryById = asyncHandler(async (req, res) => {
 
 /**
  * @desc    Delete a Category
- * @route   DELETE /api/products/:id
+ * @route   DELETE /api/categorys/:id
  * @access  Private
  */
 const deleteCategory = asyncHandler(async (req, res) => {
@@ -76,7 +97,7 @@ const deleteCategory = asyncHandler(async (req, res) => {
 
 /**
  * @desc    Update a Category
- * @route   UPDATE /api/products/:id
+ * @route   UPDATE /api/categorys/:id
  * @access  Private
  */
 const updateCategory = asyncHandler(async (req, res) => {

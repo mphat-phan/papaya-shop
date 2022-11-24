@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
+import React, { useState, useEffect } from "react";
+import clsx from "clsx";
 import {
   Typography,
   Button,
@@ -15,98 +15,98 @@ import {
   AccordionDetails,
   Accordion,
   useMediaQuery,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
   addRangePrice,
   addCategories,
   addSize,
   addBrands,
-} from '../../actions/filterActions';
-import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SearchBox from '../SearchBox';
-import categories from '../../assets/data/categories';
-import brands from '../../assets/data/brands';
+} from "../../actions/filterActions";
+import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import SearchBox from "../SearchBox";
+import categories from "../../assets/data/categories";
+import brands from "../../assets/data/brands";
 
 const INITIAL_RANGE_PRICE = [10000, 10000000];
 
 const useStyles = makeStyles((theme) => ({
   divider: {
     margin: theme.spacing(2, 0),
-    [theme.breakpoints.down('sm')]: {
-      margin: '4px 0',
+    [theme.breakpoints.down("sm")]: {
+      margin: "4px 0",
     },
   },
   title: {
-    color: '#4D4D4D',
+    color: "#4D4D4D",
     fontSize: 18,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       fontSize: 16,
     },
   },
   category: {
-    ...theme.mixins.customize.flexMixin('flex-start', 'flex-start', 'column'),
-    '& > .MuiBox-root + .MuiBox-root': {
+    ...theme.mixins.customize.flexMixin("flex-start", "flex-start", "column"),
+    "& > .MuiBox-root + .MuiBox-root": {
       marginTop: theme.spacing(2),
     },
-    '& > .MuiBox-root': {
-      cursor: 'pointer',
+    "& > .MuiBox-root": {
+      cursor: "pointer",
     },
   },
   brands: {
-    '& > button': {
+    "& > button": {
       paddingLeft: 0,
       paddingRight: 0,
       minWidth: 0,
-      textTransform: 'capitalize',
-      color: 'rgba(0, 0, 0, 0.54)',
+      textTransform: "capitalize",
+      color: "rgba(0, 0, 0, 0.54)",
     },
-    '& > button:hover': {
-      backgroundColor: 'transparent',
+    "& > button:hover": {
+      backgroundColor: "transparent",
     },
   },
   size: {
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-    '& span': {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    "& span": {
       fontSize: 14,
     },
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'column',
-      flexWrap: 'wrap',
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "column",
+      flexWrap: "wrap",
     },
   },
   accordion: {
-    '&::before': {
-      display: 'none',
+    "&::before": {
+      display: "none",
     },
-    boxShadow: 'none',
-    '& .MuiAccordionSummary-root': {
+    boxShadow: "none",
+    "& .MuiAccordionSummary-root": {
       padding: 0,
     },
-    '& .MuiAccordionDetails-root': {
-      display: 'block',
+    "& .MuiAccordionDetails-root": {
+      display: "block",
       padding: 0,
     },
   },
   isSelected: {
-    color: '#111 !important',
+    color: "#111 !important",
   },
 }));
 
 const ProductFilterBar = ({ products, sizeSelected, filter }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const onMobile = useMediaQuery('(max-width:740px)');
+  const onMobile = useMediaQuery("(max-width:740px)");
   const [expanded, setExpanded] = useState([
-    'priceRange',
-    'categories',
-    'size',
-    'brands',
+    "priceRange",
+    "categories",
+    "size",
+    "brands",
   ]);
   const [price, setPrice] = useState(INITIAL_RANGE_PRICE);
-  const [size, setSize] = useState('');
+  const [size, setSize] = useState("");
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(
@@ -153,7 +153,7 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
 
   useEffect(() => {
     if (!sizeSelected) {
-      setSize('');
+      setSize("");
     }
   }, [sizeSelected]);
 
@@ -171,12 +171,12 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
       </Hidden>
       <Accordion
         className={classes.accordion}
-        expanded={expanded.indexOf('priceRange') >= 0}
-        onChange={handleAccordionChange('priceRange')}
+        expanded={expanded.indexOf("priceRange") >= 0}
+        onChange={handleAccordionChange("priceRange")}
         defaultExpanded={true}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant='h6' gutterBottom className={classes.title}>
+          <Typography variant="h6" gutterBottom className={classes.title}>
             Lọc theo giá
           </Typography>
         </AccordionSummary>
@@ -186,38 +186,44 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
             onChange={handlePriceChange}
             max={10000000}
             min={10000}
-            color='secondary'
-            valueLabelDisplay='auto'
-            aria-labelledby='range-slider'
+            color="secondary"
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
           />
           <Box
-            display='flex'
-            justifyContent='space-between'
-            color='text.secondary'
+            display="flex"
+            justifyContent="space-between"
+            color="text.secondary"
           >
             <span>Lọc</span>
-            <span>{`Giá ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(price[0])} - ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(price[1])}`}</span>
+            <span>{`Giá ${new Intl.NumberFormat("de-DE", {
+              style: "currency",
+              currency: "VND",
+            }).format(price[0])} - ${new Intl.NumberFormat("de-DE", {
+              style: "currency",
+              currency: "VND",
+            }).format(price[1])}`}</span>
           </Box>
         </AccordionDetails>
       </Accordion>
       <Divider className={classes.divider} />
       <Accordion
         className={classes.accordion}
-        expanded={expanded.indexOf('categories') >= 0}
-        onChange={handleAccordionChange('categories')}
+        expanded={expanded.indexOf("categories") >= 0}
+        onChange={handleAccordionChange("categories")}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant='h6' gutterBottom className={classes.title}>
+          <Typography variant="h6" gutterBottom className={classes.title}>
             Thể loại
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Box className={classes.category} color='text.secondary'>
+          <Box className={classes.category} color="text.secondary">
             {categories.map((category) => (
               <Box
-                display='flex'
-                justifyContent='space-between'
-                width='100%'
+                display="flex"
+                justifyContent="space-between"
+                width="100%"
                 key={category}
                 className={clsx(
                   filter.categories.indexOf(category) >= 0 && classes.isSelected
@@ -242,22 +248,22 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
       <Divider className={classes.divider} />
       <Accordion
         className={classes.accordion}
-        expanded={expanded.indexOf('size') >= 0}
-        onChange={handleAccordionChange('size')}
+        expanded={expanded.indexOf("size") >= 0}
+        onChange={handleAccordionChange("size")}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant='h6' gutterBottom className={classes.title}>
+          <Typography variant="h6" gutterBottom className={classes.title}>
             Kích Thước
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <FormControl fullWidth component='fieldset'>
+          <FormControl fullWidth component="fieldset">
             <RadioGroup
               className={classes.size}
               value={size}
               onChange={(e) => handleSizeChange(e.target.value)}
             >
-              {['s', 'm', 'l', 'xl'].map((value) => (
+              {["s", "m", "l", "xl"].map((value) => (
                 <FormControlLabel
                   key={value}
                   value={value}
@@ -272,16 +278,16 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
       <Divider className={classes.divider} />
       <Accordion
         className={classes.accordion}
-        expanded={expanded.indexOf('brands') >= 0}
-        onChange={handleAccordionChange('brands')}
+        expanded={expanded.indexOf("brands") >= 0}
+        onChange={handleAccordionChange("brands")}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant='h6' gutterBottom className={classes.title}>
+          <Typography variant="h6" gutterBottom className={classes.title}>
             Nhãn hàng
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Box className={classes.brands} color='text.secondary'>
+          <Box className={classes.brands} color="text.secondary">
             {brands.map((brand, index) => (
               <Button
                 disableElevation
@@ -295,7 +301,7 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
               >
                 {brand}
                 {index !== brands.length - 1 && (
-                  <span style={{ margin: '0 8px' }}>/</span>
+                  <span style={{ margin: "0 8px" }}>/</span>
                 )}
               </Button>
             ))}
