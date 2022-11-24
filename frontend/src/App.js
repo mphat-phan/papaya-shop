@@ -29,7 +29,7 @@ import VerifyScreen from "./screens/VerifyScreen";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 import AdminLoginScreen from "./screens/admin/LoginScreen";
 import Error from "./screens/NotFoundScreen";
-import CategoryListScreen from "./screensCategoryListScreen";
+import CategoryListScreen from "./screens/CategoryListScreen";
 import CategoryEditScreen from "./screens/CategoryEditScreen";
 import CategoryCreateScreen from "./screens/CategoryCreateScreen";
 const App = () => {

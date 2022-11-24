@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import * as XLSX from "xlsx";
 import { useDispatch, useSelector } from "react-redux";
-import { listOrders } from "../actions/orderActions";
+// import { listOrders } from "../../actions/cartActions.js";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
@@ -21,15 +21,15 @@ import { DataGrid } from "@material-ui/data-grid";
 import { MdCloudUpload, MdClose } from "react-icons/md";
 import { BiCommentDetail } from "react-icons/bi";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import Meta from "../components/Meta";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
+import Meta from "../../components/Meta";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
 import { useForm, FormProvider, Controller } from "react-hook-form";
-import { saveShippingAddress } from "../actions/cartActions";
+import { saveShippingAddress } from "../../actions/cartActions";
 import { makeStyles, withStyles, fade } from "@material-ui/core/styles";
-import { listShopProduct } from "../actions/productActions";
-import { listProducts } from "../actions/productActions";
-import SearchBox from "../components/SearchBox";
+import { listShopProduct } from "../../actions/productActions";
+import { listProducts } from "../../actions/productActions";
+import SearchBox from "../../components/SearchBox";
 
 const handleImagesUpload = (e) => {
   const files = e.target.files;
@@ -280,7 +280,7 @@ const ReceptScreen = () => {
 
       <Paper mt={16} className={classes.contentInfo}>
         <Typography variant="h5" gutterBottom>
-          Thông tin nhập hàng
+          Thông tin sản phẩm
         </Typography>
         <SearchBox role="searchDrawer" />
         {loading ? (
