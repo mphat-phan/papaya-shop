@@ -79,6 +79,48 @@ export const login = (email, password, otpCode) => async (dispatch) => {
   }
 };
 
+export const loginAdmin = (email, password, otpCode) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_LOGIN_REQUEST });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    if(otpCode){
+      const { data } = await axios.post(
+        '/api/users/verifyOTP',
+        { email, otp: otpCode },
+        config
+      );
+      console.log(data);
+    }
+    const { data } = await axios.post(
+      '/api/users/admin/login',
+      { email, password },
+      config
+    );
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+
+    localStorage.setItem('userInfo', JSON.stringify(data));
+  } catch (error) {
+    console.log(error.response)
+    dispatch({
+      type: USER_LOGIN_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+      isVerified: error.response.data.verified
+    });
+  }
+};
+
 export const verify = (email, otpCode) => async(dispatch) => {
   try {
     dispatch({ type: USER_VERIFY_REQUEST });

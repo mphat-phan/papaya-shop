@@ -3,6 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { listTopProducts } from '../actions/productActions';
 import Loader from '../components/Loader';
+import queryString from 'query-string';
 import Meta from '../components/Meta';
 import HomeCarousel from '../components/Home/HomeCarousel';
 import Container from '@material-ui/core/Container';
@@ -13,7 +14,7 @@ import ProductTabs from '../components/Product/ProductTabs';
 import HomeService from '../components/Home/HomeService';
 import Alert from '@material-ui/lab/Alert';
 
-const HomeScreen = ({ location }) => {
+const HomeScreen = ({ location, history }) => {
   const dispatch = useDispatch();
   const productTopRated = useSelector((state) => state.productTopRated);
 
@@ -27,6 +28,15 @@ const HomeScreen = ({ location }) => {
     dispatch(listTopProducts(1, 8));
   }, [dispatch]);
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo} = userLogin;
+
+  const { redirectHome = '/admin/dashboard-revenue' } = queryString.parse(location.search);
+  useEffect(() => {
+    if (userInfo && userInfo.isAdmin) {
+      history.push(redirectHome);
+    }
+  }, [history, userInfo, redirectHome]);
   return (
     <>
       <Meta />

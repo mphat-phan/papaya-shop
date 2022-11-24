@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { listUsers, deleteUser } from '../actions/userActions';
+import { listUsers, deleteUser } from '../../actions/userActions';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Button,
@@ -13,13 +13,13 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
-import { openSnackbar } from '../actions/snackbarActions';
+import { openSnackbar } from '../../actions/snackbarActions';
 import { makeStyles } from '@material-ui/core/styles';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Meta from '../components/Meta';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
+import Meta from '../../components/Meta';
+import Loader from '../../components/Loader';
+import Message from '../../components/Message';
 import { Switch } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   button: {

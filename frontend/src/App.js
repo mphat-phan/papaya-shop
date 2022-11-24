@@ -12,29 +12,33 @@ import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
-import UserListScreen from './screens/UserListScreen';
-import UserEditScreen from './screens/UserEditScreen';
-import ProductListScreen from './screens/ProductListScreen';
-import ProductEditScreen from './screens/ProductEditScreen';
-import DashboardRevenueScreen from './screens/DashboardRevenueScreen';
-import DashboardProductScreen from './screens/DashboardProductScreen';
-import ProductCreateScreen from './screens/ProductCreateScreen';
+import UserListScreen from './screens/admin/UserListScreen';
+import UserEditScreen from './screens/admin/UserEditScreen';
+import ProductListScreen from './screens/admin/ProductListScreen';
+import ProductEditScreen from './screens/admin/ProductEditScreen';
+import DashboardRevenueScreen from './screens/admin/DashboardRevenueScreen';
+import DashboardProductScreen from './screens/admin/DashboardProductScreen';
+import ProductCreateScreen from './screens/admin/ProductCreateScreen';
 import ShopScreen from './screens/ShopScreen';
-import OrderListScreen from './screens/OrderListScreen';
+import OrderListScreen from './screens/admin/OrderListScreen';
 import CartPreview from './components/Drawer/CartPreview';
 import SnackbarMessage from './components/SnackbarMessage';
 import MessengerChat from './components/MessengerChat';
-import ReceptScreen from './screens/ReceptScreen';
+import ReceptScreen from './screens/admin/ReceptScreen';
 import VerifyScreen from './screens/VerifyScreen';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
+import AdminLoginScreen from './screens/admin/LoginScreen';
+import Error from './screens/NotFoundScreen';
 const App = () => {
   return (
     <Router>
       <Switch>
+        <Route path='/admin' component={AdminLoginScreen} exact />
         <Route path='/login' component={LoginScreen} exact />
         <Route path='/register' component={RegisterScreen} exact />
         <Route path='/verify' component={VerifyScreen} exact />
         <Route path='/forgot-password' component={ForgotPasswordScreen} exact />
+        
         <Route>
           <Header />
           <main className='main'>
@@ -68,7 +72,10 @@ const App = () => {
           <SnackbarMessage />
           <MessengerChat />
         </Route>
+        
+        
       </Switch>
+
     </Router>
   );
 };

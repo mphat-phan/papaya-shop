@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRevenue } from '../actions/orderActions';
+import { getRevenue } from '../../actions/orderActions';
 import {
   Button,
   Container,
@@ -17,11 +17,11 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Meta from '../components/Meta';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
+import Meta from '../../components/Meta';
+import Loader from '../../components/Loader';
+import Message from '../../components/Message';
 import clsx from 'clsx';
-import LineChart from '../components/LineChart';
+import LineChart from '../../components/LineChart';
 import {
   Chart as ChartJS,
   CategoryScale,

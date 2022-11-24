@@ -146,39 +146,80 @@ const Header = (props) => {
           </IconButton>
           {!onMobile ? (
             <MenuList className={classes.navList} role='presentation'>
-              <MenuItem
+              {userInfo && userInfo.isAdmin ? 
+              <>
+                <MenuItem
+                  disableRipple
+                  component={Link}
+                  to='/admin/userlist'
+                  className='navItem'
+                  style={{ marginLeft: -16 }}
+                >
+                Quản lý User
+                </MenuItem>
+                <MenuItem
+                  component={Link}
+                  to='/admin/productlist'
+                  className='navItem'
+                  disableRipple
+                >
+                Quản lý sản phẩm
+                </MenuItem>
+                <MenuItem
+                  component={Link}
+                  to='/admin/orderlist'
+                  className='navItem'
+                  disableRipple
+                >
+                Quản lý hóa đơn
+                </MenuItem>
+                <MenuItem
+                  component={Link}
+                  to='/admin/recept'
+                  className='navItem'
+                  disableRipple
+                >
+                Nhập hàng
+                </MenuItem>
+              </> 
+              : 
+              <>
+                <MenuItem
                 disableRipple
                 component={Link}
                 to='/'
                 className='navItem'
                 style={{ marginLeft: -16 }}
-              >
+                >
                 Trang chủ
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to='/shop'
-                className='navItem'
-                disableRipple
-              >
-                Sản phẩm
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to='/'
-                className='navItem'
-                disableRipple
-              >
-                Liên hệ
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to='/'
-                className='navItem'
-                disableRipple
-              >
-                Tin tức
-              </MenuItem>
+                </MenuItem>
+                <MenuItem
+                  component={Link}
+                  to='/shop'
+                  className='navItem'
+                  disableRipple
+                >
+                  Sản phẩm
+                </MenuItem>
+                <MenuItem
+                  component={Link}
+                  to='/'
+                  className='navItem'
+                  disableRipple
+                >
+                  Liên hệ
+                </MenuItem>
+                <MenuItem
+                  component={Link}
+                  to='/'
+                  className='navItem'
+                  disableRipple
+                >
+                  Tin tức
+                </MenuItem>
+              </>
+              }
+              
             </MenuList>
           ) : (
             <Drawer
@@ -227,26 +268,26 @@ const Header = (props) => {
                     >
                       {userInfo.name ? userInfo.name : 'Profile'}
                     </MenuItem>
-                    <div style={{ width: '100%' }}>
+                    {/* <div style={{ width: '100%' }}>
                       {userInfo.isAdmin && (
                         <div style={{ width: '100%' }}>
                           <MenuItem
                             component={Link}
-                            to='/admin/userlist'
+                            to=''
                             onClick={handleCloseDrawer}
                           >
                             Manage Users
                           </MenuItem>
                           <MenuItem
                             component={Link}
-                            to='/admin/productlist'
+                            to=''
                             onClick={handleCloseDrawer}
                           >
                             Manage Products
                           </MenuItem>
                           <MenuItem
                             component={Link}
-                            to='/admin/orderlist'
+                            to=''
                             divider
                             onClick={handleCloseDrawer}
                           >
@@ -254,7 +295,7 @@ const Header = (props) => {
                           </MenuItem>
                         </div>
                       )}
-                    </div>
+                    </div> */}
                     <MenuItem onClick={() => dispatch(logout())}>
                       Logout
                     </MenuItem>
@@ -281,10 +322,15 @@ const Header = (props) => {
           <img src={logo} alt='logo' className={classes.logo} />
         </Link>
         <div className={classes.sectionDesktop}>
+          
+          {userInfo && userInfo.isAdmin 
+          ? 
+          <></>
+          :
+          <>
           <IconButton color='inherit' onClick={() => setOpenSearchDrawer(true)}>
             <SearchIcon height={22} width={22} />
           </IconButton>
-
           <Drawer
             anchor='top'
             open={openSearchDrawer}
@@ -304,6 +350,11 @@ const Header = (props) => {
               <CartIcon />
             </Badge>
           </IconButton>
+          
+          </>
+          }
+          
+
           <Hidden smDown>
             <HeaderUser />
           </Hidden>

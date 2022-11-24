@@ -148,6 +148,16 @@ const ShopScreen = ({ location, history }) => {
     }
   }, [onExtraSmallMobile]);
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo} = userLogin;
+
+  const { redirectHome = '/admin/dashboard-revenue' } = queryString.parse(location.search);
+  useEffect(() => {
+    if (userInfo && userInfo.isAdmin) {
+      history.push(redirectHome);
+    }
+  }, [history, userInfo, redirectHome]);
+
   return (
     <Container style={{ marginBottom: 140, maxWidth: '100%' }}>
       <Meta title='Shop' />

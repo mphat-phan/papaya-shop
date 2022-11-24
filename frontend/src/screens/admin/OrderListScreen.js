@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { listOrders } from '../actions/orderActions';
+import { listOrders } from '../../actions/orderActions';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Button,
@@ -15,9 +15,9 @@ import { DataGrid } from '@material-ui/data-grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { BiCommentDetail } from 'react-icons/bi';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Meta from '../components/Meta';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
+import Meta from '../../components/Meta';
+import Loader from '../../components/Loader';
+import Message from '../../components/Message';
 
 const useStyles = makeStyles((theme) => ({
   button: {

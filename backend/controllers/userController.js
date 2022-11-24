@@ -27,7 +27,10 @@ const authUser = asyncHandler(async (req, res) => {
   // res.send(req.body);
 
   const user = await User.findOne({ email });
-  
+  if( user && user.isAdmin){
+    res.status(401);
+    throw new Error('Can not login with admin user');
+  }
   if (user && user.isStatus && (await user.matchPassword(password))) {
     //Nêu tài khoản chưa được xác thực thì sẽ gửi user 
     if (!user.verified){
@@ -60,13 +63,67 @@ const authUser = asyncHandler(async (req, res) => {
       verified : user.verified,
       token: generateToken(user._id),
     });
-  } else {
+  } 
+  else {
     res.status(401);
     throw new Error('Invalid email or password');
   }
     
+});
+
+/**
+ * @desc    Authenticate user & get token
+ * @route   POST /api/users/admin/login
+ * @access  Public
+ */
+ const authAdmin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  // res.send(req.body);
+
+  const user = await User.findOne({ email });
+  if( user && !user.isAdmin){
+    res.status(401);
+    throw new Error('Your account is not admin!!');
   }
-);
+  if (user && user.isStatus  && (await user.matchPassword(password))) {
+    //Nêu tài khoản chưa được xác thực thì sẽ gửi user 
+    if (!user.verified){
+      sendOTPVerify({
+        email: user.email,
+      }, res)
+      return res.status(401).json({
+        message : "Your account is not verified!!!!",
+        verified : false,
+      });
+    }
+
+    //Nêu tài khoản khoa
+    if(user.isStatus === false){
+      throw new Error('You blocked'); 
+    }
+
+    //Nếu đăng nhập thành công
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      isStatus: user.isStatus,
+      avatar : user.avatar,
+      address : user.address,
+      city : user.city,
+      postalCode : user.postalCode,
+      country : user.country,
+      verified : user.verified,
+      token: generateToken(user._id),
+    });
+  } 
+  else {
+    res.status(401);
+    throw new Error('Invalid email or password');
+  }
+    
+});
 
 /**
  * @desc    Get user profile
@@ -486,5 +543,6 @@ export {
   resendVerifyOTP,
   sendOTPPassword,
   forgotPassword,
-  changePassword
+  changePassword,
+  authAdmin
 };

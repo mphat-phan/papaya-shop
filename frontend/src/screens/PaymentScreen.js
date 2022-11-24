@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { savePaymentMethod } from '../actions/cartActions';
@@ -23,7 +23,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-
+import queryString from 'query-string';
 const useStyles = makeStyles((theme) => ({
   breadcrumbsContainer: {
     ...theme.mixins.customize.breadcrumbs,
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PaymentScreen = ({ history }) => {
+const PaymentScreen = ({ location,history }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const methods = useForm();
@@ -67,6 +67,15 @@ const PaymentScreen = ({ history }) => {
     dispatch(savePaymentMethod(paymentMethod));
     history.push('/placeorder');
   };
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo} = userLogin;
+  const { redirectHome = '/admin/dashboard-revenue' } = queryString.parse(location.search);
+  useEffect(() => {
+    if (userInfo && userInfo.isAdmin) {
+      history.push(redirectHome);
+    }
+  }, [history, userInfo, redirectHome]);
 
   return (
     <Container maxWidth='xl' style={{ marginBottom: 48 }}>

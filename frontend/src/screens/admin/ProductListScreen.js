@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { listProducts, deleteProduct } from '../actions/productActions';
+import { listProducts, deleteProduct } from '../../actions/productActions';
 import {
   Button,
   Container,
@@ -11,20 +11,20 @@ import {
   Link,
   Box,
 } from '@material-ui/core';
-import { openSnackbar } from '../actions/snackbarActions';
+import { openSnackbar } from '../../actions/snackbarActions';
 import {
   DataGrid,
   GridToolbarContainer,
   GridToolbarExport,
 } from '@material-ui/data-grid';
-import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
+import { PRODUCT_CREATE_RESET } from '../../constants/productConstants';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { AiOutlineDelete, AiOutlineEdit, AiOutlinePlus } from 'react-icons/ai';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Meta from '../components/Meta';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
+import Meta from '../../components/Meta';
+import Loader from '../../components/Loader';
+import Message from '../../components/Message';
 
 const useStyles = makeStyles((theme) => ({
   button: {

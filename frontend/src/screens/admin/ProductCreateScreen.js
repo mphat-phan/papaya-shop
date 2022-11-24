@@ -2,10 +2,10 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
-import { openSnackbar } from '../actions/snackbarActions';
-import { createProduct } from '../actions/productActions';
+import Message from '../../components/Message';
+import Loader from '../../components/Loader';
+import { openSnackbar } from '../../actions/snackbarActions';
+import { createProduct } from '../../actions/productActions';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Typography,
@@ -22,11 +22,11 @@ import {
   IconButton,
   MenuItem,
 } from '@material-ui/core';
-import Meta from '../components/Meta';
-import ProductCard from '../components/Product/ProductCard';
+import Meta from '../../components/Meta';
+import ProductCard from '../../components/Product/ProductCard';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { MdCloudUpload, MdClose } from 'react-icons/md';
-import categories from '../assets/data/categories';
+import categories from '../../assets/data/categories';
 
 const useStyles = makeStyles((theme) => ({
   breadcrumbsContainer: {

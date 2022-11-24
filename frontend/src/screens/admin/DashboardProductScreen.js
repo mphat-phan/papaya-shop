@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSellingProduct } from '../actions/orderActions';
+import { getSellingProduct } from '../../actions/orderActions';
 import {
   Button,
   Container,
@@ -17,12 +17,12 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Meta from '../components/Meta';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
+import Meta from '../../components/Meta';
+import Loader from '../../components/Loader';
+import Message from '../../components/Message';
 import clsx from 'clsx';
-import PieChart from '../components/PieChart';
-import VerticalBar from '../components/VerticalBar';
+import PieChart from '../../components/PieChart';
+import VerticalBar from '../../components/VerticalBar';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title, } from 'chart.js';
 ChartJS.register(
   ArcElement, 

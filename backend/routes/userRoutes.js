@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   authUser,
+  authAdmin,
   getUserProfile,
   registerUser,
   updateUserProfile,
@@ -27,8 +28,10 @@ router.route('/send-otp-password').post(sendOTPPassword);   //Gửi OTP
 router.route('/forgot-password').post(forgotPassword);            //Xác nhận OTP , trả về token
 router.route('/change-password').post(protect, changePassword);   //Đổi mật khẩu
 
-//Login
+//Login User
 router.post('/login', authUser);
+//Login Admin
+router.post('/admin/login', authAdmin);
 
 router
   .route('/profile')

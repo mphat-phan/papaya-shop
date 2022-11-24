@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
+import Message from '../../components/Message';
+import Loader from '../../components/Loader';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserDetails, updateUser } from '../actions/userActions';
-import { openSnackbar } from '../actions/snackbarActions';
-import { USER_UPDATE_RESET } from '../constants/userConstants';
+import { getUserDetails, updateUser } from '../../actions/userActions';
+import { openSnackbar } from '../../actions/snackbarActions';
+import { USER_UPDATE_RESET } from '../../constants/userConstants';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm, Controller } from 'react-hook-form';

@@ -11,8 +11,8 @@ const receiptSchema = mongoose.Schema(
       {
         name: { type: String, required: true },
         qty: { type: Number, required: true },
-        sizeSelected: { type: String, required: true },
         price: { type: Number, required: true },
+        total: { type: Number, required: true },
         product: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
