@@ -136,7 +136,7 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
   };
 
   useEffect(() => {
-    if (price !== INITIAL_RANGE_PRICE) {
+    if (price) {
       const timer = setTimeout(
         () =>
           dispatch(
@@ -225,15 +225,6 @@ const ProductFilterBar = ({ products, sizeSelected, filter }) => {
                 onClick={() => addCategoriesHandler(category)}
               >
                 <span>{category}</span>
-                <span>
-                  (
-                  {products.reduce(
-                    (acc, product) =>
-                      product.category === category ? ++acc : acc,
-                    0
-                  )}
-                  )
-                </span>
               </Box>
             ))}
           </Box>

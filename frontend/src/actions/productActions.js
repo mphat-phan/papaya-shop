@@ -533,35 +533,34 @@ export const listShopProduct = (type, pageNumber, keyword) => async (dispatch, g
 };
 
 export const filterListShopProduct = () => async (dispatch, getState) => {
-  let filteredProducts = [];
   const filter = getState().filter;
-  let { products } = getState().productShop;
+  let products = getState().productShop.tempProducts;
   const { categories, brands, size, priceMax, priceMin } = filter;
   products = products.map((p) => ({
     ...p,
     priceSale: p.price * (1 - p.sale / 100),
   }));
-
+  let filteredProducts = products;
   if (!categories.length && !brands.length && !size && !priceMax && !priceMin) {
     dispatch({ type: PRODUCT_SHOP_FILTER, payload: null });
     return;
   }
   if (priceMax && priceMin) {
-    filteredProducts = products.filter(
+    filteredProducts = filteredProducts.filter(
       (p) => p.priceSale >= priceMin && p.priceSale <= priceMax
     );
   } else if (priceMax) {
-    filteredProducts = products.filter((p) => p.priceSale <= priceMax);
+    filteredProducts = filteredProducts.filter((p) => p.priceSale <= priceMax);
   } else if (priceMin) {
-    filteredProducts = products.filter((p) => p.priceSale >= priceMin);
+    filteredProducts = filteredProducts.filter((p) => p.priceSale >= priceMin);
   }
   if (categories.length) {
-    filteredProducts = products.filter(
+    filteredProducts = filteredProducts.filter(
       (p) => categories.indexOf(p.category) >= 0
     );
   }
   if (size) {
-    filteredProducts = products.filter((p) => {
+    filteredProducts = filteredProducts.filter((p) => {
       const availableSizes = Object.keys(p.size).filter(
         (sizeItem) => p.size[sizeItem] > 0
       );
@@ -569,7 +568,7 @@ export const filterListShopProduct = () => async (dispatch, getState) => {
     });
   }
   if (brands.length) {
-    filteredProducts = products.filter((p) => brands.indexOf(p.brand) >= 0);
+    filteredProducts = filteredProducts.filter((p) => brands.indexOf(p.brand) >= 0);
   }
   dispatch({
     type: PRODUCT_SHOP_FILTER,

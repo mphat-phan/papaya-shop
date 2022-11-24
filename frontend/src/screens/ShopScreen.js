@@ -125,7 +125,7 @@ const ShopScreen = ({ location, history }) => {
   const { loading, error, products, page, pages } = productShop;
 
   const filter = useSelector((state) => state.filter);
-  const { searchTerm, categories, brands, size, priceMax, priceMin } = filter;
+  const { searchTerm, categories, brands, size, priceMin, priceMax } = filter;
 
   const handleChangeLayout = (type) => {
     setActiveLayout(type);

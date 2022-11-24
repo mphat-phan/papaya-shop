@@ -99,4 +99,3 @@ export {
   deleteCategory,
   updateCategory,
 };
-n;
