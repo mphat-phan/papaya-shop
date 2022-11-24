@@ -54,34 +54,16 @@ Install dependencies with npm
 
 ## Reference resources:
 
-- Free images: [Unsplash](http://unsplash.com/), [Storyset](https://storyset.com/)  
-- Carousel images: [Goya Fashion](https://goya.everthemes.com/demo-fashion/)  
-- Products image: [QOS](https://demo2.wpopal.com/qos/home-8/)
-
-
-
 
 ## Author
 
-<<<<<<< HEAD
 [@mphat-phan](https://github.com/mphat-phan)
 
-=======
-[@phongduybui](https://github.com/phongduybui)
-
-  
->>>>>>> master
 ## Feedback
 
-If you have any feedback, please reach out to [me](mailto:buiduyphong921@gmail.com)
-
-<<<<<<< HEAD
 Check
 Le Nguyen Gia Linh
 My Uyen
 Banh He dia~ huo^ng <3 cua Aphu
 love you babe
 My Tien
-=======
-  
->>>>>>> master
