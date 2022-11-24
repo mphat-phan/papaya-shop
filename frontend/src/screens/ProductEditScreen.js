@@ -171,7 +171,8 @@ const ProductEditScreen = ({ match, history }) => {
         setUploading(false);
       }
     }
-
+    
+    const countInStock = 0;
 
     const product = {
       _id: productId,
@@ -182,6 +183,7 @@ const ProductEditScreen = ({ match, history }) => {
       brand,
       category,
       description,
+      countInStock,
     };
     dispatch(updateProduct(product));
   };
