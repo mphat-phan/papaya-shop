@@ -22,7 +22,7 @@ import Meta from "../../components/Meta";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 
-const handleImagesUpload = (e) => {
+const handleExcelUpload = (e) => {
   const files = e.target.files;
   const reader = new FileReader();
   reader.onload = (evt) => {
