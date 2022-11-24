@@ -186,7 +186,6 @@ const ProductEditScreen = ({ match, history }) => {
       brand,
       category,
       description,
-      size: { s: sizeS, m: sizeM, l: sizeL, xl: sizeXl },
       countInStock,
     };
     dispatch(updateProduct(product));
