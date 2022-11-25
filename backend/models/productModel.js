@@ -85,10 +85,6 @@ const productSchema = mongoose.Schema(
       required: true,
     },
     images: [String],
-    brand: {
-      type: String,
-      required: true,
-    },
     category: {
       type: String,
       required: true,

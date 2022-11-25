@@ -184,16 +184,16 @@ const createReviewReply = asyncHandler(async (req, res) => {
 // @route   POST /api/products/:id/comments
 // @access  Private
 const createProductComment = asyncHandler(async (req, res) => {
-  const { comment, avatar } = req.body;
+  const { comment, avatar, name, id } = req.body;
 
   const product = await Product.findById(req.params.id);
 
   if (product) {
 
     const commentUser = {
-      name: req.user.name,
+      name: name,
       comment,
-      user: req.user._id,
+      user: id,
       avatar
     };
 
