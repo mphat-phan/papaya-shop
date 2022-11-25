@@ -7,21 +7,21 @@ import { Carousel } from 'react-responsive-carousel';
 const dataCarousel = [
   {
     image:
-      'https://res.cloudinary.com/phongbuiduy/image/upload/v1623085103/fashionshop/carousel/monigote_gnzuhj.jpg',
+      'https://res.cloudinary.com/dnkhiiz0b/image/upload/v1669402562/papaya-shop/online-book-store-banner-template_23-2149043261_r2fwlk.webp',
     subtitle: "tSUMMER '21",
     title: 'Áo Thun Ngày Hè',
     position: 'left',
   },
   {
     image:
-      'https://res.cloudinary.com/phongbuiduy/image/upload/v1623085132/fashionshop/carousel/curly_hair_white-1_x4bo5v.jpg',
+      'https://res.cloudinary.com/dnkhiiz0b/image/upload/v1669402683/papaya-shop/bookstore-banner-template_23-2148741738_mflyvj.webp',
     subtitle: '50% OFF',
     title: 'Váy Cocktail Mới',
     position: 'right',
   },
   {
     image:
-      'https://res.cloudinary.com/phongbuiduy/image/upload/v1623085147/fashionshop/carousel/curly_hair_girl-1_rus3zv.jpg',
+      'https://res.cloudinary.com/dnkhiiz0b/image/upload/v1669402562/papaya-shop/banner-bookstore-ad-template_23-2148680419_yxmlmi.webp',
     subtitle: "LIMITED",
     title: 'Limited Collection',
     position: 'left',
