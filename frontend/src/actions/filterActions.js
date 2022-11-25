@@ -8,7 +8,9 @@ import {
   FILTER_ADD_BRAND,
   FILTER_REMOVE_BRAND,
   FILTER_CLEAR_ALL,
-} from '../constants/filterConstants';
+  FILTER_ADD_PRODUCTID,
+  FILTER_REMOVE_PRODUCTID,
+} from "../constants/filterConstants";
 
 export const addSearchTerm = (term) => ({
   type: FILTER_ADD_SEARCH_TERM,
@@ -49,6 +51,16 @@ export const addBrands = (brands) => ({
 export const removeBrand = (brand) => ({
   type: FILTER_REMOVE_BRAND,
   payload: brand,
+});
+
+export const removeProductId = (id) => ({
+  type: FILTER_REMOVE_PRODUCTID,
+  payload: id,
+});
+
+export const addProductId = (ids) => ({
+  type: FILTER_ADD_PRODUCTID,
+  payload: ids,
 });
 
 export const filterClearAll = () => ({

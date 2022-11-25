@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProductCreateScreen = ({ history }) => {
+const CategoryCreateScreen = ({ history }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [name, setName] = useState("");
@@ -185,4 +185,4 @@ const ProductCreateScreen = ({ history }) => {
   );
 };
 
-export default ProductCreateScreen;
+export default CategoryCreateScreen;

@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import Meta from '../components/Meta';
-import { removeFromCart } from '../actions/cartActions';
-import { openSnackbar } from '../actions/snackbarActions';
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Meta from "../components/Meta";
+import { removeFromCart } from "../actions/cartActions";
+import { openSnackbar } from "../actions/snackbarActions";
 import {
   Avatar,
   Box,
@@ -27,11 +27,11 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ProductFormSelect from '../components/Product/ProductFormSelect';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import DeleteIcon from '@material-ui/icons/Delete';
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import ProductFormSelect from "../components/Product/ProductFormSelect";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   breadcrumbsContainer: {
@@ -44,12 +44,12 @@ const useStyles = makeStyles((theme) => ({
   cartTotalWrapper: {
     padding: 20,
     fontSize: 16,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: "#F4F4F4",
   },
   cartTotal: {
     fontSize: 18,
     marginBottom: 8,
-    '&:nth-child(2)': {
+    "&:nth-child(2)": {
       color: theme.palette.secondary.main,
     },
   },
@@ -57,10 +57,10 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 24,
   },
   divider: {
-    margin: '8px 0',
+    margin: "8px 0",
     width: 60,
     height: 2,
-    backgroundColor: '#2a2a2a',
+    backgroundColor: "#2a2a2a",
   },
 }));
 
@@ -71,28 +71,29 @@ const CartScreen = ({ history }) => {
 
   const { cartItems } = useSelector((state) => state.cart);
 
-  const totalPrice = cartItems
-    .reduce((acc, item) => acc + item.qty * item.priceSale, 0);
+  const totalPrice = cartItems.reduce(
+    (acc, item) => acc + item.qty * item.priceSale,
+    0
+  );
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
-    dispatch(openSnackbar('Item has been removed from the cart', 'success'));
+    dispatch(openSnackbar("Item has been removed from the cart", "success"));
   };
 
   const checkoutHandler = () => {
-    history.push('/login?redirect=shipping');
+    history.push("/login?redirect=/shipping");
   };
-
   return (
-    <Container maxWidth='xl' style={{ marginBottom: 48 }}>
-      <Meta title='Shopping Cart | Chang Fashion Shop' />
+    <Container maxWidth="xl" style={{ marginBottom: 48 }}>
+      <Meta title="Shopping Cart | Chang Fashion Shop" />
       <Grid container className={classes.breadcrumbsContainer}>
         <Grid item>
-          <Breadcrumbs separator={<NavigateNextIcon fontSize='small' />}>
-            <Link color='inherit' component={RouterLink} to='/'>
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
+            <Link color="inherit" component={RouterLink} to="/">
               Trang chủ
             </Link>
-            <Link color='textPrimary' component={RouterLink} to='/cart'>
+            <Link color="textPrimary" component={RouterLink} to="/cart">
               Giỏ hàng
             </Link>
           </Breadcrumbs>
@@ -108,22 +109,22 @@ const CartScreen = ({ history }) => {
                     <TableRow>
                       <TableCell>Sản phẩm</TableCell>
                       <Hidden smDown>
-                        <TableCell align='right'>Giá</TableCell>
-                        <TableCell align='right'>Số lượng</TableCell>
-                        <TableCell align='right'>Hành động</TableCell>
+                        <TableCell align="right">Giá</TableCell>
+                        <TableCell align="right">Số lượng</TableCell>
+                        <TableCell align="right">Hành động</TableCell>
                       </Hidden>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {cartItems.map((item) => (
                       <TableRow key={item.name}>
-                        <TableCell component='th' scope='item'>
+                        <TableCell component="th" scope="item">
                           <ListItem disableGutters>
                             <ListItemAvatar>
                               <Avatar
-                                variant='square'
+                                variant="square"
                                 src={item.images && item.images[0]}
-                                alt='product image'
+                                alt="product image"
                                 className={classes.largeImage}
                               ></Avatar>
                             </ListItemAvatar>
@@ -133,20 +134,25 @@ const CartScreen = ({ history }) => {
                             />
                           </ListItem>
                           <Hidden mdUp>
-                            <Divider variant='fullWidth' />
+                            <Divider variant="fullWidth" />
                             <Box
-                              display='flex'
-                              justifyContent='space-between'
-                              alignItems='center'
+                              display="flex"
+                              justifyContent="space-between"
+                              alignItems="center"
                               mt={2}
                             >
-                              <Box textAlign='center'>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)}</Box>
-                              <Box textAlign='center'>
+                              <Box textAlign="center">
+                                {new Intl.NumberFormat("de-DE", {
+                                  style: "currency",
+                                  currency: "VND",
+                                }).format(item.priceSale)}
+                              </Box>
+                              <Box textAlign="center">
                                 <ProductFormSelect item={item} />
                               </Box>
-                              <Box textAlign='center'>
+                              <Box textAlign="center">
                                 <IconButton
-                                  edge='end'
+                                  edge="end"
                                   onClick={() =>
                                     removeFromCartHandler(item.product)
                                   }
@@ -158,13 +164,18 @@ const CartScreen = ({ history }) => {
                           </Hidden>
                         </TableCell>
                         <Hidden smDown>
-                          <TableCell align='right'>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)}</TableCell>
-                          <TableCell align='right'>
+                          <TableCell align="right">
+                            {new Intl.NumberFormat("de-DE", {
+                              style: "currency",
+                              currency: "VND",
+                            }).format(item.priceSale)}
+                          </TableCell>
+                          <TableCell align="right">
                             <ProductFormSelect item={item} />
                           </TableCell>
-                          <TableCell align='right'>
+                          <TableCell align="right">
                             <IconButton
-                              edge='end'
+                              edge="end"
                               onClick={() =>
                                 removeFromCartHandler(item.product)
                               }
@@ -181,10 +192,10 @@ const CartScreen = ({ history }) => {
             </>
           ) : (
             <div className={classes.empty}>
-              <Typography variant='subtitle1' color='secondary'>
-                Giỏ hàng của bạn trống.{' '}
-                <Link to='/' component={RouterLink} color='primary'>
-                Mua sắm ngay bây giờ!
+              <Typography variant="subtitle1" color="secondary">
+                Giỏ hàng của bạn trống.{" "}
+                <Link to="/" component={RouterLink} color="primary">
+                  Mua sắm ngay bây giờ!
                 </Link>
               </Typography>
             </div>
@@ -192,25 +203,30 @@ const CartScreen = ({ history }) => {
         </Grid>
         <Grid item xs={12} lg={4}>
           <Paper elevation={0} className={classes.cartTotalWrapper}>
-            <Typography variant='h4' style={{ fontSize: 23 }}>
+            <Typography variant="h4" style={{ fontSize: 23 }}>
               Tổng số giỏ hàng
             </Typography>
             <Divider className={classes.divider} />
-            <List style={{ padding: '10px 0 20px' }}>
+            <List style={{ padding: "10px 0 20px" }}>
               <ListItem divider disableGutters>
-                <ListItemText primary='Vật phẩm:' />
+                <ListItemText primary="Vật phẩm:" />
                 <Typography>
                   {cartItems.reduce((acc, item) => acc + item.qty, 0)}
                 </Typography>
               </ListItem>
               <ListItem divider disableGutters>
-                <ListItemText primary='Tổng tiền:' />
-                <Typography color='secondary'>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(totalPrice)}</Typography>
+                <ListItemText primary="Tổng tiền:" />
+                <Typography color="secondary">
+                  {new Intl.NumberFormat("de-DE", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(totalPrice)}
+                </Typography>
               </ListItem>
             </List>
             <Button
-              variant='contained'
-              color='secondary'
+              variant="contained"
+              color="secondary"
               fullWidth
               style={{ marginTop: 8 }}
               onClick={checkoutHandler}

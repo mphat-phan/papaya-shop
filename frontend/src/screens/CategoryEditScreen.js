@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CategoryEditScreen = ({ match, history }) => {
   const categoryId = match.params.id;
-
+  console.log(categoryId);
   const [name, setName] = useState("");
 
   const dispatch = useDispatch();
@@ -100,20 +100,24 @@ const CategoryEditScreen = ({ match, history }) => {
   const categoryDetails = useSelector((state) => state.categoryDetails);
   const { loading, error, category } = categoryDetails;
   console.log(category);
-  const productUpdate = useSelector((state) => state.productUpdate);
+  const categoryUpdate = useSelector((state) => state.categoryUpdate);
   const {
     loading: loadingUpdate,
     error: errorUpdate,
     success: successUpdate,
-  } = productUpdate;
+  } = categoryUpdate;
 
   useEffect(() => {
+    console.log(1);
     if (successUpdate) {
+      console.log(2);
       dispatch({ type: CATEGORY_UPDATE_RESET });
       dispatch(openSnackbar("Product has been updated!", "success"));
       history.push("/admin/categorylist");
     } else {
+      console.log(3);
       if (!category.name || category._id !== categoryId) {
+        console.log(4);
         dispatch(fetchCategoryDetails(categoryId));
       } else {
         setName(category.name);

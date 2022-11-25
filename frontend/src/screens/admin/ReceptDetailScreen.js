@@ -29,12 +29,15 @@ import Message from "../../components/Message";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { saveShippingAddressRecept } from "../../actions/productActions";
 import { makeStyles, withStyles, fade } from "@material-ui/core/styles";
-import { listShopProduct } from "../../actions/productActions";
+import {
+  listShopProduct,
+  fetchProductDetails,
+} from "../../actions/productActions";
 import { listProducts } from "../../actions/productActions";
 import SearchBox from "../../components/SearchBox";
 import CheckoutSteps from "../../components/CheckoutStepsRecept";
 import ReceptBanner from "../../assets/images/20946018.jpg";
-
+import queryString from "query-string";
 const handleImagesUpload = (e) => {
   const files = e.target.files;
   const reader = new FileReader();
@@ -77,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ReceptScreen = ({ history }) => {
+const ReceptDetailScreen = ({ location, history }) => {
   const Input = withStyles((theme) => ({
     root: {
       "label + &": {
@@ -102,39 +105,41 @@ const ReceptScreen = ({ history }) => {
     },
   }))(InputBase);
 
-  // const columns = [
-  //   { field: "_id", headerName: "ID", width: 220 },
-  //   {
-  //     field: "name",
-  //     headerName: "Name",
-  //     flex: 1,
-  //   },
-  //   {
-  //     field: "category",
-  //     headerName: "Category",
-  //     width: 160,
-  //   },
-  //   {
-  //     field: "price",
-  //     headerName: "Price",
-  //     width: 120,
-  //   },
-  //   {
-  //     field: "quantity",
-  //     headerName: "Quantity",
-  //     width: 160,
-  //   },
-  //   {
-  //     field: "action",
-  //     headerName: "Action",
-  //     sortable: false,
-  //     width: 100,
-  //     renderCell: (params) => {
-  //       const id = params.getValue(params.id, "_id") || "";
-  //       return <></>;
-  //     },
-  //   },
-  // ];
+  const columns = [
+    { field: "_id", headerName: "ID", width: 220 },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+    },
+    {
+      field: "category",
+      headerName: "Category",
+      width: 160,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      width: 120,
+    },
+    {
+      field: "countInStock",
+      headerName: "Quantity",
+      width: 160,
+      editable: true,
+      // ignoreModifications: true,
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      sortable: false,
+      width: 100,
+      renderCell: (params) => {
+        const id = params.getValue(params.id, "_id") || "";
+        return <></>;
+      },
+    },
+  ];
 
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -144,19 +149,30 @@ const ReceptScreen = ({ history }) => {
   const { shippingAddressRecept } = productRecept;
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  const query = queryString.parse(location.search);
+  let { sort_by = "default", page: pageNumber = 1 } = query;
 
   const productList = useSelector((state) => state.productList);
   let { loading, error, products = [] } = productList;
   products = products.map((product) => ({ ...product, id: product._id }));
+  console.log(products);
 
+  const productDetails = useSelector((state) => state.productDetails);
+  let { product } = productDetails;
+  console.log(product);
   const filter = useSelector((state) => state.filter);
   const { searchTerm } = filter;
-
+  console.log(searchTerm);
+  console.log();
   useEffect(() => {
     if (!userInfo) {
-      history.push(`/login?redirect=recept`);
+      history.push(`/login?redirect=receptDetail`);
     }
-  }, [dispatch, history]);
+    if (searchTerm) {
+      dispatch(listShopProduct(sort_by, pageNumber, searchTerm));
+      dispatch(fetchProductDetails(searchTerm));
+    }
+  }, [dispatch, , sort_by, pageNumber, searchTerm]);
 
   const onSubmit = ({ address, city, postalCode, country, phoneNumber }) => {
     dispatch(
@@ -193,115 +209,11 @@ const ReceptScreen = ({ history }) => {
               Nhập hàng
             </Link>
           </Breadcrumbs>
-          <CheckoutSteps step={1} />
+          <CheckoutSteps step={2} />
         </Grid>
       </Grid>
-      <Paper elevation={0} className={classes.content}>
-        <Grid container spacing={8}>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h5" gutterBottom>
-              Thông tin nhập hàng
-            </Typography>
-            <FormProvider {...methods}>
-              <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-                <Controller
-                  name="address"
-                  defaultValue={shippingAddressRecept.address || ""}
-                  control={control}
-                  render={({ field, fieldState: { error } }) => (
-                    <FormControl fullWidth error={!!error}>
-                      <InputLabel shrink htmlFor="shipping-address">
-                        Địa chỉ
-                      </InputLabel>
-                      <Input {...field} id="shipping-address" fullWidth />{" "}
-                      {error && (
-                        <FormHelperText error>{error.message}</FormHelperText>
-                      )}
-                    </FormControl>
-                  )}
-                  rules={{ required: "(*) Address is required" }}
-                />
-                <Controller
-                  name="city"
-                  defaultValue={shippingAddressRecept.city || ""}
-                  control={control}
-                  render={({ field, fieldState: { error } }) => (
-                    <FormControl fullWidth error={!!error}>
-                      <InputLabel shrink htmlFor="shipping-city">
-                        Thành phố
-                      </InputLabel>
-                      <Input {...field} id="shipping-city" fullWidth />{" "}
-                      {error && (
-                        <FormHelperText error>{error.message}</FormHelperText>
-                      )}
-                    </FormControl>
-                  )}
-                  rules={{ required: "(*) City is required" }}
-                />
-                <Controller
-                  name="postalCode"
-                  defaultValue={shippingAddressRecept.postalCode || ""}
-                  control={control}
-                  render={({ field, fieldState: { error } }) => (
-                    <FormControl fullWidth error={!!error}>
-                      <InputLabel shrink htmlFor="shipping-postalCode">
-                        Mã bưu điện
-                      </InputLabel>
-                      <Input {...field} id="shipping-postalCode" fullWidth />{" "}
-                      {error && (
-                        <FormHelperText error>{error.message}</FormHelperText>
-                      )}
-                    </FormControl>
-                  )}
-                  rules={{ required: "(*) Postal code is required" }}
-                />
-                <Controller
-                  name="phoneNumber"
-                  defaultValue={shippingAddressRecept.phoneNumber || ""}
-                  control={control}
-                  render={({ field, fieldState: { error } }) => (
-                    <FormControl fullWidth error={!!error}>
-                      <InputLabel shrink htmlFor="shipping-phoneNumber">
-                        Số điện thoại
-                      </InputLabel>
-                      <Input {...field} id="shipping-phoneNumber" fullWidth />{" "}
-                      {error && (
-                        <FormHelperText error>{error.message}</FormHelperText>
-                      )}
-                    </FormControl>
-                  )}
-                  rules={{ required: "(*) Vui lòng nhập số điện thoại" }}
-                />
-                <Controller
-                  name="country"
-                  defaultValue={shippingAddressRecept.country || ""}
-                  control={control}
-                  render={({ field, fieldState: { error } }) => (
-                    <FormControl fullWidth error={!!error}>
-                      <InputLabel shrink htmlFor="shipping-country">
-                        Quốc gia
-                      </InputLabel>
-                      <Input {...field} id="shipping-country" fullWidth />{" "}
-                      {error && (
-                        <FormHelperText error>{error.message}</FormHelperText>
-                      )}
-                    </FormControl>
-                  )}
-                  rules={{ required: "(*) Country is required" }}
-                />
-                <Button type="submit" variant="contained" color="secondary">
-                  Bước kế tiếp
-                </Button>
-              </form>
-            </FormProvider>
-          </Grid>
-          <Grid item xs={6} md={6}>
-            <img src={ReceptBanner} className={classes.banner}></img>
-          </Grid>
-        </Grid>
-      </Paper>
 
-      {/* <Paper mt={16} className={classes.contentInfo}>
+      <Paper mt={16} className={classes.contentInfo}>
         <Typography variant="h5" gutterBottom>
           Thông tin sản phẩm
         </Typography>
@@ -335,10 +247,10 @@ const ReceptScreen = ({ history }) => {
             </Grid>
           </Grid>
         )}
-      </Paper> */}
+      </Paper>
 
-      {/* <InputLabel style={{ marginBottom: 8 }}>Upload excel</InputLabel> */}
-      {/* <input
+      <InputLabel style={{ marginBottom: 8 }}>Upload excel</InputLabel>
+      <input
         id="contained-button-file"
         onChange={handleImagesUpload}
         type="file"
@@ -355,9 +267,9 @@ const ReceptScreen = ({ history }) => {
             Nhập hàng
           </Button>
         </Box>
-      </label> */}
+      </label>
     </Container>
   );
 };
 
-export default ReceptScreen;
+export default ReceptDetailScreen;
