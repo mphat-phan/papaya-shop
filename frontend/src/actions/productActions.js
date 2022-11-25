@@ -214,6 +214,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 
 export const createProductReview =
   (productId, review) => async (dispatch, getState) => {
+    console.log(productId, review);
     try {
       dispatch({
         type: PRODUCT_CREATE_REVIEW_REQUEST,
@@ -553,7 +554,7 @@ export const listShopProduct =
 export const filterListShopProduct = () => async (dispatch, getState) => {
   const filter = getState().filter;
   let products = getState().productShop.tempProducts;
-  const { categories, brands, size, priceMax, priceMin } = filter;
+  const { categories, brands, priceMax, priceMin } = filter;
   products = products.map((p) => ({
     ...p,
     priceSale: p.price * (1 - p.sale / 100),

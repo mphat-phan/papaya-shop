@@ -30,8 +30,7 @@ import Meta from "../../components/Meta";
 import ProductCard from "../../components/Product/ProductCard";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { MdCloudUpload, MdClose } from "react-icons/md";
-import categories from "../../assets/data/categories";
-
+import { listCategorys } from "../../actions/categoryActions";
 const useStyles = makeStyles((theme) => ({
   breadcrumbsContainer: {
     ...theme.mixins.customize.breadcrumbs,
@@ -107,7 +106,11 @@ const ProductEditScreen = ({ match, history }) => {
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
-  console.log(product);
+
+  const categoryList = useSelector((state) => state.categoryList);
+  let { categorys = [] } = categoryList;
+  categorys = categorys.map((category) => ({ ...category, id: category._id }));
+
   const productUpdate = useSelector((state) => state.productUpdate);
   const {
     loading: loadingUpdate,
@@ -116,6 +119,7 @@ const ProductEditScreen = ({ match, history }) => {
   } = productUpdate;
 
   useEffect(() => {
+    dispatch(listCategorys("", "", "all"));
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       dispatch(openSnackbar("Product has been updated!", "success"));
@@ -128,7 +132,6 @@ const ProductEditScreen = ({ match, history }) => {
         setPrice(product.price);
         setSale(product.sale);
         setPreviewImages(product.images);
-        setBrand(product.brand);
         setCategory(product.category);
         setDescription(product.description);
       }
@@ -183,7 +186,6 @@ const ProductEditScreen = ({ match, history }) => {
       price,
       sale,
       images: uploadedImages.length !== 0 ? uploadedImages : null,
-      brand,
       category,
       description,
       countInStock,
@@ -336,17 +338,6 @@ const ProductEditScreen = ({ match, history }) => {
                     ))}
                   </Box>
                 </div>
-
-                <TextField
-                  variant="outlined"
-                  required
-                  name="brand"
-                  label="Brand"
-                  fullWidth
-                  value={brand}
-                  onChange={(e) => setBrand(e.target.value)}
-                />
-
                 <TextField
                   select
                   variant="outlined"
@@ -357,9 +348,9 @@ const ProductEditScreen = ({ match, history }) => {
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
-                  {categories.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
+                  {categorys.map((option) => (
+                    <MenuItem key={option._id} value={option.name}>
+                      {option.name}
                     </MenuItem>
                   ))}
                 </TextField>

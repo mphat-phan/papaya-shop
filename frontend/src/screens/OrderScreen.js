@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
-import { PayPalButton } from 'react-paypal-button-v2';
-import { useDispatch, useSelector } from 'react-redux';
-import { getOrderById, payOrder, deliverOrder, cancelOrder, confirmOrder, deliveringOrder } from '../actions/orderActions';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import { PayPalButton } from "react-paypal-button-v2";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getOrderById,
+  payOrder,
+  deliverOrder,
+  cancelOrder,
+  confirmOrder,
+  deliveringOrder,
+} from "../actions/orderActions";
+import { Link as RouterLink } from "react-router-dom";
 import {
   ORDER_DELIVER_RESET,
   ORDER_PAY_RESET,
-} from '../constants/orderConstants';
+} from "../constants/orderConstants";
 import {
   Container,
   Grid,
@@ -34,16 +41,16 @@ import {
   TableRow,
   Button,
   TextField,
-} from '@material-ui/core';
-import Rating from '@material-ui/lab/Rating';
-import { makeStyles } from '@material-ui/core/styles';
-import { GrLocation, GrCreditCard, GrProjects, GrUser } from 'react-icons/gr';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Meta from '../components/Meta';
-import paypalImage from '../assets/images/paypal.png';
-import OrderSteps from '../components/OrderSteps'
-import OrderButton from '../components/OrderButton';
-import { createProductReview } from '../actions/productActions';
+} from "@material-ui/core";
+import Rating from "@material-ui/lab/Rating";
+import { makeStyles } from "@material-ui/core/styles";
+import { GrLocation, GrCreditCard, GrProjects, GrUser } from "react-icons/gr";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import Meta from "../components/Meta";
+import paypalImage from "../assets/images/paypal.png";
+import OrderSteps from "../components/OrderSteps";
+import OrderButton from "../components/OrderButton";
+import { createProductReview } from "../actions/productActions";
 const useStyles = makeStyles((theme) => ({
   breadcrumbsContainer: {
     ...theme.mixins.customize.breadcrumbs,
@@ -51,26 +58,26 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     padding: 24,
-    boxShadow: '0 10px 31px 0 rgba(0,0,0,0.05)',
-    [theme.breakpoints.down('sm')]: {
+    boxShadow: "0 10px 31px 0 rgba(0,0,0,0.05)",
+    [theme.breakpoints.down("sm")]: {
       padding: 32,
     },
   },
   orderItems: {
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     paddingRight: 0,
   },
   items: {
-    flexBasis: '100%',
+    flexBasis: "100%",
     marginLeft: 56,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       marginLeft: 0,
     },
-    '& .MuiTableCell-root': {
+    "& .MuiTableCell-root": {
       paddingLeft: 0,
     },
-    '& .MuiTableCell-head': {
-      color: 'rgba(0, 0, 0, 0.54)',
+    "& .MuiTableCell-head": {
+      color: "rgba(0, 0, 0, 0.54)",
       fontWeight: 400,
     },
   },
@@ -79,34 +86,34 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(8),
   },
   empty: {
-    ...theme.mixins.customize.centerFlex('column wrap'),
+    ...theme.mixins.customize.centerFlex("column wrap"),
     marginTop: 30,
   },
   cartTotalWrapper: {
     marginTop: 22,
     padding: 20,
     fontSize: 16,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: "#F4F4F4",
   },
   cartTotal: {
     fontSize: 18,
     marginBottom: 8,
-    '&:nth-child(2)': {
+    "&:nth-child(2)": {
       color: theme.palette.secondary.main,
     },
   },
   divider: {
-    margin: '8px 0',
+    margin: "8px 0",
     width: 80,
     height: 2,
-    backgroundColor: '#2a2a2a',
+    backgroundColor: "#2a2a2a",
   },
   itemName: {
     ...theme.mixins.customize.textClamp(2),
   },
   form: {
-    ...theme.mixins.customize.flexMixin('center', 'flex-start', 'column'),
-    '& > *': {
+    ...theme.mixins.customize.flexMixin("center", "flex-start", "column"),
+    "& > *": {
       marginBottom: 16,
     },
   },
@@ -131,7 +138,7 @@ const OrderScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   if (!loading && order) {
     //   Calculate prices
@@ -149,12 +156,12 @@ const OrderScreen = ({ match, history }) => {
 
   useEffect(() => {
     if (!userInfo) {
-      history.push('/login');
+      history.push("/login");
     }
     const addPayPalScript = async () => {
-      const { data: clientId } = await axios.get('/api/config/paypal');
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
+      const { data: clientId } = await axios.get("/api/config/paypal");
+      const script = document.createElement("script");
+      script.type = "text/javascript";
       script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
       script.async = true;
       script.onload = () => {
@@ -175,7 +182,7 @@ const OrderScreen = ({ match, history }) => {
       }
     }
   }, [dispatch, history, orderId, successPay, successDeliver, order, userInfo]);
-  
+
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult));
   };
@@ -204,17 +211,16 @@ const OrderScreen = ({ match, history }) => {
 
   const handleSubmitReview = (e, productId, orderID, orderItem) => {
     e.preventDefault();
-    
-    
+
     const comment = e.target[10].value;
     let rating = 0;
     const target = e.target;
-    for(let i=0; i<=9 ;i++){
-      if(target[i].checked){
+    for (let i = 0; i <= 9; i++) {
+      if (target[i].checked) {
         rating = target[i]._wrapperState.initialValue;
       }
     }
-    if(comment){
+    if (comment) {
       dispatch(
         createProductReview(productId, {
           rating,
@@ -226,7 +232,7 @@ const OrderScreen = ({ match, history }) => {
           name:userInfo.name,
         })
       );
-      //window.location.reload();
+      window.location.reload();
     }
     else{
       alert('Nhập đánh giá!!')
@@ -237,28 +243,27 @@ const OrderScreen = ({ match, history }) => {
     <Loader my={200} />
   ) : error ? (
     <Message mt={100}>{error}</Message>
-  ) : (   
-    <Container maxWidth='xl' style={{ marginBottom: 48 }}>
-      <Meta title='Order | Chang Fashion Shop' />
+  ) : (
+    <Container maxWidth="xl" style={{ marginBottom: 48 }}>
+      <Meta title="Order | Chang Fashion Shop" />
       <Grid container className={classes.breadcrumbsContainer}>
         <Grid item xs={12}>
           <Breadcrumbs
-            separator={<NavigateNextIcon fontSize='small' />}
+            separator={<NavigateNextIcon fontSize="small" />}
             style={{ marginBottom: 24 }}
           >
-            <Link color='inherit' component={RouterLink} to='/'>
+            <Link color="inherit" component={RouterLink} to="/">
               Home
             </Link>
-            <Link color='textPrimary' component={RouterLink} to='/order'>
+            <Link color="textPrimary" component={RouterLink} to="/order">
               Order Details
             </Link>
           </Breadcrumbs>
-          {order.status ? 
-          (
-          <OrderSteps step={order.status}></OrderSteps>)
-          : 
-          <OrderSteps step={0}></OrderSteps> }
-          
+          {order.status ? (
+            <OrderSteps step={order.status}></OrderSteps>
+          ) : (
+            <OrderSteps step={0}></OrderSteps>
+          )}
         </Grid>
       </Grid>
       <Paper elevation={0} className={classes.content}>
@@ -276,39 +281,39 @@ const OrderScreen = ({ match, history }) => {
                   <GrUser fontSize={22} />
                 </ListItemIcon>
                 <ListItemText
-                  primary='Receiver'
+                  primary="Receiver"
                   secondary={`${order.user.name}, email: ${order.user.email}`}
                 />
               </ListItem>
-              <ListItem divider style={{ flexWrap: 'wrap' }}>
+              <ListItem divider style={{ flexWrap: "wrap" }}>
                 <ListItemIcon>
                   <GrLocation fontSize={22} />
                 </ListItemIcon>
                 <ListItemText
-                  primary='Shipping'
-                  secondary={Object.values(order.shippingAddress).join(', ')}
+                  primary="Shipping"
+                  secondary={Object.values(order.shippingAddress).join(", ")}
                 />
                 {order.isDelivered ? (
-                  <Message severity='success' mt={8}>
+                  <Message severity="success" mt={8}>
                     Delivered on {new Date(order.deliveredAt).toUTCString()}
                   </Message>
                 ) : (
                   <Message mt={8}>Not Delivered</Message>
                 )}
               </ListItem>
-              <ListItem divider style={{ flexWrap: 'wrap' }}>
+              <ListItem divider style={{ flexWrap: "wrap" }}>
                 <ListItemIcon>
                   <GrCreditCard fontSize={22} />
                 </ListItemIcon>
                 <ListItemText
-                  primary='Payment Method'
+                  primary="Payment Method"
                   secondary={order.paymentMethod}
                 />
                 <ListItemAvatar>
-                  <img src={paypalImage} alt='' width='80px' height='30px' />
+                  <img src={paypalImage} alt="" width="80px" height="30px" />
                 </ListItemAvatar>
                 {order.isPaid ? (
-                  <Message severity='success' mt={8}>
+                  <Message severity="success" mt={8}>
                     Paid on {new Date(order.paidAt).toUTCString()}
                   </Message>
                 ) : (
@@ -319,7 +324,7 @@ const OrderScreen = ({ match, history }) => {
                 <ListItemIcon>
                   <GrProjects fontSize={22} />
                 </ListItemIcon>
-                <ListItemText primary='Order Items' />
+                <ListItemText primary="Order Items" />
                 {order.orderItems.length > 0 ? (
                   <div className={classes.items}>
                     <TableContainer component={Paper} elevation={0}>
@@ -328,106 +333,137 @@ const OrderScreen = ({ match, history }) => {
                           <TableRow>
                             <TableCell>Products</TableCell>
                             <Hidden smDown>
-                              <TableCell align='right'>Price</TableCell>
+                              <TableCell align="right">Price</TableCell>
                             </Hidden>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {order.orderItems.map((item) => (
                             <>
-                            <TableRow key={item.name}>
-                              <TableCell component='th' scope='item'>
-                                <ListItem disableGutters>
-                                  <ListItemAvatar>
-                                    <Avatar
-                                      variant='square'
-                                      src={item.images && item.images[0]}
-                                      alt='product image'
-                                      className={classes.largeImage}
-                                    ></Avatar>
-                                  </ListItemAvatar>
-                                  <ListItemText
-                                    primary={item.name}
-                                    className={classes.itemName}
-                                    style={{ marginLeft: 16 }}
-                                  />
-                                </ListItem>
-                                <Hidden mdUp>
-                                  <Box
-                                    display='flex'
-                                    justifyContent='space-between'
-                                    alignItems='center'
-                                    mt={2}
-                                  >
-                                    <Box textAlign='center'>
-                                      {`${item.qty} x ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)} = ${
-                                        new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.qty * item.priceSale)
-                                      }`}
+                              <TableRow key={item.name}>
+                                <TableCell component="th" scope="item">
+                                  <ListItem disableGutters>
+                                    <ListItemAvatar>
+                                      <Avatar
+                                        variant="square"
+                                        src={item.images && item.images[0]}
+                                        alt="product image"
+                                        className={classes.largeImage}
+                                      ></Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                      primary={item.name}
+                                      className={classes.itemName}
+                                      style={{ marginLeft: 16 }}
+                                    />
+                                  </ListItem>
+                                  <Hidden mdUp>
+                                    <Box
+                                      display="flex"
+                                      justifyContent="space-between"
+                                      alignItems="center"
+                                      mt={2}
+                                    >
+                                      <Box textAlign="center">
+                                        {`${item.qty} x ${new Intl.NumberFormat(
+                                          "de-DE",
+                                          { style: "currency", currency: "VND" }
+                                        ).format(
+                                          item.priceSale
+                                        )} = ${new Intl.NumberFormat("de-DE", {
+                                          style: "currency",
+                                          currency: "VND",
+                                        }).format(item.qty * item.priceSale)}`}
+                                      </Box>
                                     </Box>
-                                  </Box>
-                                </Hidden>
-                              </TableCell>
-                              <Hidden smDown>
-                              
-                                <TableCell align='right'>
-                                  {`${item.qty} x ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.priceSale)} = ${
-                                    new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(item.qty * item.priceSale)
-                                  }`}
+                                  </Hidden>
                                 </TableCell>
-                              </Hidden>
-                            </TableRow>
-                           
-                            {!item.rating && userInfo && !userInfo.isAdmin && order.isDelivered ? 
-                            (
-                              <Box marginTop={2}>
-                              <form onSubmit={(e) => handleSubmitReview(e, item.product, orderId, item._id)} className={classes.form}>
-                              <Typography variant='h6'>Viết một đánh giá</Typography>
-                              <Rating
-                                name={'rating-value-'+item.name}
-                                precision={0.5}
-                              />
-                              <TextField
-                                variant='outlined'
-                                label='Reply'
-                                multiline
-                                fullWidth
-                                error={!!message}
-                                helperText={message}
-                              ></TextField>
-                              <Button variant='contained' color='secondary' type='submit'>
-                                Reply
-                              </Button>
-                              </form>
-                              </Box>
-                            ):
-                            (
-                              <>
-                              <Grid item xs zeroMinWidth>
-                                <Rating
-                                name='rating'
-                                value={item.rating}
-                                precision={0.5}
-                                readOnly
-                                />
-                                <p style={{ textAlign: 'left', marginTop: 5 }}>
-                                  {item.comment}
-                                </p>
-                              </Grid>
-                              </>
-                            )
-                            }
+                                <Hidden smDown>
+                                  <TableCell align="right">
+                                    {`${item.qty} x ${new Intl.NumberFormat(
+                                      "de-DE",
+                                      { style: "currency", currency: "VND" }
+                                    ).format(
+                                      item.priceSale
+                                    )} = ${new Intl.NumberFormat("de-DE", {
+                                      style: "currency",
+                                      currency: "VND",
+                                    }).format(item.qty * item.priceSale)}`}
+                                  </TableCell>
+                                </Hidden>
+                              </TableRow>
+
+                              {!item.rating &&
+                              userInfo &&
+                              !userInfo.isAdmin &&
+                              order.isDelivered ? (
+                                <Box marginTop={2}>
+                                  <form
+                                    onSubmit={(e) =>
+                                      handleSubmitReview(
+                                        e,
+                                        item.product,
+                                        orderId,
+                                        item._id
+                                      )
+                                    }
+                                    className={classes.form}
+                                  >
+                                    <Typography variant="h6">
+                                      Viết một đánh giá
+                                    </Typography>
+                                    <Rating
+                                      name={"rating-value-" + item.name}
+                                      precision={0.5}
+                                    />
+                                    <TextField
+                                      variant="outlined"
+                                      label="Reply"
+                                      multiline
+                                      fullWidth
+                                      error={!!message}
+                                      helperText={message}
+                                    ></TextField>
+                                    <Button
+                                      variant="contained"
+                                      color="secondary"
+                                      type="submit"
+                                    >
+                                      Reply
+                                    </Button>
+                                  </form>
+                                </Box>
+                              ) : (
+                                <>
+                                  <Grid item xs zeroMinWidth>
+                                    <Rating
+                                      name="rating"
+                                      value={item.rating}
+                                      precision={0.5}
+                                      readOnly
+                                    />
+                                    <p
+                                      style={{
+                                        textAlign: "left",
+                                        marginTop: 5,
+                                      }}
+                                    >
+                                      {item.comment}
+                                    </p>
+                                  </Grid>
+                                </>
+                              )}
                             </>
                           ))}
-
                         </TableBody>
                       </Table>
                     </TableContainer>
                   </div>
                 ) : (
                   <div className={classes.empty}>
-                    <Typography variant='subtitle1' color='secondary'>
-                      Your cart is empty.{' '}
-                      <Link to='/' component={RouterLink} color='primary'>
+                    <Typography variant="subtitle1" color="secondary">
+                      Your cart is empty.{" "}
+                      <Link to="/" component={RouterLink} color="primary">
                         Shopping now!
                       </Link>
                     </Typography>
@@ -438,29 +474,49 @@ const OrderScreen = ({ match, history }) => {
           </Grid>
           <Grid item xs={12} lg={4}>
             <Paper elevation={0} className={classes.cartTotalWrapper}>
-              <Typography variant='h4' style={{ fontSize: 23 }}>
+              <Typography variant="h4" style={{ fontSize: 23 }}>
                 Order Summary
               </Typography>
               <Divider className={classes.divider} />
-              <List style={{ padding: '10px 20px 20px' }}>
+              <List style={{ padding: "10px 20px 20px" }}>
                 <ListItem divider disableGutters>
-                  <ListItemText primary='Items:' />
-                  <Typography>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(order.itemsPrice)}</Typography>
+                  <ListItemText primary="Items:" />
+                  <Typography>
+                    {new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(order.itemsPrice)}
+                  </Typography>
                 </ListItem>
                 <ListItem divider disableGutters>
-                  <ListItemText primary='Shipping:' />
-                  <Typography>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(order.shippingPrice)}</Typography>
+                  <ListItemText primary="Shipping:" />
+                  <Typography>
+                    {new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(order.shippingPrice)}
+                  </Typography>
                 </ListItem>
                 <ListItem divider disableGutters>
-                  <ListItemText primary='Tax:' />
-                  <Typography>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(order.taxPrice)}</Typography>
+                  <ListItemText primary="Tax:" />
+                  <Typography>
+                    {new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(order.taxPrice)}
+                  </Typography>
                 </ListItem>
                 <ListItem disableGutters>
-                  <ListItemText primary='Total:' />
-                  <Typography color='secondary'>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(order.totalPrice)}</Typography>
+                  <ListItemText primary="Total:" />
+                  <Typography color="secondary">
+                    {new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(order.totalPrice)}
+                  </Typography>
                 </ListItem>
               </List>
-              {!order.isPaid && order.paymentMethod === "PayPal" &&(
+              {!order.isPaid && order.paymentMethod === "PayPal" && (
                 <Box fullWidth>
                   {loadingPay && <Loader />}
                   {!sdkReady ? (
@@ -469,45 +525,33 @@ const OrderScreen = ({ match, history }) => {
                     <PayPalButton
                       amount={order.USD}
                       onSuccess={successPaymentHandler}
-                      style={{ width: '100%' }}
+                      style={{ width: "100%" }}
                     />
                   )}
                 </Box>
               )}
               {loadingDeliver && <Loader />}
-              {
-                userInfo 
-                &&
-                userInfo.isAdmin 
-                &&
-                (order.isPaid || order.paymentMethod==='Cash') 
-                && 
-                !order.isDelivered 
-                && 
-                (<OrderButton status={order.status} order={order}></OrderButton>)
-              }
-              {
-                userInfo 
-                &&
-                !userInfo.isAdmin 
-                &&
-                order.status !==0 
-                &&
-                !order.isDelivered 
-                &&  
-                (<OrderButton status={5} order={order}></OrderButton>)
-              }
-              {
-                userInfo 
-                &&
-                !userInfo.isAdmin 
-                &&
-                order.status ===0 
-                &&
-                !order.isDelivered 
-                &&  
-                (<OrderButton status={0} order={order}></OrderButton>)
-              }
+              {userInfo &&
+                userInfo.isAdmin &&
+                (order.isPaid || order.paymentMethod === "Cash") &&
+                !order.isDelivered && (
+                  <OrderButton
+                    status={order.status}
+                    order={order}
+                  ></OrderButton>
+                )}
+              {userInfo &&
+                !userInfo.isAdmin &&
+                order.status !== 0 &&
+                !order.isDelivered && (
+                  <OrderButton status={5} order={order}></OrderButton>
+                )}
+              {userInfo &&
+                !userInfo.isAdmin &&
+                order.status === 0 &&
+                !order.isDelivered && (
+                  <OrderButton status={0} order={order}></OrderButton>
+                )}
             </Paper>
           </Grid>
         </Grid>

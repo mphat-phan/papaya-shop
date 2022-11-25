@@ -93,15 +93,15 @@ const LoginScreen = ({ location, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo, isVerified, message } = userLogin;
 
-  const { redirectHome = "/" } = queryString.parse(location.search);
+  const { redirect = "/" } = queryString.parse(location.search);
   useEffect(() => {
     if (userInfo) {
       if (!userInfo.verified) {
       } else {
-        history.push(redirectHome);
+        history.push(redirect);
       }
     }
-  }, [history, userInfo, redirectHome]);
+  }, [history, userInfo, redirect]);
 
   const submitHandler = ({ email, password, otpCode }) => {
     setEmail(email);
@@ -227,7 +227,7 @@ const LoginScreen = ({ location, history }) => {
                 Tài khoản mới?{" "}
                 <Link
                   component={RouterLink}
-                  to={`/register?redirect=${redirectHome}`}
+                  to={`/register?redirect=${redirect}`}
                 >
                   Tạo tài khoản mới
                 </Link>
