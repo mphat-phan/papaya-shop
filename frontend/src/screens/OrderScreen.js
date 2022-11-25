@@ -221,10 +221,12 @@ const OrderScreen = ({ match, history }) => {
           comment,
           orderID,
           orderItem,
-          avatar:userInfo.avatar
+          avatar:userInfo.avatar,
+          userId:userInfo._id,
+          name:userInfo.name,
         })
       );
-      window.location.reload();
+      //window.location.reload();
     }
     else{
       alert('Nhập đánh giá!!')

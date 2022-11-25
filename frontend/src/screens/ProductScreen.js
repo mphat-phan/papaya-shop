@@ -4,7 +4,7 @@ import { fetchProductDetails } from "../actions/productActions.js";
 import { Link as RouterLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm, Controller } from "react-hook-form";
-import { addToCart } from "../actions/cartActions";
+import { updateToCart } from "../actions/cartActions";
 import { openSnackbar } from "../actions/snackbarActions";
 import Meta from "../components/Meta";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
@@ -112,20 +112,20 @@ const ProductScreen = ({ history, match }) => {
 
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
-
+  const { status } = useSelector((state) => state.cart);
   const { loading, error, product } = productDetails;
 
   const classes = useStyles(product);
 
+  if(status===true){
+    dispatch(openSnackbar('Cập nhật số lượng thành công', 'success'));
+  }
+  if(status===false){
+    dispatch(openSnackbar('Sản phẩm đã hết hàng', 'error'));
+  }
+  
   const addToCartHandler = ({ qty }) => {
-    dispatch(addToCart(match.params.id, qty));
-    dispatch(
-      openSnackbar("The product has been added to cart!", "success", {
-        hasLink: true,
-        to: "/cart",
-        text: "View Cart",
-      })
-    );
+    dispatch(updateToCart(match.params.id, qty));
   };
 
   useEffect(() => {

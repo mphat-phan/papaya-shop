@@ -13,11 +13,19 @@ import { Grid, Typography, Button } from '@material-ui/core';
 import ProductTabs from '../components/Product/ProductTabs';
 import HomeService from '../components/Home/HomeService';
 import Alert from '@material-ui/lab/Alert';
-
+import { openSnackbar } from "../actions/snackbarActions";
+import { setOpenCartDrawer } from "../actions/cartActions";
 const HomeScreen = ({ location, history }) => {
   const dispatch = useDispatch();
   const productTopRated = useSelector((state) => state.productTopRated);
-
+  const { status } = useSelector((state) => state.cart);
+  if(status===true){
+    dispatch(openSnackbar('Cập nhật số lượng thành công', 'success'));
+    dispatch(setOpenCartDrawer(true));
+  }
+  if(status===false){
+    dispatch(openSnackbar('Sản phẩm đã hết hàng', 'error'));
+  }
   const {
     loading: loadingProductTop,
     errorProductTop,

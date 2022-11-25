@@ -1,6 +1,6 @@
 import {
   CART_ADD_ITEM,
-  CART_ADD_ITEM_FAIL,
+  CART_ADD_ITEM_RESET,
   CART_UPDATE_ITEM,
   CART_OPEN_DRAWER_PREVIEW,
   CART_REMOVE_ITEM,
@@ -25,6 +25,10 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
       countInStock: data.countInStock,
     },
   });
+  
+  dispatch({
+    type: CART_ADD_ITEM_RESET
+  })
   
   
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));

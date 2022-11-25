@@ -16,7 +16,7 @@ const addReceiptItems = asyncHandler(async (req, res) => {
     if (receiptItems && receiptItems.length === 0) {
         res.status(400);
         throw new Error('No order items');
-    } 
+    }
     else {
         const receipt = new Receipt({
             receiptItems,

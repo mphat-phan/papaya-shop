@@ -181,14 +181,7 @@ const Header = (props) => {
                   >
                     Quản lý thể loại
                   </MenuItem>
-                  <MenuItem
-                    component={Link}
-                    to="/admin/recept"
-                    className="navItem"
-                    disableRipple
-                  >
-                    Nhập hàng
-                  </MenuItem>
+                  
                 </>
               ) : (
                 <>

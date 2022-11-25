@@ -14,6 +14,7 @@ import {
   changePassword,
   forgotPassword,
   sendOTPPassword,
+  updateUserPasword,
 } from '../controllers/userController.js';
 import { protect, checkAdmin } from '../middlewares/authMiddleware.js';
 
@@ -37,6 +38,11 @@ router
   .route('/profile')
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
+
+router
+  .route('/profile/change-password')
+  .put(protect, updateUserPasword);
+
 router
   .route('/:id')
   .delete(protect, checkAdmin, deleteUser)

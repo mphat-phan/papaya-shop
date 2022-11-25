@@ -158,9 +158,10 @@ const ReceptScreen = ({ history }) => {
     }
   }, [dispatch, history]);
 
-  const onSubmit = ({ address, city, postalCode, country, phoneNumber }) => {
+  const onSubmit = ({ name, address, city, postalCode, country, phoneNumber }) => {
     dispatch(
       saveShippingAddressRecept({
+        name,
         address,
         city,
         postalCode,
@@ -200,10 +201,27 @@ const ReceptScreen = ({ history }) => {
         <Grid container spacing={8}>
           <Grid item xs={12} md={6}>
             <Typography variant="h5" gutterBottom>
-              Thông tin nhập hàng
+              Thông tin nhà cung cấp
             </Typography>
             <FormProvider {...methods}>
               <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                  name="name"
+                  defaultValue={shippingAddressRecept.name || ""}
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl fullWidth error={!!error}>
+                      <InputLabel shrink htmlFor="name">
+                        Tên nhà cung cấp
+                      </InputLabel>
+                      <Input {...field} id="name" fullWidth />{" "}
+                      {error && (
+                        <FormHelperText error>{error.message}</FormHelperText>
+                      )}
+                    </FormControl>
+                  )}
+                  rules={{ required: "(*) Address is required" }}
+                />
                 <Controller
                   name="address"
                   defaultValue={shippingAddressRecept.address || ""}
