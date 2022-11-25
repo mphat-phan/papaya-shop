@@ -118,7 +118,7 @@ const ProductListScreen = ({ history }) => {
     dispatch({ type: PRODUCT_CREATE_RESET });
 
     if (!userInfo || !userInfo.isAdmin) {
-      history.push("/login");
+      history.push("/admin");
     }
 
     dispatch(listProducts("", "", "all"));

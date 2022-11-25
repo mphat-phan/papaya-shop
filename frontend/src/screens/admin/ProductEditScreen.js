@@ -111,6 +111,9 @@ const ProductEditScreen = ({ match, history }) => {
   let { categorys = [] } = categoryList;
   categorys = categorys.map((category) => ({ ...category, id: category._id }));
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const productUpdate = useSelector((state) => state.productUpdate);
   const {
     loading: loadingUpdate,
@@ -119,6 +122,9 @@ const ProductEditScreen = ({ match, history }) => {
   } = productUpdate;
 
   useEffect(() => {
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push("/admin");
+    }
     dispatch(listCategorys("", "", "all"));
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });

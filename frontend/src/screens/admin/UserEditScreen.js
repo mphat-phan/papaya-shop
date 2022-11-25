@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import Message from '../../components/Message';
-import Loader from '../../components/Loader';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserDetails, updateUser } from '../../actions/userActions';
-import { openSnackbar } from '../../actions/snackbarActions';
-import { USER_UPDATE_RESET } from '../../constants/userConstants';
-import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import { useForm, Controller } from 'react-hook-form';
+import React, { useEffect } from "react";
+import Message from "../../components/Message";
+import Loader from "../../components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserDetails, updateUser } from "../../actions/userActions";
+import { openSnackbar } from "../../actions/snackbarActions";
+import { USER_UPDATE_RESET } from "../../constants/userConstants";
+import { Link as RouterLink } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import { useForm, Controller } from "react-hook-form";
 import {
   Typography,
   Paper,
@@ -20,7 +20,7 @@ import {
   Link,
   Box,
   Grid,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -47,9 +47,14 @@ const UserEditScreen = ({ match, history }) => {
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
-  const avatar = user.avatar
+  const avatar = user.avatar;
 
   const userUpdate = useSelector((state) => state.userUpdate);
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  if (!userInfo || !userInfo.isAdmin) {
+    history.push("/admin");
+  }
   const {
     loading: loadingUpdate,
     error: errorUpdate,
@@ -59,33 +64,33 @@ const UserEditScreen = ({ match, history }) => {
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: USER_UPDATE_RESET });
-      history.push('/admin/userlist');
+      history.push("/admin/userlist");
     } else {
       if (!user.name || user._id !== userId) {
         dispatch(getUserDetails(userId));
       } else {
-        setValue('name', user.name, { shouldValidate: true });
-        setValue('email', user.email, { shouldValidate: true });
-        setValue('isAdmin', user.isAdmin);
+        setValue("name", user.name, { shouldValidate: true });
+        setValue("email", user.email, { shouldValidate: true });
+        setValue("isAdmin", user.isAdmin);
       }
     }
   }, [dispatch, history, setValue, userId, user, successUpdate]);
 
   useEffect(() => {
     if (successUpdate) {
-      dispatch(openSnackbar('Cập nhật thành công', 'success'));
+      dispatch(openSnackbar("Cập nhật thành công", "success"));
     } else if (errorUpdate) {
-      dispatch(openSnackbar(errorUpdate, 'error'));
+      dispatch(openSnackbar(errorUpdate, "error"));
     }
   }, [dispatch, successUpdate, errorUpdate]);
 
   const submitHandler = ({ name, email, isAdmin }) => {
-    dispatch(updateUser({ _id: userId, name, email, isAdmin, avatar}));
+    dispatch(updateUser({ _id: userId, name, email, isAdmin, avatar }));
   };
 
   return (
-    <Container maxWidth='xl' className={classes.container}>
-      <Grid container justify='center'>
+    <Container maxWidth="xl" className={classes.container}>
+      <Grid container justify="center">
         {loading ? (
           <Loader />
         ) : error ? (
@@ -94,14 +99,14 @@ const UserEditScreen = ({ match, history }) => {
           <Grid item xs={12} sm={6} component={Paper} className={classes.paper}>
             <div>
               <Typography
-                variant='h5'
-                component='h1'
-                style={{ textAlign: 'center' }}
+                variant="h5"
+                component="h1"
+                style={{ textAlign: "center" }}
               >
                 Chỉnh sửa user
               </Typography>
-              <Box display='flex' justifyContent='flex-start' mb={2}>
-                <Link component={RouterLink} to='/admin/userlist'>
+              <Box display="flex" justifyContent="flex-start" mb={2}>
+                <Link component={RouterLink} to="/admin/userlist">
                   Trở lại
                 </Link>
               </Box>
@@ -111,13 +116,13 @@ const UserEditScreen = ({ match, history }) => {
               onSubmit={handleSubmit(submitHandler)}
             >
               <Controller
-                name='name'
+                name="name"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <FormControl fullWidth style={{ marginBottom: 16 }}>
                     <TextField
-                      label='Name'
-                      defaultValue=' '
+                      label="Name"
+                      defaultValue=" "
                       {...field}
                       error={!!error}
                       helperText={error && error.message}
@@ -126,13 +131,13 @@ const UserEditScreen = ({ match, history }) => {
                 )}
               />
               <Controller
-                name='email'
+                name="email"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <FormControl fullWidth style={{ marginBottom: 16 }}>
                     <TextField
-                      label='Email'
-                      defaultValue=' '
+                      label="Email"
+                      defaultValue=" "
                       {...field}
                       error={!!error}
                       helperText={error && error.message}
@@ -142,7 +147,7 @@ const UserEditScreen = ({ match, history }) => {
                 rules={{
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Địa chỉ email không hợp lệ',
+                    message: "Địa chỉ email không hợp lệ",
                   },
                 }}
               />
@@ -150,7 +155,7 @@ const UserEditScreen = ({ match, history }) => {
                 <FormControlLabel
                   control={
                     <Controller
-                      name='isAdmin'
+                      name="isAdmin"
                       control={control}
                       render={({ field: { value, onChange, ...field } }) => (
                         <Checkbox
@@ -161,10 +166,10 @@ const UserEditScreen = ({ match, history }) => {
                       )}
                     />
                   }
-                  label='Is Admin'
+                  label="Is Admin"
                 />
               </FormControl>
-              <Button type='submit' variant='contained' color='secondary'>
+              <Button type="submit" variant="contained" color="secondary">
                 Cập nhật
               </Button>
               {loadingUpdate && <Loader />}
