@@ -172,7 +172,7 @@ const ProductTabs = () => {
             component={Link}
             to='/shop?sort_by=latest'
           >
-            Discover More
+            Xem thêm
           </Button>
         </div>
       </TabPanel>
@@ -199,7 +199,7 @@ const ProductTabs = () => {
             component={Link}
             to='/shop?sort_by=sale'
           >
-            Discover More
+            Xem thêm
           </Button>
         </div>
       </TabPanel>
@@ -226,7 +226,7 @@ const ProductTabs = () => {
             component={Link}
             to='/shop'
           >
-            Discover More
+            Xem thêm
           </Button>
         </div>
       </TabPanel>
