@@ -17,7 +17,7 @@ const ProductRelated = ({ category = '' }) => {
   return (
     <>
       <Box my={3}>
-        <Typography variant='h5'>Related Products</Typography>
+        <Typography variant='h5'>Sản phẩm liên quan</Typography>
       </Box>
       <Paper
         style={{ padding: '32px 20px', margin: '24px 0 50px' }}

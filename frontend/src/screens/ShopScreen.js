@@ -198,19 +198,19 @@ const ShopScreen = ({ location, history }) => {
           <Box className={classes.topFilter}>
             <div>
               <FormControl variant="outlined" className={classes.selectBox}>
-                <FormLabel>Sort by</FormLabel>
+                <FormLabel>Sắp xếp bởi</FormLabel>
                 <Select
                   value={sort_by}
                   onChange={(e) =>
                     history.push(`/shop?sort_by=${e.target.value}`)
                   }
                 >
-                  <MenuItem value="default">Default Sorting</MenuItem>
-                  <MenuItem value="latest">Lastest</MenuItem>
-                  <MenuItem value="rating">Rating</MenuItem>
-                  <MenuItem value="sale">Sale</MenuItem>
-                  <MenuItem value="priceAsc">Price: Low to High</MenuItem>
-                  <MenuItem value="priceDesc">Price: High to Low</MenuItem>
+                  <MenuItem value="default">Sắp xếp mặc định</MenuItem>
+                  <MenuItem value="latest">Mới nhất</MenuItem>
+                  <MenuItem value="rating">Đánh giá</MenuItem>
+                  <MenuItem value="sale">Giảm giá</MenuItem>
+                  <MenuItem value="priceAsc">Giá: Thấp tới cao</MenuItem>
+                  <MenuItem value="priceDesc">Price: Cao tói thấp</MenuItem>
                 </Select>
               </FormControl>
             </div>
@@ -239,7 +239,7 @@ const ShopScreen = ({ location, history }) => {
                 <Chip
                   variant="outlined"
                   size="small"
-                  label={`Keyword: ${searchTerm}`}
+                  label={`Từ khóa: ${searchTerm}`}
                   onDelete={() => dispatch(removeSearchTerm())}
                 />
               )}
@@ -247,7 +247,7 @@ const ShopScreen = ({ location, history }) => {
                 <Chip
                   variant="outlined"
                   size="small"
-                  label={`Above: $${priceMin}`}
+                  label={`Trên: $${priceMin}`}
                   onDelete={() => dispatch(removeRangePrice("min"))}
                 />
               )}
@@ -255,7 +255,7 @@ const ShopScreen = ({ location, history }) => {
                 <Chip
                   variant="outlined"
                   size="small"
-                  label={`Below: $${priceMax}`}
+                  label={`Dưới: $${priceMax}`}
                   onDelete={() => dispatch(removeRangePrice("max"))}
                 />
               )}

@@ -214,45 +214,12 @@ const ProductFilterBar = ({ products, filter }) => {
         </AccordionDetails>
       </Accordion>
       <Divider className={classes.divider} />
-      <Accordion className={classes.accordion}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6" gutterBottom className={classes.title}>
-            Kích Thước
-          </Typography>
-        </AccordionSummary>
-      </Accordion>
-      <Divider className={classes.divider} />
       <Accordion
         className={classes.accordion}
         expanded={expanded.indexOf("brands") >= 0}
         onChange={handleAccordionChange("brands")}
       >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6" gutterBottom className={classes.title}>
-            Nhãn hàng
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Box className={classes.brands} color="text.secondary">
-            {brands.map((brand, index) => (
-              <Button
-                disableElevation
-                disableFocusRipple
-                disableRipple
-                key={brand}
-                className={clsx(
-                  filter.brands.indexOf(brand) >= 0 && classes.isSelected
-                )}
-                onClick={() => addBrandsHandler(brand)}
-              >
-                {brand}
-                {index !== brands.length - 1 && (
-                  <span style={{ margin: "0 8px" }}>/</span>
-                )}
-              </Button>
-            ))}
-          </Box>
-        </AccordionDetails>
+        <AccordionDetails></AccordionDetails>
       </Accordion>
     </>
   );
