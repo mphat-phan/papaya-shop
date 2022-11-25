@@ -182,10 +182,10 @@ const ShopScreen = ({ location, history }) => {
             style={{ marginBottom: 24 }}
           >
             <Link color="inherit" component={RouterLink} to="/">
-              Home
+              Trang chủ
             </Link>
             <Link color="textPrimary" component={RouterLink} to="/shop">
-              Shop
+              Sản phẩm
             </Link>
           </Breadcrumbs>
         </Grid>
@@ -210,7 +210,7 @@ const ShopScreen = ({ location, history }) => {
                   <MenuItem value="rating">Đánh giá</MenuItem>
                   <MenuItem value="sale">Giảm giá</MenuItem>
                   <MenuItem value="priceAsc">Giá: Thấp tới cao</MenuItem>
-                  <MenuItem value="priceDesc">Price: Cao tói thấp</MenuItem>
+                  <MenuItem value="priceDesc">Giá: Cao xuống thấp</MenuItem>
                 </Select>
               </FormControl>
             </div>

@@ -145,7 +145,7 @@ const CategoryEditScreen = ({ match, history }) => {
             style={{ marginBottom: 24 }}
           >
             <Link color="inherit" component={RouterLink} to="/">
-              Home
+              Trang chủ
             </Link>
             <Link color="inherit" component={RouterLink} to="/">
               Admin Thống kê
@@ -155,7 +155,7 @@ const CategoryEditScreen = ({ match, history }) => {
               component={RouterLink}
               to="/admin/categorylist"
             >
-              Products
+              Sản phẩm
             </Link>
             <Link
               color="textPrimary"
@@ -169,7 +169,7 @@ const CategoryEditScreen = ({ match, history }) => {
               component={RouterLink}
               to={`/admin/category/${category._id}/edit`}
             >
-              Edit
+              Chỉnh sửa
             </Link>
           </Breadcrumbs>
         </Grid>
@@ -194,7 +194,7 @@ const CategoryEditScreen = ({ match, history }) => {
                 gutterBottom
                 style={{ textAlign: "center" }}
               >
-                Edit Product
+                Chỉnh sửa sản phẩm
               </Typography>
               {loadingUpdate && <Loader />}
               {errorUpdate && <Message>{errorUpdate}</Message>}
@@ -210,7 +210,7 @@ const CategoryEditScreen = ({ match, history }) => {
                 />
 
                 <Button type="submit" variant="contained" color="secondary">
-                  Submit
+                  Xác nhận
                 </Button>
               </form>
             </Grid>

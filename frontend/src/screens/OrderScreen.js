@@ -253,10 +253,10 @@ const OrderScreen = ({ match, history }) => {
             style={{ marginBottom: 24 }}
           >
             <Link color="inherit" component={RouterLink} to="/">
-              Home
+              Trang chủ
             </Link>
             <Link color="textPrimary" component={RouterLink} to="/order">
-              Order Details
+              Thông tin chi tiết đơn hàng
             </Link>
           </Breadcrumbs>
           {order.status ? (
@@ -295,10 +295,10 @@ const OrderScreen = ({ match, history }) => {
                 />
                 {order.isDelivered ? (
                   <Message severity="success" mt={8}>
-                    Delivered on {new Date(order.deliveredAt).toUTCString()}
+                    Đã Vận chuyển vào {new Date(order.deliveredAt).toUTCString()}
                   </Message>
                 ) : (
-                  <Message mt={8}>Not Delivered</Message>
+                  <Message mt={8}>Chưa vận chuyển</Message>
                 )}
               </ListItem>
               <ListItem divider style={{ flexWrap: "wrap" }}>
@@ -314,10 +314,10 @@ const OrderScreen = ({ match, history }) => {
                 </ListItemAvatar>
                 {order.isPaid ? (
                   <Message severity="success" mt={8}>
-                    Paid on {new Date(order.paidAt).toUTCString()}
+                    Đã thanh toán vào {new Date(order.paidAt).toUTCString()}
                   </Message>
                 ) : (
-                  <Message mt={8}>Not Paid</Message>
+                  <Message mt={8}>Chưa thanh toán</Message>
                 )}
               </ListItem>
               <ListItem className={classes.orderItems}>
@@ -331,9 +331,9 @@ const OrderScreen = ({ match, history }) => {
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell>Products</TableCell>
+                            <TableCell>Sản phẩm</TableCell>
                             <Hidden smDown>
-                              <TableCell align="right">Price</TableCell>
+                              <TableCell align="right">Giá</TableCell>
                             </Hidden>
                           </TableRow>
                         </TableHead>
@@ -462,9 +462,9 @@ const OrderScreen = ({ match, history }) => {
                 ) : (
                   <div className={classes.empty}>
                     <Typography variant="subtitle1" color="secondary">
-                      Your cart is empty.{" "}
+                      Giỏ hàng của bạn đang trống.{" "}
                       <Link to="/" component={RouterLink} color="primary">
-                        Shopping now!
+                        Mua ngay!
                       </Link>
                     </Typography>
                   </div>
@@ -475,7 +475,7 @@ const OrderScreen = ({ match, history }) => {
           <Grid item xs={12} lg={4}>
             <Paper elevation={0} className={classes.cartTotalWrapper}>
               <Typography variant="h4" style={{ fontSize: 23 }}>
-                Order Summary
+                Tổng tiền
               </Typography>
               <Divider className={classes.divider} />
               <List style={{ padding: "10px 20px 20px" }}>

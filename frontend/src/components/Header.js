@@ -241,14 +241,14 @@ const Header = (props) => {
                   style={{ marginLeft: onMobile ? 0 : -16 }}
                   onClick={handleCloseDrawer}
                 >
-                  Home
+                  Trang chủ
                 </MenuItem>
                 <MenuItem
                   component={Link}
                   to="/shop"
                   onClick={handleCloseDrawer}
                 >
-                  Shop
+                  Sản phẩm
                 </MenuItem>
                 <MenuItem
                   component={Link}
@@ -256,7 +256,7 @@ const Header = (props) => {
                   divider
                   onClick={handleCloseDrawer}
                 >
-                  About Us
+                  Tin tức
                 </MenuItem>
                 {userInfo ? (
                   <div style={{ width: "100%" }}>
@@ -297,12 +297,12 @@ const Header = (props) => {
                       )}
                     </div> */}
                     <MenuItem onClick={() => dispatch(logout())}>
-                      Logout
+                      Đăng xuất
                     </MenuItem>
                   </div>
                 ) : (
                   <MenuItem component={Link} to="/login">
-                    Login
+                    Đăng nhập
                   </MenuItem>
                 )}
               </MenuList>

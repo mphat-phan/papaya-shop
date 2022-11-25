@@ -130,7 +130,7 @@ const CategoryListScreen = ({ history }) => {
             style={{ marginBottom: 24 }}
           >
             <Link color="inherit" component={RouterLink} to="/">
-              Home
+              Trang chủ
             </Link>
             <Link color="inherit" component={RouterLink} to="/">
               Admin thống kê

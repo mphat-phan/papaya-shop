@@ -123,7 +123,7 @@ const CategoryCreateScreen = ({ history }) => {
             style={{ marginBottom: 24 }}
           >
             <Link color="inherit" component={RouterLink} to="/">
-              Home
+              Trang chủ
             </Link>
             <Link color="inherit" component={RouterLink} to="/">
               Admin thống kê
@@ -133,14 +133,14 @@ const CategoryCreateScreen = ({ history }) => {
               component={RouterLink}
               to="/admin/categorytlist"
             >
-              Categorys
+              Thể loại
             </Link>
             <Link
               color="textPrimary"
               component={RouterLink}
               to={`/admin/category/create`}
             >
-              Create
+              Thêm mới
             </Link>
           </Breadcrumbs>
         </Grid>
@@ -160,7 +160,7 @@ const CategoryCreateScreen = ({ history }) => {
             gutterBottom
             style={{ textAlign: "center" }}
           >
-            Create Category
+            Thêm thể loại
           </Typography>
           {loadingCreate && <Loader />}
           {errorCreate && <Message>{errorCreate}</Message>}
@@ -176,7 +176,7 @@ const CategoryCreateScreen = ({ history }) => {
             />
 
             <Button type="submit" variant="contained" color="secondary">
-              Submit
+              Xác nhận
             </Button>
           </form>
         </Grid>
