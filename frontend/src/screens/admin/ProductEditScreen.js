@@ -212,7 +212,7 @@ const ProductEditScreen = ({ match, history }) => {
               Home
             </Link>
             <Link color="inherit" component={RouterLink} to="/">
-              Admin Dashboard
+              Admin Thống kê
             </Link>
             <Link
               color="inherit"

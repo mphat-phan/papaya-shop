@@ -151,10 +151,10 @@ const ProductListScreen = ({ history }) => {
               Home
             </Link>
             <Link color="inherit" component={RouterLink} to="/">
-              Admin Dashboard
+              Admin Thống kê
             </Link>
             <Link color="textPrimary" component={RouterLink} to="/userlist">
-              Products
+              Sản phẩm
             </Link>
           </Breadcrumbs>
           <div>

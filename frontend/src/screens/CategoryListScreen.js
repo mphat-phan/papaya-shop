@@ -133,10 +133,10 @@ const CategoryListScreen = ({ history }) => {
               Home
             </Link>
             <Link color="inherit" component={RouterLink} to="/">
-              Admin Dashboard
+              Admin thống kê
             </Link>
             <Link color="textPrimary" component={RouterLink} to="/categorylist">
-              Categorys
+              Thể loại
             </Link>
           </Breadcrumbs>
           <div>

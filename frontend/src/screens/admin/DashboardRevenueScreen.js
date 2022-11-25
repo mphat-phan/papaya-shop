@@ -169,10 +169,10 @@ const ProductListScreen = ({ history }) => {
               Trang chủ
             </Link>
             <Link color="inherit" component={RouterLink} to="/">
-              Admin Dashboard
+              Admin Thống kê
             </Link>
             <Link color="textPrimary" component={RouterLink} to="/userlist">
-              Dashboard Revenue
+              Thống kê doanh thu
             </Link>
           </Breadcrumbs>
           {loading ? (

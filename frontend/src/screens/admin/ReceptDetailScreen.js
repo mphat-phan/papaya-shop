@@ -199,7 +199,7 @@ const ReceptDetailScreen = ({ location, history }) => {
               Trang chủ
             </Link>
             <Link color="inherit" component={RouterLink} to="/">
-              Admin Dashboard
+              Admin thống kê
             </Link>
             <Link
               color="inherit"
