@@ -62,12 +62,12 @@ const CategoryListScreen = ({ history }) => {
     { field: "_id", headerName: "ID", width: 220 },
     {
       field: "name",
-      headerName: "Name",
+      headerName: "Tên",
       flex: 1,
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Hành động",
       sortable: false,
       width: 100,
       renderCell: (params) => {
@@ -136,7 +136,7 @@ const CategoryListScreen = ({ history }) => {
               Admin Dashboard
             </Link>
             <Link color="textPrimary" component={RouterLink} to="/categorylist">
-              Categorys
+              Thể loại
             </Link>
           </Breadcrumbs>
           <div>
@@ -145,7 +145,7 @@ const CategoryListScreen = ({ history }) => {
               component="h1"
               style={{ textAlign: "center" }}
             >
-              Category Management
+              Quản lý thể loại
             </Typography>
             <Box display="flex" justifyContent="flex-end" mb={2}>
               <Button
@@ -155,7 +155,7 @@ const CategoryListScreen = ({ history }) => {
                 component={RouterLink}
                 to="/admin/category/create"
               >
-                Create Product
+                Tạo sản phẩm
               </Button>
             </Box>
           </div>
