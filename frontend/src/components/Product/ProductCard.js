@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
@@ -13,7 +13,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ProductModalView from './ProductModalView';
 import { Button, CardActionArea, Hidden, IconButton } from '@material-ui/core';
 import { addToCart, setOpenCartDrawer } from '../../actions/cartActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -110,19 +110,20 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductCard = (props) => {
   const { _id, name, images, price, sale } = props;
+  
   const [openModal, setOpenModal] = useState(false);
   const classes = useStyles(props);
   const dispatch = useDispatch();
-
+  
   const handleAddToCart = (e, id) => {
     e.preventDefault();
-    dispatch(setOpenCartDrawer(true));
-    dispatch(addToCart(id, 1, 'm'));
+    dispatch(addToCart(id, 1));
   };
   const handleOpenQuickView = (e) => {
     e.preventDefault();
     setOpenModal(true);
   };
+
   return (
     <>
       <Card className={classes.root}>

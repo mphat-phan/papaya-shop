@@ -82,8 +82,11 @@ export default function HeaderUser() {
                         id='menu-list-grow'
                         onKeyDown={handleListKeyDown}
                       >
-                        <MenuItem component={RouterLink} to='/profile' divider>
+                        <MenuItem component={RouterLink} to='/profile'>
                           {userInfo.name ? userInfo.name : 'Profile'}
+                        </MenuItem>
+                        <MenuItem component={RouterLink} to='/change-password' divider>
+                          Đổi mật khẩu
                         </MenuItem>
                         {userInfo.isAdmin && [
                           <MenuItem

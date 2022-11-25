@@ -36,7 +36,8 @@ import Meta from '../components/Meta';
 import ProductCard from '../components/Product/ProductCard';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { RiLayoutGridFill, RiLayoutFill } from 'react-icons/ri';
-
+import { addToCart, setOpenCartDrawer } from '../actions/cartActions';
+import { openSnackbar } from '../actions/snackbarActions';
 const useStyles = makeStyles((theme) => ({
   breadcrumbsContainer: {
     ...theme.mixins.customize.breadcrumbs,
@@ -150,15 +151,25 @@ const ShopScreen = ({ location, history }) => {
   }, [onExtraSmallMobile]);
 
   const userLogin = useSelector((state) => state.userLogin);
+  const cart = useSelector((state) => state.cart);
   const { userInfo} = userLogin;
-
+  const { status } = cart;
   const { redirectHome = '/admin/dashboard-revenue' } = queryString.parse(location.search);
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       history.push(redirectHome);
     }
   }, [history, userInfo, redirectHome]);
-
+  if(status===true){
+    dispatch(openSnackbar('Thêm sản phẩm vào giỏ hàng thành công', 'success'));
+    dispatch(setOpenCartDrawer(true));
+  }
+  if(status===false){
+    dispatch(openSnackbar('Sản phẩm đã hết hàng', 'error'));
+  }
+  // useEffect(() => {
+    
+  // }, [history, status]);
   return (
     <Container style={{ marginBottom: 140, maxWidth: '100%' }}>
       <Meta title='Shop' />

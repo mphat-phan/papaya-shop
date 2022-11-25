@@ -447,6 +447,40 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 });
 
 /**
+ * @desc    Update user profile
+ * @route   PUT /api/users/profile/change-password
+ * @access  Private
+ */
+const updateUserPasword = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const { password, oldPassword } = req.body;
+  if (user && (await user.matchPassword(oldPassword))) {
+  
+    user.password = password || user.password;
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      isStatus: updatedUser.isStatus,
+      avatar: updatedUser.avatar,
+      address : user.address,
+      city : user.city,
+      postalCode : user.postalCode,
+      country : user.country,
+      token: generateToken(updatedUser._id),
+    });
+
+  } else {
+      res.status(404);
+      throw new Error('User not found or incorrect password!!!');
+  }
+});
+
+/**
  * @desc    Get all users
  * @route   GET /api/users
  * @access  Private/Admin only

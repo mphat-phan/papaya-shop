@@ -129,7 +129,6 @@ const ProfileScreen = ({ history }) => {
   const classes = useStyles();
   const methods = useForm();
   const { handleSubmit, getValues, setValue } = methods;
-  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -216,7 +215,6 @@ const ProfileScreen = ({ history }) => {
   const submitHandler = ({
     name,
     email,
-    password,
     address,
     city,
     postalCode,
@@ -227,7 +225,6 @@ const ProfileScreen = ({ history }) => {
         id: user._id,
         name,
         email,
-        password,
         avatar,
         address,
         city,
@@ -387,46 +384,6 @@ const ProfileScreen = ({ history }) => {
                           pattern: {
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                             message: "Invalid email address",
-                          },
-                        }}
-                      />
-                    </FormControl>
-                    <FormControl fullWidth style={{ marginBottom: 12 }}>
-                      <InputController
-                        type={showPassword ? "text" : "password"}
-                        name="password"
-                        label="Mật khẩu"
-                        rules={{
-                          minLength: {
-                            value: 6,
-                            message: "Password must be more than 6 characters",
-                          },
-                        }}
-                      />
-                    </FormControl>
-                    <FormControl fullWidth style={{ marginBottom: 12 }}>
-                      <InputController
-                        type={showPassword ? "text" : "password"}
-                        name="confirmPassword"
-                        label="Xác nhận mật khẩu"
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton
-                                onClick={() => setShowPassword(!showPassword)}
-                                onMouseDown={(e) => e.preventDefault()}
-                              >
-                                {showPassword ? <VscEye /> : <VscEyeClosed />}
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                        }}
-                        rules={{
-                          validate: {
-                            matchPassword: (value) =>
-                              value !== getValues("password")
-                                ? "Password do not match"
-                                : true,
                           },
                         }}
                       />

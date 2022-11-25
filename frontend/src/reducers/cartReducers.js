@@ -5,27 +5,90 @@ import {
   CART_REMOVE_ITEM,
   CART_SAVE_PAYMENT_METHOD,
   CART_SAVE_SHIPPING_ADDRESS,
+  CART_ADD_ITEM_FAIL,
+  CART_UPDATE_ITEM
 } from '../constants/cartConstants';
 
 export const cartReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {
     case CART_ADD_ITEM:
+      //Item vừa thêm vào
       const item = action.payload;
-
+      if(item.countInStock===0){
+        return {
+          ...state,
+          cartItems: [...state.cartItems],
+          status:false
+        };
+      }
+      //Item đã tồn tại trước đó
       const existItem = state.cartItems.find((x) => x.product === item.product);
-
+      
       if (existItem) {
+        if(existItem.qty >= item.countInStock){
+          return {
+            ...state,
+            cartItems: [...state.cartItems],
+            status:false
+          };
+        }
+        item.qty = existItem.qty + 1;
+        
         return {
           ...state,
           cartItems: state.cartItems.map((x) =>
             x.product === existItem.product ? item : x
           ),
+          status:true
         };
       } else {
         return {
           ...state,
           cartItems: [...state.cartItems, item],
+          status:true
         };
+      }
+    case CART_UPDATE_ITEM:
+      //Item vừa thêm vào
+      const item2 = action.payload;
+      if(item2.countInStock===0){
+        return {
+          ...state,
+          cartItems: [...state.cartItems],
+          status:false
+        };
+      }
+      //Item đã tồn tại trước đó
+      const existItem2 = state.cartItems.find((x) => x.product === item2.product);
+      
+      if (existItem2) {
+        if(existItem2.qty > item2.countInStock){
+          return {
+            ...state,
+            cartItems: [...state.cartItems],
+            status:false
+          };
+        }
+        //item2.qty = existItem2.qty + 1;
+        
+        return {
+          ...state,
+          cartItems: state.cartItems.map((x) =>
+            x.product === existItem2.product ? item2 : x
+          ),
+          status:true
+        };
+      } else {
+        return {
+          ...state,
+          cartItems: [...state.cartItems, item2],
+          status:true
+        };
+      }
+    case CART_ADD_ITEM_FAIL:
+      return {
+        ...state,
+        cartItems: [...state.cartItems],
       }
     case CART_REMOVE_ITEM:
       return {

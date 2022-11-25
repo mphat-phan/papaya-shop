@@ -1,5 +1,7 @@
 import {
   CART_ADD_ITEM,
+  CART_ADD_ITEM_FAIL,
+  CART_UPDATE_ITEM,
   CART_OPEN_DRAWER_PREVIEW,
   CART_REMOVE_ITEM,
   CART_SAVE_PAYMENT_METHOD,
@@ -9,7 +11,7 @@ import axios from "axios";
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
   const { data } = await axios.get(`/api/products/${id}`);
-
+  
   dispatch({
     type: CART_ADD_ITEM,
     payload: {
@@ -23,7 +25,29 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
       countInStock: data.countInStock,
     },
   });
+  
+  
+  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+};
 
+export const updateToCart = (id, qty) => async (dispatch, getState) => {
+  const { data } = await axios.get(`/api/products/${id}`);
+  
+  dispatch({
+    type: CART_UPDATE_ITEM,
+    payload: {
+      name: data.name,
+      qty: qty,
+      images: data.images,
+      price: data.price,
+      sale: data.sale,
+      priceSale: data.price * (1 - data.sale / 100),
+      product: data._id,
+      countInStock: data.countInStock,
+    },
+  });
+  
+  
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 

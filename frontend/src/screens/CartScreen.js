@@ -69,7 +69,13 @@ const CartScreen = ({ history }) => {
 
   const dispatch = useDispatch();
 
-  const { cartItems } = useSelector((state) => state.cart);
+  const { cartItems, status } = useSelector((state) => state.cart);
+  if(status===true){
+    dispatch(openSnackbar('Cập nhật số lượng thành công', 'success'));
+  }
+  if(status===false){
+    dispatch(openSnackbar('Sản phẩm đã hết hàng', 'error'));
+  }
 
   const totalPrice = cartItems
     .reduce((acc, item) => acc + item.qty * item.priceSale, 0);

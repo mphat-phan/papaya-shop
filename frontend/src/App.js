@@ -32,6 +32,7 @@ import Error from "./screens/NotFoundScreen";
 import CategoryListScreen from "./screens/CategoryListScreen";
 import CategoryEditScreen from "./screens/CategoryEditScreen";
 import CategoryCreateScreen from "./screens/CategoryCreateScreen";
+import ChangePasswordScreen from "./screens/ChangePasswordScreen";
 const App = () => {
   return (
     <Router>
@@ -87,6 +88,7 @@ const App = () => {
             <Route path="/product/:id" component={ProductScreen} />
             <Route path="/cart/:id?" component={CartScreen} />
             <Route path="/profile" component={ProfileScreen} />
+            <Route path="/change-password" component={ChangePasswordScreen} />
             <Route path="/admin/recept" component={ReceptScreen} />
             <Route path="/shipping" component={ShippingScreen} />
             <Route path="/payment" component={PaymentScreen} />
