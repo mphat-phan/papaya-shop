@@ -553,7 +553,7 @@ export const listShopProduct =
 export const filterListShopProduct = () => async (dispatch, getState) => {
   const filter = getState().filter;
   let products = getState().productShop.tempProducts;
-  const { categories, brands, size, priceMax, priceMin } = filter;
+  const { categories, brands, priceMax, priceMin } = filter;
   products = products.map((p) => ({
     ...p,
     priceSale: p.price * (1 - p.sale / 100),
