@@ -135,7 +135,7 @@ const ChangePasswordScreen = ({ history }) => {
 
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
-
+  const passwordError = userDetails.success;
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -143,7 +143,7 @@ const ChangePasswordScreen = ({ history }) => {
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
-
+  
   const orderListMy = useSelector((state) => state.orderListMy);
   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
 
@@ -185,7 +185,7 @@ const ChangePasswordScreen = ({ history }) => {
   };
 
   useEffect(() => {
-    if (!userInfo || userDetails.error) {
+    if (!userInfo) {
       dispatch(logout());
       history.push("/login");
     } else {
@@ -196,7 +196,7 @@ const ChangePasswordScreen = ({ history }) => {
       } else {
         setValue("password", '');
         setValue("confirmPassword", '');
-        
+        setValue("oldPassword", '');
       }
     }
   }, [dispatch, setValue, history, userInfo, user, success]);
@@ -207,7 +207,12 @@ const ChangePasswordScreen = ({ history }) => {
         openSnackbar("Đổi mật khẩu thành công", "success")
       );
     }
-  }, [dispatch, success]);
+    if(passwordError === false){
+      dispatch(
+        openSnackbar("Đổi mật khẩu không thành công", "error")
+      );
+    }
+  }, [dispatch, success, passwordError]);
 
   const submitHandler = ({
     password,

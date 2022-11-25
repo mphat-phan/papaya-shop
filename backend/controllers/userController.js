@@ -574,4 +574,5 @@ export {
   forgotPassword,
   changePassword,
   authAdmin,
+  updateUserPasword,
 };

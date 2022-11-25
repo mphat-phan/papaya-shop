@@ -94,7 +94,7 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
     case USER_DETAILS_SUCCESS:
       return { loading: false, user: action.payload };
     case USER_DETAILS_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, success: false };
     case USER_DETAILS_RESET:
       return { user: {} };
     default:
@@ -109,7 +109,7 @@ export const userUpdateProfileReducer = (state = {}, action) => {
     case USER_UPDATE_PROFILE_SUCCESS:
       return { loading: false, success: true, userInfo: action.payload, message: action.message };
     case USER_UPDATE_PROFILE_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, success: false };
     case USER_UPDATE_PROFILE_RESET:
       return {};
     default:

@@ -72,7 +72,7 @@ const SearchBox = (props) => {
     e.preventDefault();
     if (keyword) {
       dispatch(addSearchTerm(keyword));
-      history.push("/shop");
+      // history.push("/shop");
       props.setOpenSearchDrawer(false);
     }
   };

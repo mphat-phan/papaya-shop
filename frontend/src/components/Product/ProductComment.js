@@ -76,7 +76,9 @@ import {
         dispatch(
           createProductComment(productId, {
             comment,
-            avatar:userInfo.avatar
+            avatar:userInfo.avatar,
+            name:userInfo.name,
+            id: userInfo._id
           })
         );
       } else {

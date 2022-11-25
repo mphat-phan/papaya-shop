@@ -227,11 +227,15 @@ const OrderScreen = ({ match, history }) => {
           comment,
           orderID,
           orderItem,
+          avatar:userInfo.avatar,
+          userId:userInfo._id,
+          name:userInfo.name,
         })
       );
       window.location.reload();
-    } else {
-      alert("Nhập đánh giá!!");
+    }
+    else{
+      alert('Nhập đánh giá!!')
     }
   };
 
