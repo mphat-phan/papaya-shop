@@ -25,6 +25,8 @@ import CartPreview from "./components/Drawer/CartPreview";
 import SnackbarMessage from "./components/SnackbarMessage";
 import MessengerChat from "./components/MessengerChat";
 import ReceptScreen from "./screens/admin/ReceptScreen";
+import ReceptDetailScreen from "./screens/admin/ReceptDetailScreen";
+import ReceptPlaceOrderScreen from "./screens/admin/ReceptPlaceOrderScreen";
 import VerifyScreen from "./screens/VerifyScreen";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 import AdminLoginScreen from "./screens/admin/LoginScreen";
@@ -83,6 +85,8 @@ const App = () => {
               path="/admin/dashboard-product"
               component={DashboardProductScreen}
             />
+
+            <Route path="/admin/productlist" component={ProductListScreen} />
             <Route path="/admin/user/:id" component={UserEditScreen} />
             <Route path="/admin/userlist" component={UserListScreen} />
             <Route path="/product/:id" component={ProductScreen} />
@@ -90,6 +94,11 @@ const App = () => {
             <Route path="/profile" component={ProfileScreen} />
             <Route path="/change-password" component={ChangePasswordScreen} />
             <Route path="/admin/recept" component={ReceptScreen} />
+            <Route path="/admin/receptDetail" component={ReceptDetailScreen} />
+            <Route
+              path="/admin/receptPlaceOrder"
+              component={ReceptPlaceOrderScreen}
+            />
             <Route path="/shipping" component={ShippingScreen} />
             <Route path="/payment" component={PaymentScreen} />
             <Route path="/placeorder" component={PlaceOrderScreen} />

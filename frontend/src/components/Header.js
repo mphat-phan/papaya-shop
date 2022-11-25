@@ -1,109 +1,109 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
-import logo from '../assets/images/logo.png';
-import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
-import { ReactComponent as CartIcon } from '../assets/icons/cart.svg';
-import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuIcon from '@material-ui/icons/Menu';
-import CloseIcon from '@material-ui/icons/Close';
-import MenuList from '@material-ui/core/MenuList';
-import HeaderUser from './HeaderUser';
-import SearchBox from './SearchBox';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { Drawer, Hidden } from '@material-ui/core';
-import { setOpenCartDrawer } from '../actions/cartActions';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../actions/userActions';
+import React, { useState } from "react";
+import clsx from "clsx";
+import logo from "../assets/images/logo.png";
+import { ReactComponent as SearchIcon } from "../assets/icons/search.svg";
+import { ReactComponent as CartIcon } from "../assets/icons/cart.svg";
+import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Badge from "@material-ui/core/Badge";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuIcon from "@material-ui/icons/Menu";
+import CloseIcon from "@material-ui/icons/Close";
+import MenuList from "@material-ui/core/MenuList";
+import HeaderUser from "./HeaderUser";
+import SearchBox from "./SearchBox";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Drawer, Hidden } from "@material-ui/core";
+import { setOpenCartDrawer } from "../actions/cartActions";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../actions/userActions";
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    backgroundColor: '#fff',
-    color: '#444',
-    transition: 'all .2s',
-    boxShadow: '0px 2px 8px -1px rgb(0 0 0 / 10%)',
-    paddingRight: '0 !important',
+    backgroundColor: "#fff",
+    color: "#444",
+    transition: "all .2s",
+    boxShadow: "0px 2px 8px -1px rgb(0 0 0 / 10%)",
+    paddingRight: "0 !important",
     // [theme.breakpoints.up('md')]: {
     //   backgroundColor: 'transparent',
     //   boxShadow: 'none',
     // },
   },
   header2: {
-    backgroundColor: '#fff',
-    color: '#444',
-    transition: 'all .2s',
-    boxShadow: '0px 2px 8px -1px rgb(0 0 0 / 10%)',
-    paddingRight: '0 !important',
+    backgroundColor: "#fff",
+    color: "#444",
+    transition: "all .2s",
+    boxShadow: "0px 2px 8px -1px rgb(0 0 0 / 10%)",
+    paddingRight: "0 !important",
   },
   menuButton: {
-    display: 'none',
+    display: "none",
     marginRight: theme.spacing(2),
-    '@media(max-width: 740px)': {
-      display: 'block',
+    "@media(max-width: 740px)": {
+      display: "block",
     },
   },
   logoWrapper: {
-    flexBasis: '20%',
-    maxWidth: '20%',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexBasis: "20%",
+    maxWidth: "20%",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   logo: {
     flexGrow: 1,
     maxWidth: 140,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       maxWidth: 120,
       marginLeft: 16,
     },
   },
   navMenu: {
-    flexBasis: '40%',
-    maxWidth: '40%',
+    flexBasis: "40%",
+    maxWidth: "40%",
     padding: 0,
-    [theme.breakpoints.down('sm')]: {
-      flexBasis: 'unset',
-      maxWidth: 'unset',
+    [theme.breakpoints.down("sm")]: {
+      flexBasis: "unset",
+      maxWidth: "unset",
     },
   },
   drawer: {
     width: 250,
   },
   navList: {
-    display: 'flex',
+    display: "flex",
   },
   navListMobile: {
-    width: '250px',
+    width: "250px",
     marginTop: 50,
-    backgroundColor: 'white',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    '& .MuiListItem-root': {
-      width: '100%',
-      justifyContent: 'center',
+    backgroundColor: "white",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    "& .MuiListItem-root": {
+      width: "100%",
+      justifyContent: "center",
     },
   },
   sectionDesktop: {
-    flexBasis: '40%',
-    maxWidth: '40%',
-    ...theme.mixins.customize.flexMixin('flex-end', 'center'),
-    [theme.breakpoints.down('sm')]: {
-      flexBasis: 'unset',
-      maxWidth: 'unset',
+    flexBasis: "40%",
+    maxWidth: "40%",
+    ...theme.mixins.customize.flexMixin("flex-end", "center"),
+    [theme.breakpoints.down("sm")]: {
+      flexBasis: "unset",
+      maxWidth: "unset",
       flexGrow: 1,
     },
   },
   closeButton: {
-    position: 'fixed',
+    position: "fixed",
     top: 10,
     left: 20,
   },
@@ -115,7 +115,7 @@ const Header = (props) => {
   const { userInfo } = useSelector((state) => state.userLogin);
   const [mobile, setMobile] = useState(false);
   const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
-  const onMobile = useMediaQuery('(max-width:740px)');
+  const onMobile = useMediaQuery("(max-width:740px)");
 
   const classes = useStyles({ mobile });
   const trigger = useScrollTrigger({
@@ -130,101 +130,108 @@ const Header = (props) => {
 
   return (
     <AppBar
-      position='fixed'
+      position="fixed"
       className={clsx(classes.header, trigger && classes.header2)}
     >
       <Toolbar>
         <Toolbar className={classes.navMenu}>
           <IconButton
-            edge='start'
+            edge="start"
             className={classes.menuButton}
             onClick={() => setMobile(!mobile)}
-            color='inherit'
-            aria-label='open drawer'
+            color="inherit"
+            aria-label="open drawer"
           >
             <MenuIcon />
           </IconButton>
           {!onMobile ? (
-            <MenuList className={classes.navList} role='presentation'>
-              {userInfo && userInfo.isAdmin ? 
-              <>
-                <MenuItem
-                  disableRipple
-                  component={Link}
-                  to='/admin/userlist'
-                  className='navItem'
-                  style={{ marginLeft: -16 }}
-                >
-                Quản lý User
-                </MenuItem>
-                <MenuItem
-                  component={Link}
-                  to='/admin/productlist'
-                  className='navItem'
-                  disableRipple
-                >
-                Quản lý sản phẩm
-                </MenuItem>
-                <MenuItem
-                  component={Link}
-                  to='/admin/orderlist'
-                  className='navItem'
-                  disableRipple
-                >
-                Quản lý hóa đơn
-                </MenuItem>
-                <MenuItem
-                  component={Link}
-                  to='/admin/recept'
-                  className='navItem'
-                  disableRipple
-                >
-                Nhập hàng
-                </MenuItem>
-              </> 
-              : 
-              <>
-                <MenuItem
-                disableRipple
-                component={Link}
-                to='/'
-                className='navItem'
-                style={{ marginLeft: -16 }}
-                >
-                Trang chủ
-                </MenuItem>
-                <MenuItem
-                  component={Link}
-                  to='/shop'
-                  className='navItem'
-                  disableRipple
-                >
-                  Sản phẩm
-                </MenuItem>
-                <MenuItem
-                  component={Link}
-                  to='/'
-                  className='navItem'
-                  disableRipple
-                >
-                  Liên hệ
-                </MenuItem>
-                <MenuItem
-                  component={Link}
-                  to='/'
-                  className='navItem'
-                  disableRipple
-                >
-                  Tin tức
-                </MenuItem>
-              </>
-              }
-              
+            <MenuList className={classes.navList} role="presentation">
+              {userInfo && userInfo.isAdmin ? (
+                <>
+                  <MenuItem
+                    disableRipple
+                    component={Link}
+                    to="/admin/userlist"
+                    className="navItem"
+                    style={{ marginLeft: -16 }}
+                  >
+                    Quản lý User
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/admin/productlist"
+                    className="navItem"
+                    disableRipple
+                  >
+                    Quản lý sản phẩm
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/admin/orderlist"
+                    className="navItem"
+                    disableRipple
+                  >
+                    Quản lý hóa đơn
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/admin/categorylist"
+                    className="navItem"
+                    disableRipple
+                  >
+                    Quản lý thể loại
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/admin/recept"
+                    className="navItem"
+                    disableRipple
+                  >
+                    Nhập hàng
+                  </MenuItem>
+                </>
+              ) : (
+                <>
+                  <MenuItem
+                    disableRipple
+                    component={Link}
+                    to="/"
+                    className="navItem"
+                    style={{ marginLeft: -16 }}
+                  >
+                    Trang chủ
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/shop"
+                    className="navItem"
+                    disableRipple
+                  >
+                    Sản phẩm
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/"
+                    className="navItem"
+                    disableRipple
+                  >
+                    Liên hệ
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/"
+                    className="navItem"
+                    disableRipple
+                  >
+                    Tin tức
+                  </MenuItem>
+                </>
+              )}
             </MenuList>
           ) : (
             <Drawer
-              variant='temporary'
-              anchor='left'
+              variant="temporary"
+              anchor="left"
               className={classes.drawer}
               open={mobile}
               onClose={handleCloseDrawer}
@@ -233,11 +240,11 @@ const Header = (props) => {
                 disablePortal: true,
               }}
             >
-              <MenuList className={classes.navListMobile} role='presentation'>
+              <MenuList className={classes.navListMobile} role="presentation">
                 <MenuItem
                   component={Link}
-                  to='/'
-                  className='navItem'
+                  to="/"
+                  className="navItem"
                   style={{ marginLeft: onMobile ? 0 : -16 }}
                   onClick={handleCloseDrawer}
                 >
@@ -245,28 +252,28 @@ const Header = (props) => {
                 </MenuItem>
                 <MenuItem
                   component={Link}
-                  to='/shop'
+                  to="/shop"
                   onClick={handleCloseDrawer}
                 >
                   Shop
                 </MenuItem>
                 <MenuItem
                   component={Link}
-                  to='/'
+                  to="/"
                   divider
                   onClick={handleCloseDrawer}
                 >
                   About Us
                 </MenuItem>
                 {userInfo ? (
-                  <div style={{ width: '100%' }}>
+                  <div style={{ width: "100%" }}>
                     <MenuItem
                       component={Link}
-                      to='/profile'
+                      to="/profile"
                       divider
                       onClick={handleCloseDrawer}
                     >
-                      {userInfo.name ? userInfo.name : 'Profile'}
+                      {userInfo.name ? userInfo.name : "Profile"}
                     </MenuItem>
                     {/* <div style={{ width: '100%' }}>
                       {userInfo.isAdmin && (
@@ -301,59 +308,58 @@ const Header = (props) => {
                     </MenuItem>
                   </div>
                 ) : (
-                  <MenuItem component={Link} to='/login'>
+                  <MenuItem component={Link} to="/login">
                     Login
                   </MenuItem>
                 )}
               </MenuList>
               <IconButton
-                edge='start'
+                edge="start"
                 className={classes.closeButton}
                 onClick={() => setMobile(false)}
-                color='inherit'
-                aria-label='close drawer'
+                color="inherit"
+                aria-label="close drawer"
               >
                 <CloseIcon />
               </IconButton>
             </Drawer>
           )}
         </Toolbar>
-        <Link to='/' className={classes.logoWrapper}>
-          <img src={logo} alt='logo' className={classes.logo} />
+        <Link to="/" className={classes.logoWrapper}>
+          <img src={logo} alt="logo" className={classes.logo} />
         </Link>
         <div className={classes.sectionDesktop}>
-          
-          {userInfo && userInfo.isAdmin 
-          ? 
-          <></>
-          :
-          <>
-          <IconButton color='inherit' onClick={() => setOpenSearchDrawer(true)}>
-            <SearchIcon height={22} width={22} />
-          </IconButton>
-          <Drawer
-            anchor='top'
-            open={openSearchDrawer}
-            onClose={() => setOpenSearchDrawer(false)}
-          >
-            <SearchBox
-              role='searchDrawer'
-              setOpenSearchDrawer={setOpenSearchDrawer}
-            />
-          </Drawer>
+          {userInfo && userInfo.isAdmin ? (
+            <></>
+          ) : (
+            <>
+              <IconButton
+                color="inherit"
+                onClick={() => setOpenSearchDrawer(true)}
+              >
+                <SearchIcon height={22} width={22} />
+              </IconButton>
+              <Drawer
+                anchor="top"
+                open={openSearchDrawer}
+                onClose={() => setOpenSearchDrawer(false)}
+              >
+                <SearchBox
+                  role="searchDrawer"
+                  setOpenSearchDrawer={setOpenSearchDrawer}
+                />
+              </Drawer>
 
-          <IconButton
-            color='inherit'
-            onClick={() => dispatch(setOpenCartDrawer(true))}
-          >
-            <Badge badgeContent={cartItems.length} color='secondary'>
-              <CartIcon />
-            </Badge>
-          </IconButton>
-          
-          </>
-          }
-          
+              <IconButton
+                color="inherit"
+                onClick={() => dispatch(setOpenCartDrawer(true))}
+              >
+                <Badge badgeContent={cartItems.length} color="secondary">
+                  <CartIcon />
+                </Badge>
+              </IconButton>
+            </>
+          )}
 
           <Hidden smDown>
             <HeaderUser />

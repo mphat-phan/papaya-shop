@@ -50,8 +50,9 @@ import {
   PRODUCT_CREATE_REVIEW_REPLY_FAIL,
   PRODUCT_CREATE_REVIEW_REPLY_REQUEST,
   PRODUCT_CREATE_REVIEW_REPLY_SUCCESS,
-  PRODUCT_CREATE_REVIEW_REPLY_RESET
-} from '../constants/productConstants';
+  PRODUCT_CREATE_REVIEW_REPLY_RESET,
+  PRODUCT_SAVE_SHIPPING_RECEPT,
+} from "../constants/productConstants";
 
 export const productListReducer = (state = { products: [] }, action) => {
   switch (action.type) {
@@ -282,6 +283,18 @@ export const productShopReducer = (
             products: action.payload,
           }
         : { ...state, products: state.tempProducts };
+    default:
+      return state;
+  }
+};
+
+export const productReceptReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_SAVE_SHIPPING_RECEPT:
+      return {
+        ...state,
+        shippingAddressRecept: action.payload,
+      };
     default:
       return state;
   }

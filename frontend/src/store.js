@@ -17,6 +17,7 @@ import {
   productShopReducer,
   productCommentReplyCreateReducer,
   productReviewReplyCreateReducer,
+  productReceptReducer,
 } from "./reducers/productReducers.js";
 import { cartOpenDrawerReducer, cartReducer } from "./reducers/cartReducers";
 import { snackbarReducer } from "./reducers/snackbarReducers";
@@ -52,6 +53,7 @@ import {
 } from "./reducers/categoryReducers";
 
 const reducers = combineReducers({
+  productRecept: productReceptReducer,
   categoryList: categoryListReducer,
   categoryDetails: categoryDetailsReducer,
   categoryDelete: categoryDeleteReducer,
@@ -108,12 +110,19 @@ const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
   ? JSON.parse(localStorage.getItem("shippingAddress"))
   : {};
 
+const shippingAddressrReceptFromStorage = localStorage.getItem(
+  "shippingAddressRecept"
+)
+  ? JSON.parse(localStorage.getItem("shippingAddressRecept"))
+  : {};
+
 const initialState = {
   cart: {
     cartItems: cartItemsFromStorage,
     shippingAddress: shippingAddressFromStorage,
   },
   userLogin: { userInfo: userInfoFromStorage },
+  productRecept: { shippingAddressRecept: shippingAddressrReceptFromStorage },
 };
 
 const middlewares = [thunk];

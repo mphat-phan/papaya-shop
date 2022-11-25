@@ -46,6 +46,7 @@ import {
   PRODUCT_CREATE_REVIEW_REPLY_FAIL,
   PRODUCT_CREATE_REVIEW_REPLY_REQUEST,
   PRODUCT_CREATE_REVIEW_REPLY_SUCCESS,
+  PRODUCT_SAVE_SHIPPING_RECEPT,
 } from "../constants/productConstants";
 import { logout } from "./userActions";
 
@@ -585,4 +586,13 @@ export const filterListShopProduct = () => async (dispatch, getState) => {
     type: PRODUCT_SHOP_FILTER,
     payload: filteredProducts,
   });
+};
+
+export const saveShippingAddressRecept = (data) => (dispatch) => {
+  dispatch({
+    type: PRODUCT_SAVE_SHIPPING_RECEPT,
+    payload: data,
+  });
+
+  localStorage.setItem("shippingAddressRecept", JSON.stringify(data));
 };

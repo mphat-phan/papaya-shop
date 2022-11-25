@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   Container,
@@ -12,34 +12,35 @@ import {
   FormHelperText,
   Breadcrumbs,
   Link,
-} from '@material-ui/core';
-import { ReactComponent as Banner } from '../assets/images/shipping.svg';
-import { Link as RouterLink } from 'react-router-dom';
-import { saveShippingAddress } from '../actions/cartActions';
-import { makeStyles, withStyles, fade } from '@material-ui/core/styles';
-import { useForm, FormProvider, Controller } from 'react-hook-form';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import CheckoutSteps from '../components/CheckoutSteps';
-import Meta from '../components/Meta';
+} from "@material-ui/core";
+import { ReactComponent as Banner } from "../assets/images/shipping.svg";
+
+import { Link as RouterLink } from "react-router-dom";
+import { saveShippingAddress } from "../actions/cartActions";
+import { makeStyles, withStyles, fade } from "@material-ui/core/styles";
+import { useForm, FormProvider, Controller } from "react-hook-form";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import CheckoutSteps from "../components/CheckoutSteps";
+import Meta from "../components/Meta";
 
 const Input = withStyles((theme) => ({
   root: {
-    'label + &': {
+    "label + &": {
       marginTop: theme.spacing(3),
     },
-    '&.Mui-error $input': {
-      borderColor: '#f44336',
+    "&.Mui-error $input": {
+      borderColor: "#f44336",
     },
   },
   input: {
     borderRadius: 4,
-    position: 'relative',
+    position: "relative",
     backgroundColor: theme.palette.common.white,
-    border: '1px solid #ced4da',
+    border: "1px solid #ced4da",
     fontSize: 16,
-    padding: '10px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    '&:focus': {
+    padding: "10px 12px",
+    transition: theme.transitions.create(["border-color", "box-shadow"]),
+    "&:focus": {
       boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
       borderColor: theme.palette.primary.main,
     },
@@ -51,17 +52,17 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.customize.breadcrumbs,
   },
   form: {
-    '& > *': {
+    "& > *": {
       marginBottom: 16,
     },
   },
   content: {
     padding: 24,
-    boxShadow: '0 10px 31px 0 rgba(0,0,0,0.05)',
+    boxShadow: "0 10px 31px 0 rgba(0,0,0,0.05)",
   },
   banner: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
 }));
 
@@ -77,7 +78,7 @@ const ShippingScreen = ({ history }) => {
 
   const onSubmit = ({ address, city, postalCode, country }) => {
     dispatch(saveShippingAddress({ address, city, postalCode, country }));
-    history.push('/payment');
+    history.push("/payment");
   };
 
   useEffect(() => {
@@ -87,18 +88,18 @@ const ShippingScreen = ({ history }) => {
   }, [userInfo, history]);
 
   return (
-    <Container maxWidth='xl' style={{ marginBottom: 48 }}>
-      <Meta title='Shipping | FashionShop' />
+    <Container maxWidth="xl" style={{ marginBottom: 48 }}>
+      <Meta title="Shipping | FashionShop" />
       <Grid container className={classes.breadcrumbsContainer}>
         <Grid item xs={12}>
           <Breadcrumbs
-            separator={<NavigateNextIcon fontSize='small' />}
+            separator={<NavigateNextIcon fontSize="small" />}
             style={{ marginBottom: 24 }}
           >
-            <Link color='inherit' component={RouterLink} to='/'>
+            <Link color="inherit" component={RouterLink} to="/">
               Trang chủ
             </Link>
-            <Link color='textPrimary' component={RouterLink} to='/shipping'>
+            <Link color="textPrimary" component={RouterLink} to="/shipping">
               Giao hàng
             </Link>
           </Breadcrumbs>
@@ -108,80 +109,80 @@ const ShippingScreen = ({ history }) => {
       <Paper elevation={0} className={classes.content}>
         <Grid container spacing={8}>
           <Grid item xs={12} md={6}>
-            <Typography variant='h5' gutterBottom>
+            <Typography variant="h5" gutterBottom>
               Địa chỉ giao hàng:
             </Typography>
             <FormProvider {...methods}>
               <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
                 <Controller
-                  name='address'
-                  defaultValue={shippingAddress.address || ''}
+                  name="address"
+                  defaultValue={shippingAddress.address || ""}
                   control={control}
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth error={!!error}>
-                      <InputLabel shrink htmlFor='shipping-address'>
+                      <InputLabel shrink htmlFor="shipping-address">
                         Số nhà
                       </InputLabel>
-                      <Input {...field} id='shipping-address' fullWidth />{' '}
+                      <Input {...field} id="shipping-address" fullWidth />{" "}
                       {error && (
                         <FormHelperText error>{error.message}</FormHelperText>
                       )}
                     </FormControl>
                   )}
-                  rules={{ required: '(*) Address is required' }}
+                  rules={{ required: "(*) Address is required" }}
                 />
                 <Controller
-                  name='city'
-                  defaultValue={shippingAddress.city || ''}
+                  name="city"
+                  defaultValue={shippingAddress.city || ""}
                   control={control}
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth error={!!error}>
-                      <InputLabel shrink htmlFor='shipping-city'>
+                      <InputLabel shrink htmlFor="shipping-city">
                         Thành phố
                       </InputLabel>
-                      <Input {...field} id='shipping-city' fullWidth />{' '}
+                      <Input {...field} id="shipping-city" fullWidth />{" "}
                       {error && (
                         <FormHelperText error>{error.message}</FormHelperText>
                       )}
                     </FormControl>
                   )}
-                  rules={{ required: '(*) City is required' }}
+                  rules={{ required: "(*) City is required" }}
                 />
                 <Controller
-                  name='postalCode'
-                  defaultValue={shippingAddress.postalCode || ''}
+                  name="postalCode"
+                  defaultValue={shippingAddress.postalCode || ""}
                   control={control}
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth error={!!error}>
-                      <InputLabel shrink htmlFor='shipping-postalCode'>
+                      <InputLabel shrink htmlFor="shipping-postalCode">
                         Mã bưu điện
                       </InputLabel>
-                      <Input {...field} id='shipping-postalCode' fullWidth />{' '}
+                      <Input {...field} id="shipping-postalCode" fullWidth />{" "}
                       {error && (
                         <FormHelperText error>{error.message}</FormHelperText>
                       )}
                     </FormControl>
                   )}
-                  rules={{ required: '(*) Postal code is required' }}
+                  rules={{ required: "(*) Postal code is required" }}
                 />
                 <Controller
-                  name='country'
-                  defaultValue={shippingAddress.country || ''}
+                  name="country"
+                  defaultValue={shippingAddress.country || ""}
                   control={control}
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth error={!!error}>
-                      <InputLabel shrink htmlFor='shipping-country'>
+                      <InputLabel shrink htmlFor="shipping-country">
                         Quốc gia
                       </InputLabel>
-                      <Input {...field} id='shipping-country' fullWidth />{' '}
+                      <Input {...field} id="shipping-country" fullWidth />{" "}
                       {error && (
                         <FormHelperText error>{error.message}</FormHelperText>
                       )}
                     </FormControl>
                   )}
-                  rules={{ required: '(*) Country is required' }}
+                  rules={{ required: "(*) Country is required" }}
                 />
-                <Button type='submit' variant='contained' color='secondary'>
+                <Button type="submit" variant="contained" color="secondary">
                   Bước kế tiếp
                 </Button>
               </form>
