@@ -138,15 +138,15 @@ const ProductTabs = () => {
         >
           <Tab
             className={classes.tab}
-            label='Latest Arrivals'
+            label='Sản phẩm mới nhất'
             {...a11yProps(0)}
           />
           <Tab
             className={classes.tab}
-            label='Sale Products'
+            label='Sản phẩm giảm giá'
             {...a11yProps(1)}
           />
-          <Tab className={classes.tab} label='All Products' {...a11yProps(2)} />
+          <Tab className={classes.tab} label='Tất cả sản phẩm' {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
