@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import clsx from "clsx";
 import {
   Typography,
@@ -22,11 +23,11 @@ import {
   addBrands,
 } from "../../actions/filterActions";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch } from "react-redux";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import SearchBox from "../SearchBox";
 import categories from "../../assets/data/categories";
 import brands from "../../assets/data/brands";
+import { listCategorys } from "../../actions/categoryActions";
 
 const INITIAL_RANGE_PRICE = [10000, 10000000];
 
@@ -84,6 +85,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductFilterBar = ({ products, filter }) => {
+  const categoryList = useSelector((state) => state.categoryList);
+  let { loading, error, categorys = [] } = categoryList;
+  categorys = categorys.map((category) => ({ ...category, id: category._id }));
+  console.log(categorys);
   const classes = useStyles();
   const dispatch = useDispatch();
   const onMobile = useMediaQuery("(max-width:740px)");
@@ -112,6 +117,7 @@ const ProductFilterBar = ({ products, filter }) => {
   };
 
   useEffect(() => {
+    dispatch(listCategorys("", "", "all"));
     if (price) {
       const timer = setTimeout(
         () =>
@@ -189,18 +195,19 @@ const ProductFilterBar = ({ products, filter }) => {
         </AccordionSummary>
         <AccordionDetails>
           <Box className={classes.category} color="text.secondary">
-            {categories.map((category) => (
+            {categorys.map((category) => (
               <Box
                 display="flex"
                 justifyContent="space-between"
                 width="100%"
-                key={category}
+                key={category._id}
                 className={clsx(
-                  filter.categories.indexOf(category) >= 0 && classes.isSelected
+                  filter.categories.indexOf(category.name) >= 0 &&
+                    classes.isSelected
                 )}
-                onClick={() => addCategoriesHandler(category)}
+                onClick={() => addCategoriesHandler(category.name)}
               >
-                <span>{category}</span>
+                <span>{category.name}</span>
               </Box>
             ))}
           </Box>

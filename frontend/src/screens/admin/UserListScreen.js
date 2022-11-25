@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { listUsers, deleteUser } from '../../actions/userActions';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { listUsers, deleteUser } from "../../actions/userActions";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
   Container,
@@ -11,40 +11,40 @@ import {
   Breadcrumbs,
   Link,
   useMediaQuery,
-} from '@material-ui/core';
-import { DataGrid } from '@material-ui/data-grid';
-import { openSnackbar } from '../../actions/snackbarActions';
-import { makeStyles } from '@material-ui/core/styles';
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Meta from '../../components/Meta';
-import Loader from '../../components/Loader';
-import Message from '../../components/Message';
-import { Switch } from '@material-ui/core';
+} from "@material-ui/core";
+import { DataGrid } from "@material-ui/data-grid";
+import { openSnackbar } from "../../actions/snackbarActions";
+import { makeStyles } from "@material-ui/core/styles";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import Meta from "../../components/Meta";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
+import { Switch } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   button: {
-    padding: '6px 0',
-    minWidth: '30px',
-    '& .MuiButton-startIcon': {
+    padding: "6px 0",
+    minWidth: "30px",
+    "& .MuiButton-startIcon": {
       margin: 0,
     },
   },
   breadcrumbsContainer: {
     ...theme.mixins.customize.breadcrumbs,
     paddingBottom: 0,
-    '& .MuiBreadcrumbs-ol': {
-      justifyContent: 'flex-start',
+    "& .MuiBreadcrumbs-ol": {
+      justifyContent: "flex-start",
     },
   },
   users: {
-    boxShadow: '0 10px 31px 0 rgba(0,0,0,0.05)',
+    boxShadow: "0 10px 31px 0 rgba(0,0,0,0.05)",
   },
 }));
 
 const UserListScreen = ({ history }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const onMobile = useMediaQuery('(max-width:740px)');
+  const onMobile = useMediaQuery("(max-width:740px)");
   const userList = useSelector((state) => state.userList);
   let { loading, error, users = [] } = userList;
   users = users.map((user) => ({ ...user, id: user._id }));
@@ -54,45 +54,45 @@ const UserListScreen = ({ history }) => {
   const { success: successDelete = false } = userDelete;
 
   const columns = [
-    { field: '_id', headerName: 'ID', flex: 0.2, hide: onMobile },
-    { field: 'name', headerName: 'Name', flex: 0.2, hide: onMobile },
-    { field: 'email', headerName: 'Email', flex: 0.3 },
+    { field: "_id", headerName: "ID", flex: 0.2, hide: onMobile },
+    { field: "name", headerName: "Name", flex: 0.2, hide: onMobile },
+    { field: "email", headerName: "Email", flex: 0.3 },
     {
-      field: 'isAdmin',
-      headerName: 'Admin',
+      field: "isAdmin",
+      headerName: "Admin",
       flex: 0.1,
-      type: 'boolean',
+      type: "boolean",
     },
     {
-      field: 'isStatus',
-      headerName: 'Status',
+      field: "isStatus",
+      headerName: "Status",
       flex: 0.1,
       renderCell: (params) => {
-        const id = params.getValue(params.id, '_id') || '';
+        const id = params.getValue(params.id, "_id") || "";
         const status = params.row.isStatus;
         return (
           <>
             <Switch
               checked={status === true ? true : false}
-              onChange={() => deleteHandler(id,status)}
-              inputProps={{ 'aria-label': 'controlled' }}
+              onChange={() => deleteHandler(id, status)}
+              inputProps={{ "aria-label": "controlled" }}
             />
           </>
         );
       },
     },
     {
-      field: 'action',
-      headerName: 'Action',
+      field: "action",
+      headerName: "Action",
       sortable: false,
       width: 100,
       renderCell: (params) => {
-        const id = params.getValue(params.id, '_id') || '';
+        const id = params.getValue(params.id, "_id") || "";
         return (
           <>
             <Button
-              variant='contained'
-              color='primary'
+              variant="contained"
+              color="primary"
               startIcon={<AiOutlineEdit />}
               className={classes.button}
               component={RouterLink}
@@ -108,48 +108,48 @@ const UserListScreen = ({ history }) => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers());
     } else {
-      history.push('/login');
+      history.push("/admin");
     }
   }, [dispatch, history, userInfo, successDelete]);
 
   useEffect(() => {
     if (successDelete) {
-      dispatch(openSnackbar('Cặp nhật thành công', 'success'));
+      dispatch(openSnackbar("Cặp nhật thành công", "success"));
     }
   }, [dispatch, successDelete]);
 
   const deleteHandler = (id, status) => {
-    if(status && window.confirm('Bạn có chắn khóa tài khoản này?')){
+    if (status && window.confirm("Bạn có chắn khóa tài khoản này?")) {
       dispatch(deleteUser(id));
     }
-    if(!status && window.confirm('Bạn có gỡ khóa tài khoản này?')){
+    if (!status && window.confirm("Bạn có gỡ khóa tài khoản này?")) {
       dispatch(deleteUser(id));
     }
   };
   return (
-    <Container maxWidth='xl' style={{ marginBottom: 48 }}>
-      <Meta title='Dashboard | Users' />
+    <Container maxWidth="xl" style={{ marginBottom: 48 }}>
+      <Meta title="Dashboard | Users" />
       <Grid container className={classes.breadcrumbsContainer}>
         <Grid item xs={12}>
           <Breadcrumbs
-            separator={<NavigateNextIcon fontSize='small' />}
+            separator={<NavigateNextIcon fontSize="small" />}
             style={{ marginBottom: 24 }}
           >
-            <Link color='inherit' component={RouterLink} to='/'>
+            <Link color="inherit" component={RouterLink} to="/">
               Trang chủ
             </Link>
-            <Link color='inherit' component={RouterLink} to='/'>
+            <Link color="inherit" component={RouterLink} to="/">
               Admin Dashboard
             </Link>
-            <Link color='textPrimary' component={RouterLink} to='/userlist'>
+            <Link color="textPrimary" component={RouterLink} to="/userlist">
               Users
             </Link>
           </Breadcrumbs>
           <Typography
-            variant='h5'
-            component='h1'
+            variant="h5"
+            component="h1"
             gutterBottom
-            style={{ textAlign: 'center' }}
+            style={{ textAlign: "center" }}
           >
             Quản lý tài khoản
           </Typography>

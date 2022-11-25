@@ -111,11 +111,17 @@ const ProductCreateScreen = ({ history }) => {
   let { categorys = [] } = categoryList;
   categorys = categorys.map((category) => ({ ...category, id: category._id }));
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
     dispatch(listCategorys("", "", "all"));
     if (successCreate) {
       dispatch(openSnackbar("Product has been created!", "success"));
       history.push("/admin/productlist");
+    }
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push("/admin");
     }
   }, [dispatch, history, successCreate]);
 

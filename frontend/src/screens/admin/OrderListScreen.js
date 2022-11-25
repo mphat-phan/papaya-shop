@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { listOrders } from '../../actions/orderActions';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { listOrders } from "../../actions/orderActions";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
   Container,
@@ -10,32 +10,32 @@ import {
   Typography,
   Breadcrumbs,
   Link,
-} from '@material-ui/core';
-import { DataGrid } from '@material-ui/data-grid';
-import { makeStyles } from '@material-ui/core/styles';
-import { BiCommentDetail } from 'react-icons/bi';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Meta from '../../components/Meta';
-import Loader from '../../components/Loader';
-import Message from '../../components/Message';
+} from "@material-ui/core";
+import { DataGrid } from "@material-ui/data-grid";
+import { makeStyles } from "@material-ui/core/styles";
+import { BiCommentDetail } from "react-icons/bi";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import Meta from "../../components/Meta";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    padding: '6px 0',
-    minWidth: '50px',
-    '& .MuiButton-startIcon': {
+    padding: "6px 0",
+    minWidth: "50px",
+    "& .MuiButton-startIcon": {
       margin: 0,
     },
   },
   breadcrumbsContainer: {
     ...theme.mixins.customize.breadcrumbs,
     paddingBottom: 0,
-    '& .MuiBreadcrumbs-ol': {
-      justifyContent: 'flex-start',
+    "& .MuiBreadcrumbs-ol": {
+      justifyContent: "flex-start",
     },
   },
   dataGrid: {
-    boxShadow: '0 10px 31px 0 rgba(0,0,0,0.05)',
+    boxShadow: "0 10px 31px 0 rgba(0,0,0,0.05)",
   },
 }));
 
@@ -51,48 +51,48 @@ const OrderListScreen = ({ history }) => {
   const { userInfo } = userLogin;
 
   const columns = [
-    { field: '_id', headerName: 'ID', flex: 1 },
+    { field: "_id", headerName: "ID", flex: 1 },
     {
-      field: 'user',
-      headerName: 'User',
+      field: "user",
+      headerName: "User",
       width: 160,
       valueFormatter: (params) => params.row?.user?.name,
     },
     {
-      field: 'updatedAt',
-      headerName: 'Date',
+      field: "updatedAt",
+      headerName: "Date",
       width: 180,
       valueFormatter: (params) => params.value?.substring(0, 10),
     },
     {
-      field: 'totalPrice',
-      headerName: 'Total',
+      field: "totalPrice",
+      headerName: "Total",
       width: 160,
-      type: 'number',
+      type: "number",
     },
     {
-      field: 'isPaid',
-      headerName: 'Paid',
+      field: "isPaid",
+      headerName: "Paid",
       width: 160,
-      type: 'boolean',
+      type: "boolean",
     },
     {
-      field: 'isDelivered',
-      headerName: 'Delivered',
+      field: "isDelivered",
+      headerName: "Delivered",
       width: 160,
-      type: 'boolean',
+      type: "boolean",
     },
     {
-      field: 'detail',
-      headerName: 'Detail',
+      field: "detail",
+      headerName: "Detail",
       sortable: false,
       width: 100,
       renderCell: (params) => {
-        const id = params.getValue(params.id, '_id') || '';
+        const id = params.getValue(params.id, "_id") || "";
         return (
           <Button
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             startIcon={<BiCommentDetail />}
             className={classes.button}
             component={RouterLink}
@@ -107,34 +107,34 @@ const OrderListScreen = ({ history }) => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listOrders());
     } else {
-      history.push('/login');
+      history.push("/admin");
     }
   }, [dispatch, history, userInfo]);
 
   return (
-    <Container maxWidth='xl' style={{ marginBottom: 48 }}>
-      <Meta title='Dashboard | Orders' />
+    <Container maxWidth="xl" style={{ marginBottom: 48 }}>
+      <Meta title="Dashboard | Orders" />
       <Grid container className={classes.breadcrumbsContainer}>
         <Grid item xs={12}>
           <Breadcrumbs
-            separator={<NavigateNextIcon fontSize='small' />}
+            separator={<NavigateNextIcon fontSize="small" />}
             style={{ marginBottom: 24 }}
           >
-            <Link color='inherit' component={RouterLink} to='/'>
+            <Link color="inherit" component={RouterLink} to="/">
               Trang chủ
             </Link>
-            <Link color='inherit' component={RouterLink} to='/'>
+            <Link color="inherit" component={RouterLink} to="/">
               Thao tác của admin
             </Link>
-            <Link color='textPrimary' component={RouterLink} to='/userlist'>
+            <Link color="textPrimary" component={RouterLink} to="/userlist">
               Đơn hàng
             </Link>
           </Breadcrumbs>
           <Typography
-            variant='h5'
-            component='h1'
+            variant="h5"
+            component="h1"
             gutterBottom
-            style={{ textAlign: 'center' }}
+            style={{ textAlign: "center" }}
           >
             Quản lý đơn hàng
           </Typography>
