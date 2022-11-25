@@ -55,7 +55,7 @@ const UserListScreen = ({ history }) => {
 
   const columns = [
     { field: "_id", headerName: "ID", flex: 0.2, hide: onMobile },
-    { field: "name", headerName: "Name", flex: 0.2, hide: onMobile },
+    { field: "name", headerName: "Tên", flex: 0.2, hide: onMobile },
     { field: "email", headerName: "Email", flex: 0.3 },
     {
       field: "isAdmin",
@@ -65,7 +65,7 @@ const UserListScreen = ({ history }) => {
     },
     {
       field: "isStatus",
-      headerName: "Status",
+      headerName: "Trạng thái",
       flex: 0.1,
       renderCell: (params) => {
         const id = params.getValue(params.id, "_id") || "";
@@ -83,7 +83,7 @@ const UserListScreen = ({ history }) => {
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Hành động",
       sortable: false,
       width: 100,
       renderCell: (params) => {
@@ -139,10 +139,10 @@ const UserListScreen = ({ history }) => {
               Trang chủ
             </Link>
             <Link color="inherit" component={RouterLink} to="/">
-              Admin Dashboard
+              Admin thống kê
             </Link>
             <Link color="textPrimary" component={RouterLink} to="/userlist">
-              Users
+              Người dùng
             </Link>
           </Breadcrumbs>
           <Typography

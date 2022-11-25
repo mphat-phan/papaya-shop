@@ -54,19 +54,19 @@ const OrderListScreen = ({ history }) => {
     { field: "_id", headerName: "ID", flex: 1 },
     {
       field: "user",
-      headerName: "User",
+      headerName: "Người dùng",
       width: 160,
       valueFormatter: (params) => params.row?.user?.name,
     },
     {
       field: "updatedAt",
-      headerName: "Date",
+      headerName: "Ngày",
       width: 180,
       valueFormatter: (params) => params.value?.substring(0, 10),
     },
     {
       field: "totalPrice",
-      headerName: "Total",
+      headerName: "Tổng",
       width: 160,
       type: "number",
     },
@@ -78,13 +78,13 @@ const OrderListScreen = ({ history }) => {
     },
     {
       field: "isDelivered",
-      headerName: "Delivered",
+      headerName: "Đã vận chuyển",
       width: 160,
       type: "boolean",
     },
     {
       field: "detail",
-      headerName: "Detail",
+      headerName: "Chi tiết",
       sortable: false,
       width: 100,
       renderCell: (params) => {
