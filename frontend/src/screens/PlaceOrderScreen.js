@@ -137,11 +137,15 @@ const PlaceOrderScreen = ({ history }) => {
 
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
+  const { userInfo } = useSelector((state) => state.userLogin);
 
   useEffect(() => {
     if (success) {
       history.push(`/order/${order._id}`);
       dispatch(openSnackbar("Order has been created successfully", "success"));
+    }
+    if (!userInfo) {
+      history.push(`/login?redirect=placeorder`);
     }
     // eslint-disable-next-line
   }, [history, success]);

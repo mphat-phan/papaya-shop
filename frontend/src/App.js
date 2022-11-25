@@ -76,7 +76,7 @@ const App = () => {
               path="/admin/dashboard-product"
               component={DashboardProductScreen}
             />
-            <Route path="/admin/productlist" component={ProductListScreen} />
+
             <Route
               path="/admin/dashboard-revenue"
               component={DashboardRevenueScreen}
@@ -86,7 +86,6 @@ const App = () => {
               component={DashboardProductScreen}
             />
 
-            <Route path="/admin/productlist" component={ProductListScreen} />
             <Route path="/admin/user/:id" component={UserEditScreen} />
             <Route path="/admin/userlist" component={UserListScreen} />
             <Route path="/product/:id" component={ProductScreen} />
