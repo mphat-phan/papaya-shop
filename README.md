@@ -1,17 +1,5 @@
 
-# Fashion Shop v2.0
-
-Modern and stylish e-commerce website
-
-![Logo](https://res.cloudinary.com/phongbuiduy/image/upload/v1624769545/fashionshop/logo_v327oi.png)
-
-
-
-## Demo
-
-:point_right: :point_right: Version 2.0 (Improved UI, UX, and more functions):
-https://fashion-shop-mern.herokuapp.com
-
+# Papaya Shop
 
 ## Installation
 
