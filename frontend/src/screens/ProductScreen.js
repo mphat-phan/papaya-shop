@@ -117,13 +117,13 @@ const ProductScreen = ({ history, match }) => {
 
   const classes = useStyles(product);
 
-  if(status===true){
-    dispatch(openSnackbar('Cập nhật số lượng thành công', 'success'));
+  if (status === true) {
+    dispatch(openSnackbar("Cập nhật số lượng thành công", "success"));
   }
-  if(status===false){
-    dispatch(openSnackbar('Sản phẩm đã hết hàng', 'error'));
+  if (status === false) {
+    dispatch(openSnackbar("Sản phẩm đã hết hàng", "error"));
   }
-  
+
   const addToCartHandler = ({ qty }) => {
     dispatch(updateToCart(match.params.id, qty));
   };
@@ -250,7 +250,10 @@ const ProductScreen = ({ history, match }) => {
                   {product.description}
                 </Typography>
                 <form>
-                  <FormControl variant="outlined" style={{ width: 250 }}>
+                  <FormControl
+                    variant="outlined"
+                    style={{ width: 250, marginTop: 18 }}
+                  >
                     <FormLabel
                       className={classes.label}
                       style={{ marginBottom: 16 }}
@@ -311,14 +314,13 @@ const ProductScreen = ({ history, match }) => {
                   >
                     <FaTags />
                   </Box>
-                  <Typography className={classes.label}>Nhãn:</Typography>
+                  <Typography className={classes.label}>Thể loại:</Typography>
                   <Box ml={2}>
                     <Chip
                       size="small"
                       label={product.category}
                       style={{ marginRight: 8 }}
                     />
-                    <Chip size="small" label={product.brand} />
                   </Box>
                 </Box>
                 <Divider />
