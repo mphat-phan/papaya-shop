@@ -69,7 +69,7 @@ const Footer = () => {
             component='p'
             className={classes.copyright}
           >
-            Copyright &copy; 2021 Chang Fashion Shop. All Right Reserved.
+            Copyright &copy; 2021 Papaya Shop. All Right Reserved.
           </Typography>
           <div className={classes.socialGroup}>
             <IconButton className={classes.icon}>
