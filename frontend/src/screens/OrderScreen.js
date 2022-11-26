@@ -497,15 +497,6 @@ const OrderScreen = ({ match, history }) => {
                     }).format(order.shippingPrice)}
                   </Typography>
                 </ListItem>
-                <ListItem divider disableGutters>
-                  <ListItemText primary="Tax:" />
-                  <Typography>
-                    {new Intl.NumberFormat("de-DE", {
-                      style: "currency",
-                      currency: "VND",
-                    }).format(order.taxPrice)}
-                  </Typography>
-                </ListItem>
                 <ListItem disableGutters>
                   <ListItemText primary="Total:" />
                   <Typography color="secondary">
